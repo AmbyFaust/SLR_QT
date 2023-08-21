@@ -1,8 +1,7 @@
-from sqlalchemy import Column, ForeignKey, String, Float
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import Column, Float
 
-from project.database.entities.BaseEntity import BaseEntity
-from project.database.database_manager import engine
+from project.database.BaseEntity import BaseEntity
+from project.database.database_manager import db_manager
 
 
 class CoordinatesEntity(BaseEntity):
@@ -16,7 +15,7 @@ class CoordinatesEntity(BaseEntity):
     @classmethod
     def create_coordinates(cls, latitude, longitude, altitude):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             new_coordinates = cls(latitude=latitude, longitude=longitude, altitude=altitude)
             session.add(new_coordinates)
             session.commit()
@@ -26,7 +25,7 @@ class CoordinatesEntity(BaseEntity):
     @classmethod
     def delete_coordinates(cls, coordinates_id):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             coordinates = session.query(cls).get(coordinates_id)
             if coordinates:
                 session.delete(coordinates)
@@ -36,7 +35,7 @@ class CoordinatesEntity(BaseEntity):
     @classmethod
     def update_coordinates(cls, coordinates_id, new_latitude, new_longitude, new_altitude):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             coordinates = session.query(cls).get(coordinates_id)
             if coordinates:
                 coordinates.latitude = new_latitude

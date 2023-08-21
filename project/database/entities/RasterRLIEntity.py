@@ -1,8 +1,8 @@
-from sqlalchemy import Column, ForeignKey, String, Integer
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy import Column, ForeignKey, Integer
+from sqlalchemy.orm import relationship
 
-from project.database.entities.BaseEntity import BaseEntity
-from project.database.database_manager import engine
+from project.database.database_manager import db_manager
+from project.database.BaseEntity import BaseEntity
 
 
 class RasterRLIEntity(BaseEntity):
@@ -19,7 +19,7 @@ class RasterRLIEntity(BaseEntity):
     @classmethod
     def create_raster_rli(cls, rli_id, file_id, extent_id):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             new_raster_rli = cls(rli_id=rli_id, file_id=file_id, extent_id=extent_id)
             session.add(new_raster_rli)
             session.commit()
@@ -29,7 +29,7 @@ class RasterRLIEntity(BaseEntity):
     @classmethod
     def delete_raster_rli(cls, raster_rli_id):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             raster_rli = session.query(cls).get(raster_rli_id)
             if raster_rli:
                 session.delete(raster_rli)
@@ -39,7 +39,7 @@ class RasterRLIEntity(BaseEntity):
     @classmethod
     def update_raster_rli(cls, raster_rli_id, new_rli_id, new_file_id, new_extent_id):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             raster_rli = session.query(cls).get(raster_rli_id)
             if raster_rli:
                 raster_rli.rli_id = new_rli_id

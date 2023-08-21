@@ -1,12 +1,10 @@
 from datetime import datetime
 
 from sqlalchemy import Column, ForeignKey, String, Integer, TIMESTAMP
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import relationship
 
-from project.database.entities.BaseEntity import BaseEntity
-from project.database.database_manager import engine
-from project.database.entities.FileEntity import FileEntity
-from project.database.entities.RasterRLIEntity import RasterRLIEntity
+from project.database.database_manager import db_manager
+from project.database.BaseEntity import BaseEntity
 
 
 class TargetEntity(BaseEntity):
@@ -24,7 +22,7 @@ class TargetEntity(BaseEntity):
     @classmethod
     def create_target(cls, number, object_id, raster_rli_id, sppr_type_key):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             new_target = cls(number=number, object_id=object_id, raster_rli_id=raster_rli_id,
                              datetime_sending=datetime.now(), sppr_type_key=sppr_type_key)
             session.add(new_target)
@@ -35,7 +33,7 @@ class TargetEntity(BaseEntity):
     @classmethod
     def delete_target(cls, target_id):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             target = session.query(cls).get(target_id)
             if target:
                 session.delete(target)
@@ -45,7 +43,7 @@ class TargetEntity(BaseEntity):
     @classmethod
     def update_target(cls, target_id, new_number, new_object_id, new_raster_rli_id, new_sppr_type_key):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             target = session.query(cls).get(target_id)
             if target:
                 target.number = new_number

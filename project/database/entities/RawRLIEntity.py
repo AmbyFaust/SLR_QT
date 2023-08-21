@@ -1,10 +1,10 @@
 from datetime import datetime
 
-from sqlalchemy import Column, ForeignKey, String, Integer, TIMESTAMP
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy import Column, ForeignKey, Integer, TIMESTAMP
+from sqlalchemy.orm import relationship
 
-from project.database.entities.BaseEntity import BaseEntity
-from project.database.database_manager import engine
+from project.database.database_manager import db_manager
+from project.database.BaseEntity import BaseEntity
 
 
 class RawRLIEntity(BaseEntity):
@@ -20,7 +20,7 @@ class RawRLIEntity(BaseEntity):
     @classmethod
     def create_raw_rli(cls, file_id, type_source_rli_id):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             new_raw_rli = cls(file_id=file_id, type_source_rli_id=type_source_rli_id, date_receiving=datetime.now())
             session.add(new_raw_rli)
             session.commit()
@@ -30,7 +30,7 @@ class RawRLIEntity(BaseEntity):
     @classmethod
     def delete_raw_rli(cls, raw_rli_id):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             raw_rli = session.query(cls).get(raw_rli_id)
             if raw_rli:
                 session.delete(raw_rli)
@@ -40,7 +40,7 @@ class RawRLIEntity(BaseEntity):
     @classmethod
     def update_raw_rli(cls, raw_rli_id, new_file_id, new_type_source_rli_id):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             raw_rli = session.query(cls).get(raw_rli_id)
             if raw_rli:
                 raw_rli.file_id = new_file_id

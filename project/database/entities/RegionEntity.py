@@ -1,8 +1,8 @@
 from sqlalchemy import Column, ForeignKey, String, Integer
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import relationship
 
-from project.database.entities.BaseEntity import BaseEntity
-from project.database.database_manager import engine
+from project.database.database_manager import db_manager
+from project.database.BaseEntity import BaseEntity
 
 
 class RegionEntity(BaseEntity):
@@ -16,7 +16,7 @@ class RegionEntity(BaseEntity):
     @classmethod
     def create_region(cls, extent_id, name):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             new_region = cls(extent_id=extent_id, name=name)
             session.add(new_region)
             session.commit()
@@ -26,7 +26,7 @@ class RegionEntity(BaseEntity):
     @classmethod
     def delete_region(cls, region_id):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             region_ = session.query(cls).get(region_id)
             if region_:
                 session.delete(region_)
@@ -36,7 +36,7 @@ class RegionEntity(BaseEntity):
     @classmethod
     def update_region(cls, region_id, new_extent_id, new_name):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             region_ = session.query(cls).get(region_id)
             if region_:
                 region_.extent_id = new_extent_id
@@ -47,5 +47,5 @@ class RegionEntity(BaseEntity):
     @classmethod
     def get_all_regions(cls):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             return session.query(cls).all()

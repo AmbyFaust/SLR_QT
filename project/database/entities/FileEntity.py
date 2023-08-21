@@ -1,8 +1,7 @@
-from sqlalchemy import Column, ForeignKey, String, Integer
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy import Column, String
 
-from project.database.entities.BaseEntity import BaseEntity
-from project.database.database_manager import engine
+from project.database.database_manager import db_manager
+from project.database.BaseEntity import BaseEntity
 
 
 class FileEntity(BaseEntity):
@@ -17,7 +16,7 @@ class FileEntity(BaseEntity):
     @classmethod
     def create_file(cls, name, path_to_file, file_extension):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             new_file = cls(name=name, path_to_file=path_to_file, file_extension=file_extension)
             session.add(new_file)
             session.commit()
@@ -27,7 +26,7 @@ class FileEntity(BaseEntity):
     @classmethod
     def delete_file(cls, file_id):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             file = session.query(cls).get(file_id)
             if file:
                 session.delete(file)
@@ -37,7 +36,7 @@ class FileEntity(BaseEntity):
     @classmethod
     def update_file(cls, file_id, new_name, new_path_to_file, new_file_extension):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             file = session.query(cls).get(file_id)
             if file:
                 file.name = new_name

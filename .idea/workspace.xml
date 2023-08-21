@@ -5,31 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0e491e98-e25c-4ccf-97d7-632153a47184" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/SLR_QT.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/database/database_manager.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/database/entities/BaseEntity.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/database/entities/CoordinatesEntity.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/database/entities/ExtentEntity.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/database/entities/FileEntity.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/database/entities/LinkedRLIEntity.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/database/entities/MarkEntity.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/database/entities/ObjectEntity.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/database/entities/RLIEntity.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/database/entities/RasterRLIEntity.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/database/entities/RawRLIEntity.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/database/entities/RegionEntity.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/database/entities/RelatingObjectEntity.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/database/entities/TargetEntity.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/database/entities/TypeBindingMethodEntity.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/database/entities/TypeSessionEntity.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/database/entities/TypeSourceRLIEntity.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/RLS_QT_Project.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

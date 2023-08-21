@@ -1,8 +1,8 @@
 from sqlalchemy import Column, ForeignKey, String, Integer, JSON
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import relationship
 
-from project.database.entities.BaseEntity import BaseEntity
-from project.database.database_manager import engine
+from project.database.database_manager import db_manager
+from project.database.BaseEntity import BaseEntity
 
 
 class ObjectEntity(BaseEntity):
@@ -20,7 +20,7 @@ class ObjectEntity(BaseEntity):
     @classmethod
     def create_object(cls, mark_id, name, object_type, relating_object_id, meta):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             new_object = cls(mark_id=mark_id, name=name, type=object_type,
                              relating_object_id=relating_object_id, meta=meta)
             session.add(new_object)
@@ -31,7 +31,7 @@ class ObjectEntity(BaseEntity):
     @classmethod
     def delete_object(cls, object_id):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             object_ = session.query(cls).get(object_id)
             if object_:
                 session.delete(object_)
@@ -41,7 +41,7 @@ class ObjectEntity(BaseEntity):
     @classmethod
     def update_object(cls, object_id, new_mark_id, new_name, new_object_type, new_relating_object_id, new_meta):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             object_ = session.query(cls).get(object_id)
             if object_:
                 object_.mark_id = new_mark_id

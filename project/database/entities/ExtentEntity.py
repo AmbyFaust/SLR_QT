@@ -1,8 +1,8 @@
-from sqlalchemy import Column, ForeignKey, String, Integer
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy import Column, ForeignKey, Integer
+from sqlalchemy.orm import relationship
 
-from project.database.entities.BaseEntity import BaseEntity
-from project.database.database_manager import engine
+from project.database.database_manager import db_manager
+from project.database.BaseEntity import BaseEntity
 
 
 class ExtentEntity(BaseEntity):
@@ -21,7 +21,7 @@ class ExtentEntity(BaseEntity):
     @classmethod
     def create_extent(cls, top_left, bot_left, top_right, bot_right):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             new_extent = cls(top_left_id=top_left, bot_left_id=bot_left, top_right_id=top_right, bot_right_id=bot_right)
             session.add(new_extent)
             session.commit()
@@ -31,7 +31,7 @@ class ExtentEntity(BaseEntity):
     @classmethod
     def delete_extent(cls, extent_id):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             extent = session.query(cls).get(extent_id)
             if extent:
                 session.delete(extent)
@@ -41,7 +41,7 @@ class ExtentEntity(BaseEntity):
     @classmethod
     def update_extent(cls, extent_id, new_top_left, new_bot_left, new_top_right, new_bot_right):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             extent = session.query(cls).get(extent_id)
             if extent:
                 extent.top_left_id = new_top_left

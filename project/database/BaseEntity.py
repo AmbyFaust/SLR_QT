@@ -7,7 +7,7 @@ Base = declarative_base()
 
 
 class BaseEntity(Base):
-    abstract = True
+    __abstract__ = True
     id = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
 
     mutex = threading.Lock()

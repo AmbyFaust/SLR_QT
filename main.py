@@ -8,22 +8,13 @@ from project.gui.workspace_window import WorkspaceWindowTitled
 from project.core.marks_handler.marks_handler import MarksHandler
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
-from datetime import datetime
+from project.database.database_manager import db_manager
 
 
 def main():
     urllib3.disable_warnings()
-    print(datetime.now().date())
-    db_path = f'sessions\\{datetime.now().date()}_session.db'
-    engine = create_engine(f'sqlite:///{db_path}')
 
-
-    SessionDB = sessionmaker(bind=engine)
-    session = SessionDB()
-
-    Base = declarative_base()
-    Base.metadata.create_all(bind=engine)
-
+    db_manager.start_app()
 
     qgs_app = QgsApplication([], True)
     qgs_app.setPrefixPath(QGIS_PATH, True)

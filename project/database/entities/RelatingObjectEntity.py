@@ -1,8 +1,7 @@
-from sqlalchemy import Column, ForeignKey, String, Integer
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy import Column, String, Integer
 
-from project.database.entities.BaseEntity import BaseEntity
-from project.database.database_manager import engine
+from project.database.database_manager import db_manager
+from project.database.BaseEntity import BaseEntity
 
 
 class RelatingObjectEntity(BaseEntity):
@@ -15,7 +14,7 @@ class RelatingObjectEntity(BaseEntity):
     @classmethod
     def create_relating_object(cls, type_relating, name):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             new_relating_object = cls(type_relating=type_relating, name=name)
             session.add(new_relating_object)
             session.commit()
@@ -25,7 +24,7 @@ class RelatingObjectEntity(BaseEntity):
     @classmethod
     def delete_relating_object(cls, relating_object_id):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             relating_object = session.query(cls).get(relating_object_id)
             if relating_object:
                 session.delete(relating_object)
@@ -35,7 +34,7 @@ class RelatingObjectEntity(BaseEntity):
     @classmethod
     def update_relating_object(cls, relating_object_id, new_type_relating, new_name):
         with cls.mutex:
-            session = sessionmaker(bind=engine)()
+            session = db_manager.get_session()
             relating_object = session.query(cls).get(relating_object_id)
             if relating_object:
                 relating_object.type_relating = new_type_relating
