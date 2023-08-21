@@ -1,0 +1,26 @@
+[
+  {
+    "id": "world_mbtiles",
+    "name": "Подложка (локальная карта)",
+    "url": "../widgets/maps/world.mbtiles",
+    "kind": 0,
+    "provider": "",
+    "is_local": true
+  },
+  {
+    "id": "OGK1mln",
+    "name": "Карта Мира 1 млн (ГИС-сервер на С.Г.К.)",
+    "url": "IgnoreGetMapUrl=1&crs=EPSG:3857&dpiMode=7&format=image/png&layers=OGK1mln&styles=default&tileMatrixSet=urn:ogc:def:wkss:OGC:1.0:GoogleMapsCompatible&url=http://10.0.102.112:9419/GISWebServiceSE/service.php?request%3DGetCapabilities%26service%3DWMTS&username=user&password=12345678",
+    "kind": 0,
+    "provider": "wms",
+    "is_local": false
+  },
+  {
+    "id": "crimea_mbtiles",
+    "name": "Крым (локальная карта)",
+    "url": "../../maps/crimea.mbtiles",
+    "kind": 0,
+    "provider": "",
+    "is_local": true
+  }
+]

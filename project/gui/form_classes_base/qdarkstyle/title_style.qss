@@ -1,0 +1,106 @@
+QWidget
+{
+    background-color: #148CD2;
+}
+
+/*QWidget:QSpacerItem
+{
+    background-color: #148CD2;
+    color: #148CD2;
+}*/
+
+StyledButton#ButtonMin
+{
+    border-image:url(":/frame_buttons/frame_minimize.png");
+    border: 0px;
+    border-radius: 0px;
+    padding: 0px;
+}
+
+StyledButton#ButtonMin:hover
+{
+    border-image:url(":/frame_buttons/frame_minimize_focus.png");
+    border: 0px;
+    border-radius: 0px;
+    padding: 0px;
+}
+
+StyledButton#ButtonMin:pressed
+{
+    border-image:url(":/frame_buttons/frame_minimize_pressed.png");
+    border: 0px;
+    border-radius: 0px;
+    padding: 0px;
+}
+
+StyledButton#ButtonMax
+{
+    border-image:url(":/frame_buttons/frame_maximize.png");
+    border: 0px;
+    border-radius: 0px;
+    padding: 0px;
+}
+
+StyledButton#ButtonMax:hover
+{
+    border-image:url(":/frame_buttons/frame_maximize_focus.png");
+    border: 0px;
+    border-radius: 0px;
+    padding: 0px;
+}
+
+StyledButton#ButtonMax:pressed
+{
+    border-image:url(":/frame_buttons/frame_maximize_pressed.png");
+    border: 0px;
+    border-radius: 0px;
+    padding: 0px;
+}
+
+StyledButton#ButtonRestore
+{
+    border-image:url(":/frame_buttons/frame_restore.png");
+    border: 0px;
+    border-radius: 0px;
+    padding: 0px;
+}
+
+StyledButton#ButtonRestore:hover
+{
+    border-image:url(":/frame_buttons/frame_restore_focus.png");
+    border: 0px;
+    border-radius: 0px;
+    padding: 0px;
+}
+
+StyledButton#ButtonRestore:pressed
+{
+    border-image:url(":/frame_buttons/frame_restore_pressed.png");
+    border: 0px;
+    border-radius: 0px;
+    padding: 0px;
+}
+
+StyledButton#ButtonClose
+{
+    border-image:url(":/frame_buttons/frame_close.png");
+    border: 0px;
+    border-radius: 0px;
+    padding: 0px;
+}
+
+StyledButton#ButtonClose:hover
+{
+    border-image:url(":/frame_buttons/frame_close_focus.png");
+    border: 0px;
+    border-radius: 0px;
+    padding: 0px;
+}
+
+StyledButton#ButtonClose:pressed
+{
+    border-image:url(":/frame_buttons/frame_close_pressed.png");
+    border: 0px;
+    border-radius: 0px;
+    padding: 0px;
+}
