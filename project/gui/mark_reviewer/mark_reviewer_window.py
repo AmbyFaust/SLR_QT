@@ -10,7 +10,7 @@ from .mark_reviewer_controller import MarksReviewerController
 class MarksReviewerWindow(QMainWindowBase):
 
     def __init__(self, parent=None):
-        super(MarksReviwerWindow, self).__init__(parent)
+        super(MarksReviewerWindow, self).__init__(parent)
 
         self.controller = MarksReviewerController()
 
