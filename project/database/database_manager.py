@@ -7,7 +7,8 @@ from project.database.BaseEntity import Base
 
 import os
 
-class DBManager():
+
+class DBManager:
     def __init__(self):
         self.engine = None
         self.project_path = os.path.abspath(os.curdir) + '\\'
@@ -45,7 +46,6 @@ class DBManager():
         else:
             print('Начало новой сессии')
             self.create_and_set_session()
-
 
 
 db_manager = DBManager()

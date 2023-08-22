@@ -1,31 +1,21 @@
-import sqlite3
-
-
-class Mark:
-    def __init__(self):
-        pass
-
-
-class MarkHandler:
-    def __init__(self):
-        self.marks = []
-
-    def add_mark(self, mark):
-        self.marks.append(mark)
+from project.database.entities.ObjectEntity import ObjectEntity
 
 
 class MarkReviewerHandler:
-    def __init__(self):
+    @staticmethod
+    def create_mark(x, y):
+        mark_id = 1
+        return mark_id
+
+    @staticmethod
+    def delete_mark(mark_id):
         pass
 
-    def create_mark(self):
+    @staticmethod
+    def toggle_mark_visibility(mark_id, visibility):
         pass
 
-    def delete_mark(self):
-        pass
+    @staticmethod
+    def update_database(object_id, mark_id, name, object_type, relating_object_id, meta):
+        ObjectEntity.update_object(object_id, mark_id, name, object_type, relating_object_id, meta)
 
-    def update_mark(self):
-        pass
-
-    def toggle_mark_visibility(self):
-        pass
