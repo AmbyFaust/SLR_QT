@@ -4,7 +4,7 @@ import math
 
 
 class MarkReviewerController(QObject):
-    markCreated = pyqtSignal(float, float)
+    markCreated = pyqtSignal(float, float, float)
     markDeleted = pyqtSignal(int)
     markVisibilityChanged = pyqtSignal(int, bool)
     markDataChanged = pyqtSignal(int, str)
@@ -21,9 +21,9 @@ class MarkReviewerController(QObject):
         dms_minutes, dms_seconds = map(float, dms_parts[1][:len(dms_parts[1]) - 2].split("'"))
         return sign * (abs(dms_degrees) + dms_minutes / 60 + dms_seconds / 3600)
 
-    def create_mark(self, x, y):
-        mark_id = self.handler.create_mark(x, y)
-        self.markCreated.emit(x, y)
+    def create_mark(self, latitude, longitude, altitude):
+        mark_id = self.handler.create_mark(latitude, longitude, altitude)
+        self.markCreated.emit(latitude, longitude, altitude)
         return mark_id
 
     def delete_mark(self, mark_id):

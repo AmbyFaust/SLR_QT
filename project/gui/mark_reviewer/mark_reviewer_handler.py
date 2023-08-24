@@ -3,9 +3,8 @@ from project.database.entities.ObjectEntity import ObjectEntity
 
 class MarkReviewerHandler:
     @staticmethod
-    def create_mark(x, y):
-        mark_id = 1
-        return mark_id
+    def create_mark(latitude, longitude, altitude):
+        pass
 
     @staticmethod
     def delete_mark(mark_id):

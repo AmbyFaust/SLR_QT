@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0e491e98-e25c-4ccf-97d7-632153a47184" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/SLR_QT.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SLR_QT.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/database/database_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/database/database_manager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_handler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
