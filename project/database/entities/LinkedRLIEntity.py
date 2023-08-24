@@ -1,7 +1,7 @@
 from sqlalchemy import Column, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 
-from project.database.database_manager import db_manager
+from project.database.session_controller import session_controller
 from project.database.BaseEntity import BaseEntity
 
 
@@ -22,7 +22,7 @@ class LinkedRLIEntity(BaseEntity):
     @classmethod
     def create_linked_rli(cls, raster_rli_id, file_id, extent_id, binding_attempt_number, type_binding_method_id):
         with cls.mutex:
-            session = db_manager.get_session()
+            session = session_controller.get_session()
             new_linked_rli = cls(raster_rli_id=raster_rli_id, file_id=file_id, extent_id=extent_id,
                                  binding_attempt_number=binding_attempt_number,
                                  type_binding_method_id=type_binding_method_id)
@@ -34,7 +34,7 @@ class LinkedRLIEntity(BaseEntity):
     @classmethod
     def delete_linked_rli(cls, linked_rli_id):
         with cls.mutex:
-            session = db_manager.get_session()
+            session = session_controller.get_session()
             linked_rli = session.query(cls).get(linked_rli_id)
             if linked_rli:
                 session.delete(linked_rli)
@@ -45,7 +45,7 @@ class LinkedRLIEntity(BaseEntity):
     def update_linked_rli(cls, linked_rli_id, new_raster_rli_id, new_file_id, new_extent_id,
                           new_binding_attempt_number, new_type_binding_method_id):
         with cls.mutex:
-            session = db_manager.get_session()
+            session = session_controller.get_session()
             linked_rli = session.query(cls).get(linked_rli_id)
             if linked_rli:
                 linked_rli.raster_rli_id = new_raster_rli_id
