@@ -36,10 +36,8 @@ class DBManager:
         Base.metadata.create_all(bind=self.engine)
 
     def start_app(self):
-        print(self.project_path)
         db_path = self.project_path + self.sessions_directory + self.session_name_prefix +\
                   str(datetime.now().date()) + self.session_name_format
-        print(db_path)
         if os.path.isfile(db_path):
             print('Продолжение последней сессии')
             self.set_session(db_path)

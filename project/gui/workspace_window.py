@@ -29,10 +29,12 @@ class WorkspaceWindowTitled(QTitledMainWindowBase):
         self.close_event_signal.connect(self.controller.main_window_closed_event)
 
     def __create_widgets(self):
+        self.mark_reviewer_dock = NotCloseDockWidget('Управление Отметками', self)
+        self.mark_reviewer_dock.setWidget(self.controller.mark_reviewer_w)
+        self.addDockWidget(DOCK_WIDGETS_AREA, self.mark_reviewer_dock)
         # self.targets_reviewer_dock = NotCloseDockWidget('Обозреватель Целей', self)
         # self.targets_reviewer_dock.setWidget(self.controller.targets_reviewer_w)
         # self.addDockWidget(DOCK_WIDGETS_AREA, self.targets_reviewer_dock)
-        pass
 
     def __create_layout(self):
         self.setCentralWidget(self.controller.gis_w)

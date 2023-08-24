@@ -1,6 +1,7 @@
 from PyQt5.QtCore import QObject
 
 from .gis import GisWindow
+from .mark_reviewer.mark_reviewer_window import MarksReviewerWindow
 
 
 class WorkspaceController(QObject):
@@ -20,6 +21,7 @@ class WorkspaceController(QObject):
     def __create_widgets(self):
         # создание окна ГИС
         self.gis_w = GisWindow()
+        self.mark_reviewer_w = MarksReviewerWindow()
 
 
 
