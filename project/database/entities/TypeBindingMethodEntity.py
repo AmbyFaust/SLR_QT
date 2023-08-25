@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String
 
-from project.database.database_manager import db_manager
+from project.database.session_controller import session_controller
 from project.database.BaseEntity import BaseEntity
 
 
@@ -13,7 +13,7 @@ class TypeBindingMethodEntity(BaseEntity):
     @classmethod
     def create_type_binding_method(cls, name):
         with cls.mutex:
-            session = db_manager.get_session()
+            session = session_controller.get_session()
             new_type_binding_method = cls(name=name)
             session.add(new_type_binding_method)
             session.commit()
@@ -23,7 +23,7 @@ class TypeBindingMethodEntity(BaseEntity):
     @classmethod
     def delete_type_binding_method(cls, type_binding_method_id):
         with cls.mutex:
-            session = db_manager.get_session()
+            session = session_controller.get_session()
             type_binding_method = session.query(cls).get(type_binding_method_id)
             if type_binding_method:
                 session.delete(type_binding_method)
@@ -33,7 +33,7 @@ class TypeBindingMethodEntity(BaseEntity):
     @classmethod
     def update_type_binding_method(cls, type_binding_method_id, new_name):
         with cls.mutex:
-            session = db_manager.get_session()
+            session = session_controller.get_session()
             type_binding_method = session.query(cls).get(type_binding_method_id)
             if type_binding_method:
                 type_binding_method.name = new_name

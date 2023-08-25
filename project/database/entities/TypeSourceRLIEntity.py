@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String
 
-from project.database.database_manager import db_manager
+from project.database.session_controller import session_controller
 from project.database.BaseEntity import BaseEntity
 
 
@@ -13,7 +13,7 @@ class TypeSourceRLIEntity(BaseEntity):
     @classmethod
     def create_type_source_rli(cls, name):
         with cls.mutex:
-            session = db_manager.get_session()
+            session = session_controller.get_session()
             new_type_source_rli = cls(name=name)
             session.add(new_type_source_rli)
             session.commit()
@@ -23,7 +23,7 @@ class TypeSourceRLIEntity(BaseEntity):
     @classmethod
     def delete_type_source_rli(cls, type_source_rli_id):
         with cls.mutex:
-            session = db_manager.get_session()
+            session = session_controller.get_session()
             type_source_rli = session.query(cls).get(type_source_rli_id)
             if type_source_rli:
                 session.delete(type_source_rli)
@@ -33,7 +33,7 @@ class TypeSourceRLIEntity(BaseEntity):
     @classmethod
     def update_type_source_rli(cls, type_source_rli_id, new_name):
         with cls.mutex:
-            session = db_manager.get_session()
+            session = session_controller.get_session()
             type_source_rli = session.query(cls).get(type_source_rli_id)
             if type_source_rli:
                 type_source_rli.name = new_name
