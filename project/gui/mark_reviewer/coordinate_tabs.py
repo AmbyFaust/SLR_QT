@@ -18,7 +18,6 @@ class GeodesicTab(QWidget):
         self.height_spin_box = QDoubleSpinBox()
         self.height_spin_box.setDecimals(3)
 
-
     def __create_layouts(self):
         common_v_layout = QVBoxLayout()
 
