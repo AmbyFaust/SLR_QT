@@ -1,23 +1,20 @@
 from project.database.database_manager import db_manager
 from project.database.entities.CoordinatesEntity import CoordinatesEntity
+from project.database.entities.MarkEntity import MarkEntity
 from project.database.entities.ObjectEntity import ObjectEntity
-
-# class CoordinatesEntity(BaseEntity):
-#     __tablename__ = 'coordinates'
-#
-#     latitude = Column(Float, nullable=False)
-#     longitude = Column(Float, nullable=False)
-#     altitude = Column(Float, default=0)
-from project.database.entities.TypeSourceRLIEntity import TypeSourceRLIEntity
+from project.database.entities.RelatingObjectEntity import RelatingObjectEntity
 
 
 class MarksReviewerHandler:
     @staticmethod
-    def create_mark(name, geo_data, comment):
-        typess = TypeSourceRLIEntity.create_type_source_rli("name")
-        print(typess.id)
+    def create_mark(name, object_type, relating_name, relating_object_type, geo_data, meta):
         coordinates_id = CoordinatesEntity.create_coordinates(*geo_data)
-        print(coordinates_id)
+        mark_id = MarkEntity.create_mark(coordinates_id=coordinates_id)
+        relating_object_id = RelatingObjectEntity.create_relating_object(type_relating=relating_object_type,
+                                                                         name=relating_name)
+        object_id = ObjectEntity.create_object(mark_id=mark_id, name=name, object_type=object_type,
+                                               relating_object_id=relating_object_id, meta=meta)
+        print(object_id)
 
     @staticmethod
     def delete_mark(mark_id):
@@ -26,8 +23,4 @@ class MarksReviewerHandler:
     @staticmethod
     def toggle_mark_visibility(mark_id, visibility):
         pass
-
-    @staticmethod
-    def update_database(object_id, mark_id, name, object_type, relating_object_id, meta):
-        ObjectEntity.update_object(object_id, mark_id, name, object_type, relating_object_id, meta)
 

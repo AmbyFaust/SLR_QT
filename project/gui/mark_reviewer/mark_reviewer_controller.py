@@ -8,5 +8,5 @@ class MarksReviewerController(QObject):
 
         self.handler = MarksReviewerHandler()
 
-    def handle_mark_created(self, name, geo_data, comment):
-        self.handler.create_mark(name, geo_data, comment)
+    def handle_mark_created(self, name, object_type, relating_name, relating_object_type, geo_data, meta):
+        self.handler.create_mark(name, object_type, relating_name, relating_object_type, geo_data, meta)
