@@ -1,10 +1,13 @@
 from PyQt5.QtWidgets import QDialog, QVBoxLayout,\
     QPushButton, QHBoxLayout, QLabel, QLineEdit, QTabWidget, QPlainTextEdit
+from PyQt5.QtCore import pyqtSignal
 
 from project.gui.mark_reviewer.coordinate_tabs import GeodesicTab, GeocentricTab
 
 
 class CreateMarkDialogWindow(QDialog):
+    markCreated = pyqtSignal(str, tuple, str)
+
     def __init__(self, parent=None):
         super(CreateMarkDialogWindow, self).__init__(parent)
         self.setWindowTitle('Создание отметки')
@@ -53,5 +56,21 @@ class CreateMarkDialogWindow(QDialog):
         self.setLayout(common_v_layout)
 
     def __create_actions(self):
-        pass
+        self.cancel_btn.clicked.connect(self.reject)
+        self.create_btn.clicked.connect(self.accept_mark)
+
+    def accept_mark(self):
+        name = self.name_line_edit.text()
+        selected_tab_index = self.coordinates_tabs.currentIndex()
+        if selected_tab_index == 0:  # "Геоцентрические координаты"
+            geo_data = self.geocentric_tab.get_geocentric_data()
+        else:  # "Геодезические координаты"
+            geo_data = self.geodesic_tab.get_geodesic_data()
+        meta = self.comment_text_edit.toPlainText()
+
+        self.markCreated.emit(name, geo_data, meta)
+        self.name_line_edit.clear()
+        self.comment_text_edit.clear()
+        self.accept()
+
 

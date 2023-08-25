@@ -3,7 +3,6 @@ import urllib3
 
 from qgis.core import QgsApplication
 
-from project.gui.mark_reviewer.mark_reviewer_controller import mark_reviewer_controller
 from project.settings import QGIS_PATH, QGIS_PLUGINS
 from project.gui.workspace_window import WorkspaceWindowTitled
 from project.core.marks_handler.marks_handler import MarksHandler
@@ -16,7 +15,6 @@ def main():
     urllib3.disable_warnings()
 
     db_manager.start_app()
-    print(mark_reviewer_controller.dms_to_float("-85°43'31.39''"))
 
     qgs_app = QgsApplication([], True)
     qgs_app.setPrefixPath(QGIS_PATH, True)

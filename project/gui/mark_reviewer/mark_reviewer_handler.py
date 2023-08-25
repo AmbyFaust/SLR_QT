@@ -1,10 +1,23 @@
+from project.database.database_manager import db_manager
+from project.database.entities.CoordinatesEntity import CoordinatesEntity
 from project.database.entities.ObjectEntity import ObjectEntity
 
+# class CoordinatesEntity(BaseEntity):
+#     __tablename__ = 'coordinates'
+#
+#     latitude = Column(Float, nullable=False)
+#     longitude = Column(Float, nullable=False)
+#     altitude = Column(Float, default=0)
+from project.database.entities.TypeSourceRLIEntity import TypeSourceRLIEntity
 
-class MarkReviewerHandler:
+
+class MarksReviewerHandler:
     @staticmethod
-    def create_mark(latitude, longitude, altitude):
-        pass
+    def create_mark(name, geo_data, comment):
+        typess = TypeSourceRLIEntity.create_type_source_rli("name")
+        print(typess.id)
+        coordinates_id = CoordinatesEntity.create_coordinates(*geo_data)
+        print(coordinates_id)
 
     @staticmethod
     def delete_mark(mark_id):

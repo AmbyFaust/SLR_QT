@@ -4,15 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0e491e98-e25c-4ccf-97d7-632153a47184" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/create_mark_dialog.py" afterDir="false" />
+    <list default="true" id="7aed9119-fee1-4891-b70e-4c2db12b0532" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/database/database_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/database/database_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/create_mark_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/coordinate_tabs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/database/entities/CoordinatesEntity.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/database/entities/CoordinatesEntity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/database/entities/ExtentEntity.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/database/entities/ExtentEntity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/database/entities/LinkedRLIEntity.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/database/entities/LinkedRLIEntity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/database/entities/MarkEntity.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/database/entities/MarkEntity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/database/entities/ObjectEntity.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/database/entities/ObjectEntity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/database/entities/RLIEntity.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/database/entities/RLIEntity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/database/entities/RasterRLIEntity.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/database/entities/RasterRLIEntity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/database/entities/RawRLIEntity.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/database/entities/RawRLIEntity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/database/entities/RegionEntity.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/database/entities/RegionEntity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/database/entities/TargetEntity.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/database/entities/TargetEntity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/coordinate_tabs.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/coordinate_tabs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/create_mark_dialog.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/create_mark_dialog.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_handler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/gui/workspace_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/workspace_controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/gui/workspace_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/workspace_window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +35,9 @@
       </list>
     </option>
   </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="main" />
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -33,22 +45,13 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2UIybf2WMob4s90OPm0ikV1x0PS" />
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;vlad&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Projects/Python/Demo/test_variables&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
-  }
-}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Projects\SLR_QT_Project\SLR_QT\project\database\" />
@@ -125,5 +128,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
