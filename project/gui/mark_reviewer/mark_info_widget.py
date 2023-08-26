@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QCheckBox, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QSizePolicy, QFrame
 
+from project.gui.mark_reviewer.mark_more_info_dialog import MoreInfoMarkDialogWindow
 from project.gui.mark_reviewer.separator_widget import Separator
 
 
@@ -7,6 +8,7 @@ class MarkInfoWidget(QFrame):
     def __init__(self, id_, name_='', datetime_='', parent=None):
         super(MarkInfoWidget, self).__init__(parent)
         self.id = id_
+        self.more_info_dialog = MoreInfoMarkDialogWindow(self)
         self.__create_widgets()
         self.__set_name(name_)
         self.__set_datetime(datetime_)
@@ -26,6 +28,7 @@ class MarkInfoWidget(QFrame):
         self.datetime_label.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
 
         self.more_info_btn = QPushButton('Подробнее')
+        self.more_info_btn.clicked.connect(self.open_more_info_dialog)
 
         self.redact_btn = QPushButton('Редактировать')
 
@@ -46,9 +49,6 @@ class MarkInfoWidget(QFrame):
 
         common_h_layout.addWidget(self.choice_checkbox)
         common_h_layout.addLayout(common_v_layout)
-
-
-
         self.setLayout(common_h_layout)
 
     def __set_name(self, name_):
@@ -57,3 +57,5 @@ class MarkInfoWidget(QFrame):
     def __set_datetime(self, datetime_):
         self.datetime_label.setText(datetime_)
 
+    def open_more_info_dialog(self):
+        self.more_info_dialog.exec_()

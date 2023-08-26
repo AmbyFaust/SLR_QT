@@ -16,11 +16,14 @@ class MarksReviewerWindow(QMainWindowBase):
     def __init__(self, parent=None):
         super(MarksReviewerWindow, self).__init__(parent)
         self.controller = MarksReviewerController()
+        self.dialog = CreateMarkDialogWindow(self)
         self.__create_widgets()
         self.__create_layout()
         self.__create_actions()
         self.__create_toolbar()
         self.setFixedWidth(300)
+
+        self.dialog.markCreated.connect(self.controller.handle_mark_created)
 
     def __create_widgets(self):
         self.common_widget = QWidget()
@@ -64,10 +67,10 @@ class MarksReviewerWindow(QMainWindowBase):
         self.setCentralWidget(self.common_widget)
 
     def __create_actions(self):
-        pass
+        self.create_mark_btn.clicked.connect(self.open_create_mark_dialog)
 
     def __create_toolbar(self):
         pass
 
     def open_create_mark_dialog(self):
-        self.dialog = CreateMarkDialogWindow(self).exec_()
+        self.dialog.exec_()

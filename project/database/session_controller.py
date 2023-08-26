@@ -19,7 +19,4 @@ class SessionController:
         return self.session
 
 
-
-
-
 session_controller = SessionController()

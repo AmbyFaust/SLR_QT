@@ -30,6 +30,11 @@ class GeodesicTab(QWidget):
 
         self.setLayout(common_v_layout)
 
+    def get_geodesic_data(self):
+        latitude, longitude = self.degrees.get_coordinates()
+        height = self.height_spin_box.value()
+        return latitude, longitude, height
+
 
 class GeocentricTab(QWidget):
     def __init__(self):
@@ -53,9 +58,6 @@ class GeocentricTab(QWidget):
         self.z_spin_box = QDoubleSpinBox()
         self.z_spin_box.setDecimals(3)
 
-
-
-
     def __create_layouts(self):
         common_v_layout = QVBoxLayout()
 
@@ -76,3 +78,9 @@ class GeocentricTab(QWidget):
         common_v_layout.addLayout(height_h_layout)
 
         self.setLayout(common_v_layout)
+
+    def get_geocentric_data(self):
+        x = self.x_spin_box.value()
+        y = self.y_spin_box.value()
+        z = self.z_spin_box.value()
+        return x, y, z
