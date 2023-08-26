@@ -30,6 +30,7 @@ class MoreInfoMarkDialogWindow(QDialogBase):
         self.datetime_label = QLabel('Дата и время записи:')
         self.object_type_label = QLabel('Тип объекта:')
         self.relating_name_label = QLabel('Имя принадлежности объекта:')
+        self.relating_type_label = QLabel('Тип принадлежности объекта:')
 
         self.latitude_label = QLabel('Широта, град:')
         self.longitude_label = QLabel('Долгота, град:')
@@ -50,6 +51,7 @@ class MoreInfoMarkDialogWindow(QDialogBase):
         common_v_layout.addWidget(self.datetime_label)
         common_v_layout.addWidget(self.object_type_label)
         common_v_layout.addWidget(self.relating_name_label)
+        common_v_layout.addWidget(self.relating_type_label)
         common_v_layout.addWidget(Separator())
         common_v_layout.addWidget(self.latitude_label)
         common_v_layout.addWidget(self.longitude_label)

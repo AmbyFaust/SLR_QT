@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QCheckBox, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QSizePolicy, QFrame
 
-from project.gui.mark_reviewer.mark_more_info_dialog import MoreInfoMarkDialogWindow
+from project.gui.mark_reviewer.more_info_dialog import MoreInfoMarkDialogWindow
 from project.gui.mark_reviewer.separator_widget import Separator
 
 

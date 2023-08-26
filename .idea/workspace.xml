@@ -5,19 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0e491e98-e25c-4ccf-97d7-632153a47184" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/map/world.mbtiles.aux.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_more_info_dialog.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_handler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/SLR_QT.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SLR_QT.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/database/database_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/database/database_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/database/session_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/database/session_controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/coordinate_tabs.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/coordinate_tabs.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/create_mark_dialog.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/create_mark_dialog.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_info_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_info_widget.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sessions/session_2023-08-26.db" beforeDir="false" afterPath="$PROJECT_DIR$/sessions/session_2023-08-26.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_more_info_dialog.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/more_info_dialog.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +47,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "Merging vlad",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "C:/Projects/Python/Demo/test_variables",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
@@ -112,6 +102,8 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main" />
+        <item itemvalue="Python.targets_reviewer_window" />
         <item itemvalue="Python.main" />
         <item itemvalue="Python.targets_reviewer_window" />
       </list>
