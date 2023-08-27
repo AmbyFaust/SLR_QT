@@ -23,7 +23,6 @@ class MarksReviewerWindow(QMainWindowBase):
         self.__create_toolbar()
         self.setFixedWidth(300)
 
-        self.dialog.markCreated.connect(self.controller.handle_mark_created)
 
     def __create_widgets(self):
         self.common_widget = QWidget()
@@ -39,7 +38,6 @@ class MarksReviewerWindow(QMainWindowBase):
         self.mark2_info = MarkInfoWidget(2, 'вторая отметка', '2023-08-09_17:35:10')
 
         self.create_mark_btn = QPushButton('Создать отметку')
-        self.create_mark_btn.clicked.connect(self.open_create_mark_dialog)
 
         self.delete_selected_btn = QPushButton('Удалить выбранное')
         # self.delete_selected_btn.clicked.connect()
@@ -68,6 +66,8 @@ class MarksReviewerWindow(QMainWindowBase):
 
     def __create_actions(self):
         self.create_mark_btn.clicked.connect(self.open_create_mark_dialog)
+        self.dialog.markCreated.connect(self.controller.handle_mark_created)
+
 
     def __create_toolbar(self):
         pass
