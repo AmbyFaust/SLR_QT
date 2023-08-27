@@ -24,7 +24,7 @@ def main():
     # ------------------- соединения между объектами писать тут ------------------
     window = WorkspaceWindowTitled() # главное окно
 
-    marks_handler = MarksHandler(window.controller.gis_w.painter) # обработчик (бекенд) для отметок
+    marks_handler = MarksHandler(window.controller.gis_w.painter, window.controller.mark_reviewer_w.controller)
     marks_handler.test_draw() # просто тестовая отрисовка (необязательна)
 
     window.showMaximized()
