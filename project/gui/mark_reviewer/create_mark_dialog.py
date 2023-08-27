@@ -1,5 +1,7 @@
 from enum import Enum
 
+from PyQt5.QtCore import Qt
+
 from PyQt5.QtWidgets import QVBoxLayout, QPushButton, \
     QHBoxLayout, QLabel, QLineEdit, QTabWidget, QPlainTextEdit
 from PyQt5.QtCore import pyqtSignal
@@ -20,6 +22,7 @@ class CreateMarkDialogWindow(QDialogBase):
 
     def __init__(self, parent=None):
         super(CreateMarkDialogWindow, self).__init__(parent)
+        self.setWindowFlags(self.windowFlags() & ~Qt.WindowContextHelpButtonHint)
         self.setWindowTitle('Создание отметки')
         self.setMinimumSize(400, 0)
         self.__create_widgets()
