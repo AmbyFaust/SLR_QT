@@ -7,12 +7,7 @@ from PyQt5.QtCore import pyqtSignal
 
 from project.gui.form_classes_base import QDialogBase
 from project.gui.mark_reviewer.separator_widget import Separator
-
-
-class Ownership(Enum):
-    FAMILIAR = 1
-    UNFAMILIAR = 2
-    UNKNOWN = 3
+from .ownership_enum import Ownership
 
 
 class MoreInfoMarkDialogWindow(QDialogBase):
@@ -74,5 +69,22 @@ class MoreInfoMarkDialogWindow(QDialogBase):
     def __create_actions(self):
         self.close_btn.clicked.connect(self.reject)
         # self.redact_btn.clicked.connect(self.accept_mark)
+
+    def set_info_in_widgets(self, data):
+        self.name_label.setText('Имя объекта: ' + data['name'])
+        self.datetime_label.setText('Дата и время записи: ' + data['datetime'][:19])
+        self.object_type_label.setText('Тип объекта: ' + data['object_type'])
+        self.relating_name_label.setText('Имя принадлежности объекта: ' + data['relating_name'])
+        self.relating_type_label.setText('Тип принадлежности объекта: ' + data['relating_type'])
+
+        self.latitude_label.setText('Широта, град: ' + data['latitude'])
+        self.longitude_label.setText('Долгота, град: ' + data['longitude'])
+        self.altitude_label.setText('Высота, м: ' + data['altitude'])
+
+        self.x_label.setText('X, м: ' + data['x'])
+        self.y_label.setText('Y, м: ' + data['y'])
+        self.z_label.setText('Z, м: ' + data['z'])
+
+        self.comment_text_edit.setText(data['comment'])
 
 

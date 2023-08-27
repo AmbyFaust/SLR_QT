@@ -4,6 +4,8 @@ from project.database.entities.MarkEntity import MarkEntity
 from project.database.entities.ObjectEntity import ObjectEntity
 from project.database.entities.RelatingObjectEntity import RelatingObjectEntity
 
+from .ownership_enum import Ownership, int_to_ownership_type
+
 
 class MarksReviewerHandler:
     @staticmethod
@@ -38,3 +40,28 @@ class MarksReviewerHandler:
         ids = sorted([obj.id for obj in objects])
         return ids
 
+    @staticmethod
+    def get_full_mark_info(obj_id):
+        data = {}
+        session = db_manager.get_session()
+
+        obj = session.query(ObjectEntity).filter_by(id=obj_id).first()
+        data['name'] = obj.name
+        data['object_type'] = str(obj.type)
+        data['comment'] = str(obj.meta)
+
+        mark = obj.mark
+        data['datetime'] = str(mark.datetime)
+
+        coordinates = mark.coordinates
+        data['latitude'] = str(coordinates.latitude)
+        data['longitude'] = str(coordinates.longitude)
+        data['altitude'] = str(coordinates.altitude)
+        data['x'] = ''
+        data['y'] = ''
+        data['z'] = ''
+
+        relating_object = obj.relating_object
+        data['relating_name'] = relating_object.name
+        data['relating_type'] = int_to_ownership_type(relating_object.type_relating)
+        return data

@@ -7,13 +7,15 @@ from project.gui.mark_reviewer.separator_widget import Separator
 
 
 class MarkInfoWidget(QFrame):
-    def __init__(self, id_=None, name_='', datetime_='', parent=None):
+    def __init__(self, obj_id_=None, controller_=None, name_='', datetime_='', parent=None):
         super(MarkInfoWidget, self).__init__(parent)
-        self.id = id_
+        self.obj_id = obj_id_
+        self.controller = controller_
         self.more_info_dialog = MoreInfoMarkDialogWindow(self)
         self.__create_widgets()
         self.__set_name(name_)
         self.__set_datetime(datetime_)
+        self.__actions()
         self.__create_layouts()
 
     def __create_widgets(self):
@@ -30,7 +32,6 @@ class MarkInfoWidget(QFrame):
         self.datetime_label.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
 
         self.more_info_btn = QPushButton('Подробнее')
-        self.more_info_btn.clicked.connect(self.open_more_info_dialog)
 
         self.redact_btn = QPushButton('Редактировать')
 
@@ -53,6 +54,10 @@ class MarkInfoWidget(QFrame):
         common_h_layout.addLayout(common_v_layout)
         self.setLayout(common_h_layout)
 
+    def __actions(self):
+        self.more_info_btn.clicked.connect(self.open_more_info_dialog)
+
+
     def __set_name(self, name_):
         self.name_label.setText(name_)
 
@@ -60,4 +65,5 @@ class MarkInfoWidget(QFrame):
         self.datetime_label.setText(str(datetime_)[:19])
 
     def open_more_info_dialog(self):
+        self.more_info_dialog.set_info_in_widgets(self.controller.get_full_mark_info(self.obj_id))
         self.more_info_dialog.exec_()

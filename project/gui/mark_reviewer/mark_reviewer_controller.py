@@ -16,3 +16,6 @@ class MarksReviewerController(QObject):
 
     def get_all_mark_ids(self):
         return self.handler.get_all_mark_ids()
+
+    def get_full_mark_info(self, obj_id):
+        return self.handler.get_full_mark_info(obj_id)

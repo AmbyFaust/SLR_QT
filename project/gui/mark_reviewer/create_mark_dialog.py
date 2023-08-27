@@ -9,12 +9,7 @@ from PyQt5.QtCore import pyqtSignal
 from project.gui.form_classes_base import QDialogBase
 from project.gui.form_classes_base.qcombobox_base import QComboBoxBase
 from project.gui.mark_reviewer.coordinate_tabs import GeodesicTab, GeocentricTab
-
-
-class Ownership(Enum):
-    FAMILIAR = 1
-    UNFAMILIAR = 2
-    UNKNOWN = 3
+from .ownership_enum import Ownership
 
 
 class CreateMarkDialogWindow(QDialogBase):

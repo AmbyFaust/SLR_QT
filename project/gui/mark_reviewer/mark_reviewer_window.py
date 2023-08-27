@@ -64,7 +64,7 @@ class MarksReviewerWindow(QMainWindowBase):
 
     def add_mark_info_widget(self, obj_id):
         short_info = self.controller.get_short_mark_info(obj_id)
-        self.marks_info_layout.addWidget(MarkInfoWidget(obj_id, *short_info))
+        self.marks_info_layout.addWidget(MarkInfoWidget(obj_id, self.controller, *short_info))
         self.marks_info_layout.addWidget(Separator())
 
     def show_all_marks(self):
