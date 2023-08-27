@@ -10,3 +10,9 @@ class MarksReviewerController(QObject):
 
     def handle_mark_created(self, name, object_type, relating_name, relating_object_type, geo_data, meta):
         self.handler.create_mark(name, object_type, relating_name, relating_object_type, geo_data, meta)
+
+    def get_short_mark_info(self, obj_id):
+        return self.handler.get_short_mark_info(obj_id)
+
+    def get_all_mark_ids(self):
+        return self.handler.get_all_mark_ids()

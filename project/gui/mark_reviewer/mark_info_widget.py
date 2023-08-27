@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from PyQt5.QtWidgets import QWidget, QCheckBox, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QSizePolicy, QFrame
 
 from project.gui.mark_reviewer.more_info_dialog import MoreInfoMarkDialogWindow
@@ -5,7 +7,7 @@ from project.gui.mark_reviewer.separator_widget import Separator
 
 
 class MarkInfoWidget(QFrame):
-    def __init__(self, id_, name_='', datetime_='', parent=None):
+    def __init__(self, id_=None, name_='', datetime_='', parent=None):
         super(MarkInfoWidget, self).__init__(parent)
         self.id = id_
         self.more_info_dialog = MoreInfoMarkDialogWindow(self)
@@ -55,7 +57,7 @@ class MarkInfoWidget(QFrame):
         self.name_label.setText(name_)
 
     def __set_datetime(self, datetime_):
-        self.datetime_label.setText(datetime_)
+        self.datetime_label.setText(str(datetime_)[:19])
 
     def open_more_info_dialog(self):
         self.more_info_dialog.exec_()

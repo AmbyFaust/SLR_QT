@@ -17,10 +17,24 @@ class MarksReviewerHandler:
         print(object_id)
 
     @staticmethod
-    def delete_mark(mark_id):
+    def delete_mark(obj_id):
         pass
 
     @staticmethod
-    def toggle_mark_visibility(mark_id, visibility):
+    def toggle_mark_visibility(obj_id, visibility):
         pass
+
+    @staticmethod
+    def get_short_mark_info(obj_id):
+        session = db_manager.get_session()
+        obj = session.query(ObjectEntity).filter_by(id=obj_id).first()
+        mark = obj.mark
+        return obj.name, mark.datetime
+
+    @staticmethod
+    def get_all_mark_ids():
+        session = db_manager.get_session()
+        objects = session.query(ObjectEntity).all()
+        ids = sorted([obj.id for obj in objects])
+        return ids
 
