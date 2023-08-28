@@ -4,8 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0e491e98-e25c-4ccf-97d7-632153a47184" name="Changes" comment="">
+    <list default="true" id="92bdbd98-db2c-44c5-a391-9a6a81a29c7b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/SLR_QT.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SLR_QT.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/core/marks_handler/marks_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/core/marks_handler/marks_handler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/database/entities/ObjectEntity.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/database/entities/ObjectEntity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,22 +41,16 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2UIybf2WMob4s90OPm0ikV1x0PS" />
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Projects/Python/Demo/test_variables&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
-  }
-}</component>
+  <component name="PropertiesComponent">
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Projects\SLR_QT_Project\SLR_QT\project\database\" />
@@ -128,5 +129,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
