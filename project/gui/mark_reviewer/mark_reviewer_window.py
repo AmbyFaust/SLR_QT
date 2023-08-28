@@ -1,4 +1,4 @@
-from PyQt5.QtCore import Qt, pyqtSlot, pyqtSignal
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QAction, QWidget, QVBoxLayout, QPushButton, QScrollArea, QSizePolicy, QHBoxLayout
 
@@ -10,53 +10,48 @@ from .mark_info_widget import MarkInfoWidget
 from .separator_widget import Separator
 
 
+
 class MarksReviewerWindow(QMainWindowBase):
 
     def __init__(self, parent=None):
         super(MarksReviewerWindow, self).__init__(parent)
+        self.controller = MarksReviewerController()
         self.dialog = CreateMarkDialogWindow(self)
-        self.__create_controller()
         self.__create_widgets()
         self.__create_layout()
         self.__create_actions()
-        self.__create_toolbar()
-        self.__get_all_marks()
         self.setFixedWidth(300)
+        self.show_all_marks()
 
-    def __create_controller(self):
-        self.controller = MarksReviewerController(self)
 
     def __create_widgets(self):
         self.common_widget = QWidget()
 
         self.marks_info_container_widget = QWidget()
 
-        self.marks_info_scroll_area = QScrollArea()
-        self.marks_info_scroll_area.setAlignment(Qt.AlignTop)
-        self.marks_info_scroll_area.setWidgetResizable(True)
-        self.marks_info_scroll_area.setWidget(self.marks_info_container_widget)
-
-        # self.mark1_info = MarkInfoWidget(1, 'первая отметкффффффффффффффффффффффффффффффффффффффффффа', '2023-08-09_12:24:17')
-        # self.mark2_info = MarkInfoWidget(2, 'вторая отметка', '2023-08-09_17:35:10')
+        self.marks_info_scrollarea = QScrollArea()
+        self.marks_info_scrollarea.setAlignment(Qt.AlignTop)
+        self.marks_info_scrollarea.setWidgetResizable(True)
+        self.marks_info_scrollarea.setWidget(self.marks_info_container_widget)
 
         self.create_mark_btn = QPushButton('Создать отметку')
 
         self.delete_selected_btn = QPushButton('Удалить выбранное')
         # self.delete_selected_btn.clicked.connect()
 
+
+
     def __create_layout(self):
         common_v_layout = QVBoxLayout()
 
-        marks_info_layout = QVBoxLayout()
-        marks_info_layout.setAlignment(Qt.AlignTop)
-        marks_info_layout.addStretch(1)
-        # marks_info_layout.addWidget(self.mark1_info)
-        # marks_info_layout.addWidget(Separator())
-        # marks_info_layout.addWidget(self.mark2_info)
+        self.marks_info_layout = QVBoxLayout()
+        self.marks_info_layout.setAlignment(Qt.AlignTop)
+        self.marks_info_layout.addStretch(1)
 
-        self.marks_info_container_widget.setLayout(marks_info_layout)
+        self.marks_info_container_widget.setLayout(self.marks_info_layout)
 
-        common_v_layout.addWidget(self.marks_info_scroll_area)
+
+        common_v_layout.addWidget(self.marks_info_scrollarea)
         common_v_layout.addWidget(self.create_mark_btn)
         common_v_layout.addWidget(self.delete_selected_btn)
 
@@ -65,17 +60,18 @@ class MarksReviewerWindow(QMainWindowBase):
 
     def __create_actions(self):
         self.create_mark_btn.clicked.connect(self.open_create_mark_dialog)
-        self.dialog.markCreated.connect(self.controller.mark_created)
+        self.dialog.markCreated.connect(self.controller.handle_mark_created)
 
-    def __create_toolbar(self):
-        pass
+    def add_mark_info_widget(self, obj_id):
+        short_info = self.controller.get_short_mark_info(obj_id)
+        self.marks_info_layout.addWidget(MarkInfoWidget(obj_id, self.controller, *short_info))
+        self.marks_info_layout.addWidget(Separator())
 
-    def __get_all_marks(self):
-        all_marks = self.controller.all_marks
-        mark_info_list = []
-        # for mark in all_marks:
-        #     mark_info_list.append(MarkInfoWidget(mark.id, mark.name, ))
-        print(all_marks)
+    def show_all_marks(self):
+        all_mark_ids = self.controller.get_all_mark_ids()
+        for obj_id in all_mark_ids:
+            self.add_mark_info_widget(obj_id)
+
 
     def open_create_mark_dialog(self):
         self.dialog.exec_()

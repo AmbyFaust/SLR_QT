@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 
 
 class SessionController:
@@ -15,7 +15,7 @@ class SessionController:
         except Exception:
             raise Exception('Не удалось изменить сессию. Укажите правильный путь до файла')
 
-    def get_session(self):
+    def get_session(self) -> Session:
         return self.session
 
 

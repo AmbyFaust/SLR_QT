@@ -19,7 +19,7 @@ class DBManager:
         self.session_name_format = '.db'
 
     def get_session(self):
-        return session_controller.set_session()
+        return session_controller.get_session()
 
     def set_session(self, path):
         session_controller.set_session(path)
