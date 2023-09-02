@@ -26,6 +26,7 @@ def main():
 
     marks_handler = MarksHandler(window.controller.gis_w.painter, window.controller.mark_reviewer_w.controller)
     marks_handler.get_all_marks()
+    window.controller.mark_reviewer_w.showAllMarks.emit()
 
     window.showMaximized()
 
