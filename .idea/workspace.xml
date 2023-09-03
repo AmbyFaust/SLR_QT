@@ -5,7 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0e491e98-e25c-4ccf-97d7-632153a47184" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/core/marks_handler/marks_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/core/marks_handler/marks_handler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/gui/common/coordinates_tab_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/coordinates_tab_widget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/create_mark_dialog.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/create_mark_dialog.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/more_info_dialog.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/more_info_dialog.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sessions/session_2023-08-26.db" beforeDir="false" afterPath="$PROJECT_DIR$/sessions/session_2023-09-04.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sessions/session_2023-09-03.db" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,11 +51,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "vlad"
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Projects\SLR_QT_Project\SLR_QT\project\gui\mark_reviewer" />
       <recent name="$PROJECT_DIR$/project/gui/mark_reviewer/resources/images" />
       <recent name="C:\Projects\SLR_QT_Project\SLR_QT\project\database\" />
     </key>
@@ -124,6 +138,5 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

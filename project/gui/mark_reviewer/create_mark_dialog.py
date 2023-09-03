@@ -1,15 +1,12 @@
-from enum import Enum
-
 from PyQt5.QtCore import Qt
 
 from PyQt5.QtWidgets import QVBoxLayout, QPushButton, \
-    QHBoxLayout, QLabel, QLineEdit, QTabWidget, QPlainTextEdit
-from PyQt5.QtCore import pyqtSignal
+    QHBoxLayout, QLabel, QLineEdit, QPlainTextEdit
 
 from project.gui.form_classes_base import QDialogBase
 from project.gui.form_classes_base.qcombobox_base import QComboBoxBase
 from .ownership_enum import Ownership
-from ..common.coordinates_tab_widget import CoordinatesTab
+from project.gui.mark_reviewer.coordinates_tab_widget import CoordinatesTab
 
 
 class CreateMarkDialogWindow(QDialogBase):

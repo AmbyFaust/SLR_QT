@@ -85,7 +85,7 @@ class MarksHandler(QObject):
                                                   'comment': str(object_entity.meta), 'datetime': str(mark.datetime),
                                                   'latitude': str(coordinates.latitude),
                                                   'longitude': str(coordinates.longitude),
-                                                  'altitude': str(coordinates.altitude), 'x': '', 'y': '', 'z': '',
+                                                  'altitude': str(coordinates.altitude),
                                                   'relating_name': relating_object.name,
                                                   'relating_type': int_to_ownership_type(relating_object.type_relating)}
 
