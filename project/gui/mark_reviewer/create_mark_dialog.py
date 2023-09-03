@@ -8,8 +8,8 @@ from PyQt5.QtCore import pyqtSignal
 
 from project.gui.form_classes_base import QDialogBase
 from project.gui.form_classes_base.qcombobox_base import QComboBoxBase
-from project.gui.mark_reviewer.coordinate_tabs import GeodesicTab, GeocentricTab
 from .ownership_enum import Ownership
+from ..common.coordinates_tab_widget import CoordinatesTab
 
 
 class CreateMarkDialogWindow(QDialogBase):
@@ -28,20 +28,17 @@ class CreateMarkDialogWindow(QDialogBase):
         self.name_label = QLabel()
         self.name_label.setText('Имя объекта:')
 
-        self.name_line_edit = QLineEdit()
-        self.name_line_edit.setPlaceholderText('TODO Сюда имя по умолчанию')
+        self.name_line_edit = QLineEdit('Без имени')
 
         self.object_type_label = QLabel()
         self.object_type_label.setText('Тип объекта:')
 
-        self.object_type_edit = QLineEdit()
-        self.object_type_edit.setPlaceholderText('TODO Сюда имя по умолчанию')
+        self.object_type_edit = QLineEdit('Неизвестно')
 
         self.relating_name_label = QLabel()
         self.relating_name_label.setText('Имя принадлежности объекта:')
 
-        self.relating_name_edit = QLineEdit()
-        self.relating_name_edit.setPlaceholderText('TODO Сюда имя по умолчанию')
+        self.relating_name_edit = QLineEdit('Неизвестно')
 
         self.relating_object_type_box = QComboBoxBase()
         for ownership in Ownership:
@@ -50,14 +47,8 @@ class CreateMarkDialogWindow(QDialogBase):
 
         self.relating_object_type_box.adjustSize()
 
-        self.coordinates_tabs = QTabWidget()
+        self.coordinates_tabs = CoordinatesTab()
 
-        self.geodesic_tab = GeodesicTab()
-
-        self.geocentric_tab = GeocentricTab()
-
-        self.coordinates_tabs.addTab(self.geocentric_tab, 'Геоцентрические координаты')
-        self.coordinates_tabs.addTab(self.geodesic_tab, 'Геодезические координаты')
 
         self.comment_text_edit = QPlainTextEdit()
         self.comment_text_edit.setPlaceholderText('Комментарий')
@@ -105,14 +96,16 @@ class CreateMarkDialogWindow(QDialogBase):
 
         selected_coordinates_tab_index = self.coordinates_tabs.currentIndex()
         if selected_coordinates_tab_index == 0:  # "Геоцентрические координаты"
-            geo_data = self.geocentric_tab.get_geocentric_data()
+            geo_data = self.geocentric_tab.get_coordinates()
         else:  # "Геодезические координаты"
-            geo_data = self.geodesic_tab.get_geodesic_data()
+            geo_data = self.geodesic_tab.get_coordinates()
         meta = self.comment_text_edit.toPlainText()
 
         self.markCreated.emit(name, object_type, relating_name, relating_object_type, geo_data, meta)
         self.name_line_edit.clear()
         self.comment_text_edit.clear()
         self.accept()
+
+
 
 
