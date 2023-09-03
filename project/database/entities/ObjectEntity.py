@@ -50,3 +50,10 @@ class ObjectEntity(BaseEntity):
                 object_.relating_object_id = new_relating_object_id
                 object_.meta = new_meta
                 session.commit()
+
+    # Функция для получения всех объектов
+    @classmethod
+    def get_all_objects(cls):
+        with cls.mutex:
+            session = session_controller.get_session()
+            return session.query(cls).all()

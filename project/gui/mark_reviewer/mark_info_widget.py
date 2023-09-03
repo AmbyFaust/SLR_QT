@@ -1,9 +1,16 @@
+import os
+
 from datetime import datetime
 
+from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import QWidget, QCheckBox, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QSizePolicy, QFrame
 
 from project.gui.mark_reviewer.more_info_dialog import MoreInfoMarkDialogWindow
 from project.gui.mark_reviewer.separator_widget import Separator
+
+
+IMAGE_DIRECTORY = os.getcwd() + '/project/gui/mark_reviewer/resources/images'
 
 
 class MarkInfoWidget(QFrame):
@@ -12,6 +19,8 @@ class MarkInfoWidget(QFrame):
         self.obj_id = obj_id_
         self.controller = controller_
         self.more_info_dialog = MoreInfoMarkDialogWindow(self)
+        self.visibility_images = [os.path.join(IMAGE_DIRECTORY, filename) for filename in os.listdir(IMAGE_DIRECTORY)]
+        self.image_visibility_index = 0
         self.__create_widgets()
         self.__set_name(name_)
         self.__set_datetime(datetime_)
@@ -31,6 +40,10 @@ class MarkInfoWidget(QFrame):
         self.datetime_label = QLabel()
         self.datetime_label.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
 
+        self.show_visibility_btn = QPushButton()
+        self.show_visibility_btn.setFixedSize(24, 24)
+        self.__load_current_visibility_image()
+
         self.more_info_btn = QPushButton('Подробнее')
 
         self.redact_btn = QPushButton('Редактировать')
@@ -41,6 +54,7 @@ class MarkInfoWidget(QFrame):
         common_v_layout = QVBoxLayout()
 
         btn_h_layout = QHBoxLayout()
+        btn_h_layout.addWidget(self.show_visibility_btn)
         btn_h_layout.addWidget(self.more_info_btn)
         btn_h_layout.addWidget(self.redact_btn)
 
@@ -56,7 +70,7 @@ class MarkInfoWidget(QFrame):
 
     def __actions(self):
         self.more_info_btn.clicked.connect(self.open_more_info_dialog)
-
+        self.show_visibility_btn.clicked.connect(self.show_mark_visibility)
 
     def __set_name(self, name_):
         self.name_label.setText(name_)
@@ -64,6 +78,21 @@ class MarkInfoWidget(QFrame):
     def __set_datetime(self, datetime_):
         self.datetime_label.setText(str(datetime_)[:19])
 
+    def __load_current_visibility_image(self):
+        visibility_image = QPixmap(self.visibility_images[self.image_visibility_index])
+
+        visibility_image = visibility_image.scaled(self.show_visibility_btn.size(),
+                                                   Qt.KeepAspectRatio, Qt.SmoothTransformation)
+
+        self.show_visibility_btn.setIcon(QIcon(visibility_image))
+        self.show_visibility_btn.setIconSize(visibility_image.size())
+
     def open_more_info_dialog(self):
-        self.more_info_dialog.set_info_in_widgets(self.controller.get_full_mark_info(self.obj_id))
+        self.controller.get_full_mark_info(self.obj_id)
+        self.more_info_dialog.set_info_in_widgets(self.controller.current_mark_full_info)
         self.more_info_dialog.exec_()
+
+    def show_mark_visibility(self):
+        self.image_visibility_index = (self.image_visibility_index + 1) % len(self.visibility_images)
+        self.__load_current_visibility_image()
+        self.controller.showVisibility.emit(self.obj_id, self.image_visibility_index)

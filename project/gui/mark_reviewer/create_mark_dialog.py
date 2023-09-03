@@ -13,8 +13,6 @@ from ..common.coordinates_tab_widget import CoordinatesTab
 
 
 class CreateMarkDialogWindow(QDialogBase):
-    markCreated = pyqtSignal(str, str, str, int, tuple, str)
-
     def __init__(self, parent=None):
         super(CreateMarkDialogWindow, self).__init__(parent)
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowContextHelpButtonHint)
@@ -23,6 +21,8 @@ class CreateMarkDialogWindow(QDialogBase):
         self.__create_widgets()
         self.__create_layout()
         self.__create_actions()
+
+        self.mark_info = {}
 
     def __create_widgets(self):
         self.name_label = QLabel()
@@ -101,8 +101,13 @@ class CreateMarkDialogWindow(QDialogBase):
             geo_data = self.geodesic_tab.get_coordinates()
         meta = self.comment_text_edit.toPlainText()
 
-        self.markCreated.emit(name, object_type, relating_name, relating_object_type, geo_data, meta)
+        self.mark_info = {'name': name, 'object_type': object_type, 'relating_name': relating_name,
+                          'relating_object_type': relating_object_type, 'geo_data': geo_data,
+                          'meta': meta}
+
         self.name_line_edit.clear()
+        self.object_type_edit.clear()
+        self.relating_name_edit.clear()
         self.comment_text_edit.clear()
         self.accept()
 
