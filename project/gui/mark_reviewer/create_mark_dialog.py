@@ -46,7 +46,6 @@ class CreateMarkDialogWindow(QDialogBase):
 
         self.coordinates_tabs = CoordinatesTab()
 
-
         self.comment_text_edit = QPlainTextEdit()
         self.comment_text_edit.setPlaceholderText('Комментарий')
 
@@ -91,21 +90,17 @@ class CreateMarkDialogWindow(QDialogBase):
         relating_name = self.relating_name_edit.text()
         relating_object_type = list(Ownership)[self.relating_object_type_box.currentIndex()].value
 
-        selected_coordinates_tab_index = self.coordinates_tabs.currentIndex()
-        if selected_coordinates_tab_index == 0:  # "Геоцентрические координаты"
-            geo_data = self.geocentric_tab.get_coordinates()
-        else:  # "Геодезические координаты"
-            geo_data = self.geodesic_tab.get_coordinates()
+        geo_data = self.coordinates_tabs.sk_tab.get_coordinates()
         meta = self.comment_text_edit.toPlainText()
 
         self.mark_info = {'name': name, 'object_type': object_type, 'relating_name': relating_name,
                           'relating_object_type': relating_object_type, 'geo_data': geo_data,
                           'meta': meta}
 
-        self.name_line_edit.clear()
-        self.object_type_edit.clear()
-        self.relating_name_edit.clear()
-        self.comment_text_edit.clear()
+        self.name_line_edit.setText('Без имени')
+        self.object_type_edit.setText('Неизвестно')
+        self.relating_name_edit.setText('Неизвестно')
+        self.comment_text_edit.setPlainText('Комментарий')
         self.accept()
 
 
