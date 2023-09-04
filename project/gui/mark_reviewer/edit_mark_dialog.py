@@ -5,19 +5,22 @@ from PyQt5.QtWidgets import QVBoxLayout, QPushButton, \
 
 from project.gui.form_classes_base import QDialogBase
 from project.gui.form_classes_base.qcombobox_base import QComboBoxBase
-from .ownership_enum import Ownership
+from .ownership_enum import Ownership, ownership_type_to_int
 from project.gui.mark_reviewer.coordinates_tab_widget import CoordinatesTab
+from ..common.coordinates_translator import translate_coordinates, CoordinateSystemEpsg
 
 
-class CreateMarkDialogWindow(QDialogBase):
+class EditMarkDialogWindow(QDialogBase):
     def __init__(self, parent=None):
-        super(CreateMarkDialogWindow, self).__init__(parent)
+        super(EditMarkDialogWindow, self).__init__(parent)
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowContextHelpButtonHint)
         self.setWindowTitle('Создание отметки')
         self.setMinimumSize(400, 0)
+        self.obj_id = None
         self.__create_widgets()
         self.__create_layout()
         self.__create_actions()
+
 
         self.mark_info = {}
 
@@ -25,7 +28,7 @@ class CreateMarkDialogWindow(QDialogBase):
         self.name_label = QLabel()
         self.name_label.setText('Имя объекта:')
 
-        self.name_line_edit = QLineEdit('Без имени')
+        self.name_edit = QLineEdit('Без имени')
 
         self.object_type_label = QLabel()
         self.object_type_label.setText('Тип объекта:')
@@ -57,7 +60,7 @@ class CreateMarkDialogWindow(QDialogBase):
 
         name_h_layout = QHBoxLayout()
         name_h_layout.addWidget(self.name_label)
-        name_h_layout.addWidget(self.name_line_edit)
+        name_h_layout.addWidget(self.name_edit)
 
         object_type_h_layout = QHBoxLayout()
         object_type_h_layout.addWidget(self.object_type_label)
@@ -85,7 +88,7 @@ class CreateMarkDialogWindow(QDialogBase):
         self.create_btn.clicked.connect(self.accept_mark)
 
     def accept_mark(self):
-        name = self.name_line_edit.text()
+        name = self.name_edit.text()
         object_type = self.object_type_edit.text()
         relating_name = self.relating_name_edit.text()
         relating_object_type = list(Ownership)[self.relating_object_type_box.currentIndex()].value
@@ -95,14 +98,28 @@ class CreateMarkDialogWindow(QDialogBase):
 
         self.mark_info = {'name': name, 'object_type': object_type, 'relating_name': relating_name,
                           'relating_object_type': relating_object_type, 'geo_data': geo_data,
-                          'meta': meta}
+                          'meta': meta, 'id': self.obj_id}
 
-        self.name_line_edit.setText('Без имени')
+        self.name_edit.setText('Без имени')
         self.object_type_edit.setText('Неизвестно')
         self.relating_name_edit.setText('Неизвестно')
         self.comment_text_edit.setPlainText('Комментарий')
         self.accept()
 
+    def set_data(self, data):
+        self.setWindowTitle('Редактирование отметки')
+        self.obj_id = int(data['id'])
+        self.name_edit.setText(data['name'])
+        self.object_type_edit.setText(data['object_type'])
+        self.relating_name_edit.setText(data['relating_name'])
+        self.relating_object_type_box.setCurrentIndex(ownership_type_to_int(data['relating_type']))
+        self.coordinates_tabs.coordinates = list(translate_coordinates(
+            CoordinateSystemEpsg.sk_42,
+            CoordinateSystemEpsg.wgs_84,
+            (float(data['longitude']), float(data['latitude']))
+        )) + [float(data['altitude'])]
+        self.coordinates_tabs.set_coordinates_cur_tab()
+        self.comment_text_edit.setPlainText(data['comment'])
 
 
 

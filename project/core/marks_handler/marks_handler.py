@@ -31,15 +31,24 @@ class MarksHandler(QObject):
     @pyqtSlot(dict)
     def create_mark(self, mark_info):
         geo_data = mark_info['geo_data']
+
         coordinates_id = CoordinatesEntity.create_coordinates(*geo_data)
         mark_id = MarkEntity.create_mark(coordinates_id=coordinates_id)
         relating_object_id = RelatingObjectEntity.\
             create_relating_object(type_relating=mark_info['relating_object_type'],
                                    name=mark_info['relating_name'])
-        ObjectEntity.create_object(mark_id=mark_id, name=mark_info['name'],
-                                   object_type=mark_info['object_type'],
-                                   relating_object_id=relating_object_id,
-                                   meta=mark_info['meta'])
+
+        if mark_info['id'] is not None:
+            ObjectEntity.update_object(object_id=mark_info['id'], new_mark_id=mark_id,
+                                       new_name=mark_info['name'], new_object_type=mark_info['object_type'],
+                                       new_relating_object_id=relating_object_id, new_meta=mark_info['meta'])
+            print(1)
+        else:
+            print(2)
+            ObjectEntity.create_object(mark_id=mark_id, name=mark_info['name'],
+                                       object_type=mark_info['object_type'],
+                                       relating_object_id=relating_object_id,
+                                       meta=mark_info['meta'])
         self.get_all_marks()
 
     @pyqtSlot(int)

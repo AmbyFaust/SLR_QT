@@ -5,7 +5,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QAction, QWidget, QVBoxLayout, QPushButton, QScrollArea, QSizePolicy, QHBoxLayout
 
 from project.gui.form_classes_base import QMainWindowBase, Toolbar, QDialogBase
-from .create_mark_dialog import CreateMarkDialogWindow
+from .edit_mark_dialog import EditMarkDialogWindow
 
 from .mark_reviewer_controller import MarksReviewerController
 from .mark_info_widget import MarkInfoWidget
@@ -18,11 +18,11 @@ class MarksReviewerWindow(QMainWindowBase):
     def __init__(self, parent=None):
         super(MarksReviewerWindow, self).__init__(parent)
         self.controller = MarksReviewerController()
-        self.dialog = CreateMarkDialogWindow(self)
+        self.dialog = EditMarkDialogWindow(self)
         self.__create_widgets()
         self.__create_layout()
         self.__create_actions()
-        self.setFixedWidth(300)
+        self.setMinimumWidth(350)
 
         self.showAllMarks.connect(self.show_all_marks)
 

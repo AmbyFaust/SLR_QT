@@ -15,3 +15,12 @@ def int_to_ownership_type(val):
     else:
         return 'Неизвестно'
 
+
+def ownership_type_to_int(val):
+    if val == 'Свой':
+        return 1
+    elif val == 'Чужой':
+        return 2
+    else:
+        return 3
+

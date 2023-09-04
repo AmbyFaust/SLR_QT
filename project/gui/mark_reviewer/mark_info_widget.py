@@ -6,6 +6,8 @@ from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import QWidget, QCheckBox, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QSizePolicy, QFrame
 
+from project.gui.form_classes_base import QDialogBase
+from project.gui.mark_reviewer.edit_mark_dialog import EditMarkDialogWindow
 from project.gui.mark_reviewer.more_info_dialog import MoreInfoMarkDialogWindow
 from project.gui.mark_reviewer.separator_widget import Separator
 
@@ -19,6 +21,7 @@ class MarkInfoWidget(QFrame):
         self.obj_id = obj_id_
         self.controller = controller_
         self.more_info_dialog = MoreInfoMarkDialogWindow(self)
+        self.edit_mark_dialog = EditMarkDialogWindow(self)
         self.visibility_images = [os.path.join(IMAGE_DIRECTORY, filename) for filename in os.listdir(IMAGE_DIRECTORY)]
         self.image_visibility_index = 0
         self.__create_widgets()
@@ -70,6 +73,7 @@ class MarkInfoWidget(QFrame):
 
     def __actions(self):
         self.more_info_btn.clicked.connect(self.open_more_info_dialog)
+        self.redact_btn.clicked.connect(self.open_edit_mark_dialog)
         self.show_visibility_btn.clicked.connect(self.show_mark_visibility)
 
     def __set_name(self, name_):
@@ -91,6 +95,12 @@ class MarkInfoWidget(QFrame):
         self.controller.get_full_mark_info(self.obj_id)
         self.more_info_dialog.set_info_in_widgets(self.controller.current_mark_full_info)
         self.more_info_dialog.exec_()
+
+    def open_edit_mark_dialog(self):
+        self.controller.get_full_mark_info(self.obj_id)
+        self.edit_mark_dialog.set_data(self.controller.current_mark_full_info)
+        if self.edit_mark_dialog.exec_() == QDialogBase.Accepted:
+            self.controller.create_mark(self.edit_mark_dialog.mark_info)
 
     def show_mark_visibility(self):
         self.image_visibility_index = (self.image_visibility_index + 1) % len(self.visibility_images)
