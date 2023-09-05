@@ -5,9 +5,9 @@ from PyQt5.QtWidgets import QVBoxLayout, QPushButton, \
     QHBoxLayout, QLabel, QTextEdit
 
 from project.gui.form_classes_base import QDialogBase
+from project.gui.mark_reviewer.mark_data import MarkData
 from project.gui.mark_reviewer.separator_widget import Separator
 from project.gui.common.coordinates_translator import CoordinateSystemEpsg, translate_coordinates
-
 
 class MoreInfoMarkDialogWindow(QDialogBase):
     def __init__(self, parent=None):
@@ -110,17 +110,17 @@ class MoreInfoMarkDialogWindow(QDialogBase):
         self.close_btn.clicked.connect(self.reject)
         # self.redact_btn.clicked.connect(self.accept_mark)
 
-    def set_info_in_widgets(self, data):
-        self.name_label.setText('Имя объекта: ' + data['name'])
-        self.datetime_label.setText('Дата и время записи: ' + data['datetime'][:19])
-        self.object_type_label.setText('Тип объекта: ' + data['object_type'])
-        self.relating_name_label.setText('Имя принадлежности объекта: ' + data['relating_name'])
-        self.relating_type_label.setText('Тип принадлежности объекта: ' + data['relating_type'])
+    def set_info_in_widgets(self, data: MarkData):
+        self.name_label.setText('Имя объекта: ' + data.name)
+        self.datetime_label.setText('Дата и время записи: ' + str(data.datetime)[:19])
+        self.object_type_label.setText('Тип объекта: ' + str(data.object_type))
+        self.relating_name_label.setText('Имя принадлежности объекта: ' + data.relating_name)
+        self.relating_type_label.setText('Тип принадлежности объекта: ' + str(data.relating_type))
 
         wgs_coordinates = list(translate_coordinates(
             CoordinateSystemEpsg.sk_42,
             CoordinateSystemEpsg.wgs_84,
-            (float(data['longitude']), float(data['latitude']))
+            (float(data.longitude), float(data.latitude))
         ))
         self.wgs_longitude_label.setText('Долгота, град: ' + str(wgs_coordinates[0]))
         self.wgs_latitude_label.setText('Широта, град: ' + str(wgs_coordinates[1]))
@@ -128,24 +128,24 @@ class MoreInfoMarkDialogWindow(QDialogBase):
         pz_coordinates = list(translate_coordinates(
             CoordinateSystemEpsg.sk_42,
             CoordinateSystemEpsg.pz_90,
-            (float(data['longitude']), float(data['latitude']))
+            (float(data.longitude), float(data.latitude))
         ))
         self.pz_longitude_label.setText('Долгота, град: ' + str(pz_coordinates[0]))
         self.pz_latitude_label.setText('Широта, град: ' + str(pz_coordinates[1]))
 
-        self.sk_longitude_label.setText('Долгота, град: ' + data['longitude'])
-        self.sk_latitude_label.setText('Широта, град: ' + data['latitude'])
+        self.sk_longitude_label.setText('Долгота, град: ' + str(data.longitude))
+        self.sk_latitude_label.setText('Широта, град: ' + str(data.latitude))
 
         gauss_kruger_coordinates = list(translate_coordinates(
             CoordinateSystemEpsg.sk_42,
             CoordinateSystemEpsg.gauss_kruger,
-            (float(data['longitude']), float(data['latitude']))
+            (float(data.longitude), float(data.latitude))
         ))
         self.gauss_kruger_x_label.setText('X, м: ' + str(gauss_kruger_coordinates[0]))
         self.gauss_kruger_y_label.setText('Y, м: ' + str(gauss_kruger_coordinates[1]))
 
-        self.altitude_label.setText('Высота, м: ' + data['altitude'])
+        self.altitude_label.setText('Высота, м: ' + str(data.altitude))
 
-        self.comment_text_edit.setText(data['comment'])
+        self.comment_text_edit.setText(data.comment)
 
 

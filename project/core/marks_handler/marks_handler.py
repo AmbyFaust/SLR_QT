@@ -8,9 +8,9 @@ from ...database.entities.MarkEntity import MarkEntity
 from ...database.entities.ObjectEntity import ObjectEntity
 from ...database.entities.RelatingObjectEntity import RelatingObjectEntity
 from ...gui.mark_reviewer.constants import VISIBILITY_VARIANTS
+from ...gui.mark_reviewer.mark_data import MarkData
 from ...gui.mark_reviewer.mark_reviewer_controller import MarksReviewerController
 from ...gui.mark_reviewer.ownership_enum import int_to_ownership_type
-
 
 class MarksHandler(QObject):
     def __init__(self, painter: CanvasPainter, controller: MarksReviewerController, parent=None):
@@ -28,27 +28,24 @@ class MarksHandler(QObject):
         self.controller.deleteMark.connect(self.delete_mark)
         self.controller.showVisibility.connect(self.show_visibility)
 
-    @pyqtSlot(dict)
-    def create_mark(self, mark_info):
-        geo_data = mark_info['geo_data']
-
+    @pyqtSlot(MarkData)
+    def create_mark(self, mark_info: MarkData):
+        geo_data = [mark_info.longitude, mark_info.latitude, mark_info.altitude]
         coordinates_id = CoordinatesEntity.create_coordinates(*geo_data)
         mark_id = MarkEntity.create_mark(coordinates_id=coordinates_id)
         relating_object_id = RelatingObjectEntity.\
-            create_relating_object(type_relating=mark_info['relating_object_type'],
-                                   name=mark_info['relating_name'])
+            create_relating_object(type_relating=mark_info.relating_type,
+                                   name=mark_info.relating_name)
 
-        if mark_info['id'] is not None:
-            ObjectEntity.update_object(object_id=mark_info['id'], new_mark_id=mark_id,
-                                       new_name=mark_info['name'], new_object_type=mark_info['object_type'],
-                                       new_relating_object_id=relating_object_id, new_meta=mark_info['meta'])
-            print(1)
+        if mark_info.obj_id is not None:
+            ObjectEntity.update_object(object_id=mark_info.obj_id, new_mark_id=mark_id,
+                                       new_name=mark_info.name, new_object_type=mark_info.object_type,
+                                       new_relating_object_id=relating_object_id, new_meta=mark_info.comment)
         else:
-            print(2)
-            ObjectEntity.create_object(mark_id=mark_id, name=mark_info['name'],
-                                       object_type=mark_info['object_type'],
+            ObjectEntity.create_object(mark_id=mark_id, name=mark_info.name,
+                                       object_type=mark_info.object_type,
                                        relating_object_id=relating_object_id,
-                                       meta=mark_info['meta'])
+                                       meta=mark_info.comment)
         self.get_all_marks()
 
     @pyqtSlot(int)
@@ -89,12 +86,14 @@ class MarksHandler(QObject):
         mark = object_entity.mark
         coordinates = mark.coordinates
         relating_object = object_entity.relating_object
-        self.controller.current_mark_full_info = {'id': object_id, 'name': object_entity.name,
-                                                  'object_type': str(object_entity.type),
-                                                  'comment': str(object_entity.meta), 'datetime': str(mark.datetime),
-                                                  'latitude': str(coordinates.latitude),
-                                                  'longitude': str(coordinates.longitude),
-                                                  'altitude': str(coordinates.altitude),
-                                                  'relating_name': relating_object.name,
-                                                  'relating_type': int_to_ownership_type(relating_object.type_relating)}
-
+        self.controller.current_mark_full_info = MarkData(
+            obj_id=object_id,
+            name=object_entity.name,
+            object_type=object_entity.type,
+            datetime=mark.datetime,
+            relating_name=relating_object.name,
+            relating_type=int_to_ownership_type(relating_object.type_relating),
+            latitude=coordinates.latitude,
+            longitude=coordinates.longitude,
+            altitude=coordinates.altitude,
+            comment=str(object_entity.meta))

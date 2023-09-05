@@ -1,8 +1,10 @@
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 
+from project.gui.mark_reviewer.mark_data import MarkData
+
 
 class MarksReviewerController(QObject):
-    createMark = pyqtSignal(dict)
+    createMark = pyqtSignal(MarkData)
     deleteMark = pyqtSignal(int)
     getAllMarks = pyqtSignal(list)
     getShortMarkInfo = pyqtSignal(int)

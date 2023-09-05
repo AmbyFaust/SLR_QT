@@ -18,7 +18,6 @@ class MarksReviewerWindow(QMainWindowBase):
     def __init__(self, parent=None):
         super(MarksReviewerWindow, self).__init__(parent)
         self.controller = MarksReviewerController()
-        self.dialog = EditMarkDialogWindow(self)
         self.__create_widgets()
         self.__create_layout()
         self.__create_actions()
@@ -103,6 +102,7 @@ class MarksReviewerWindow(QMainWindowBase):
             self.add_mark_info_widget(object_entity)
 
     def open_create_mark_dialog(self):
-        if self.dialog.exec_() == QDialogBase.Accepted:
-            self.controller.create_mark(self.dialog.mark_info)
+        dialog = EditMarkDialogWindow(self)
+        if dialog.exec_() == QDialogBase.Accepted:
+            self.controller.create_mark(dialog.mark_info)
             self.showAllMarks.emit()
