@@ -7,7 +7,7 @@ class MarksReviewerController(QObject):
     getAllMarks = pyqtSignal(list)
     getShortMarkInfo = pyqtSignal(int)
     getFullMarkInfo = pyqtSignal(int)
-    showVisibility = pyqtSignal(int, int)
+    showVisibility = pyqtSignal(int, int, dict)
 
     def __init__(self, parent=None):
         super().__init__(parent)

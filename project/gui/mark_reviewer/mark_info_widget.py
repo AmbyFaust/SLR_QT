@@ -1,18 +1,13 @@
 import os
 
-from datetime import datetime
-
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QIcon
-from PyQt5.QtWidgets import QWidget, QCheckBox, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QSizePolicy, QFrame
+from PyQt5.QtWidgets import QCheckBox, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QSizePolicy, QFrame
 
 from project.gui.form_classes_base import QDialogBase
+from project.gui.mark_reviewer.constants import IMAGE_DIRECTORY, VISIBILITY_VARIANTS
 from project.gui.mark_reviewer.edit_mark_dialog import EditMarkDialogWindow
 from project.gui.mark_reviewer.more_info_dialog import MoreInfoMarkDialogWindow
-from project.gui.mark_reviewer.separator_widget import Separator
-
-
-IMAGE_DIRECTORY = os.getcwd() + '/project/gui/mark_reviewer/resources/images'
 
 
 class MarkInfoWidget(QFrame):
@@ -23,6 +18,8 @@ class MarkInfoWidget(QFrame):
         self.more_info_dialog = MoreInfoMarkDialogWindow(self)
         self.edit_mark_dialog = EditMarkDialogWindow(self)
         self.visibility_images = [os.path.join(IMAGE_DIRECTORY, filename) for filename in os.listdir(IMAGE_DIRECTORY)]
+        self.visibility_dict = dict(zip(range(VISIBILITY_VARIANTS),
+                                        ['open_eye' in filename for filename in self.visibility_images]))
         self.image_visibility_index = 0
         self.__create_widgets()
         self.__set_name(name_)
@@ -105,4 +102,4 @@ class MarkInfoWidget(QFrame):
     def show_mark_visibility(self):
         self.image_visibility_index = (self.image_visibility_index + 1) % len(self.visibility_images)
         self.__load_current_visibility_image()
-        self.controller.showVisibility.emit(self.obj_id, self.image_visibility_index)
+        self.controller.showVisibility.emit(self.obj_id, self.image_visibility_index, self.visibility_dict)

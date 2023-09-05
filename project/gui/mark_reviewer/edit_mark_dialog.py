@@ -21,7 +21,6 @@ class EditMarkDialogWindow(QDialogBase):
         self.__create_layout()
         self.__create_actions()
 
-
         self.mark_info = {}
 
     def __create_widgets(self):
@@ -93,11 +92,19 @@ class EditMarkDialogWindow(QDialogBase):
         relating_name = self.relating_name_edit.text()
         relating_object_type = list(Ownership)[self.relating_object_type_box.currentIndex()].value
 
-        geo_data = self.coordinates_tabs.sk_tab.get_coordinates()
+        cur_coordinates_system = self.coordinates_tabs.cur_coordinates_system
+        geo_data = self.coordinates_tabs.get_coordinates_cur_tab()
+
+        coordinates = list(translate_coordinates(
+            cur_coordinates_system,
+            CoordinateSystemEpsg.sk_42,
+            (geo_data[0], geo_data[1])
+        )) + [geo_data[-1]]
+
         meta = self.comment_text_edit.toPlainText()
 
         self.mark_info = {'name': name, 'object_type': object_type, 'relating_name': relating_name,
-                          'relating_object_type': relating_object_type, 'geo_data': geo_data,
+                          'relating_object_type': relating_object_type, 'geo_data': coordinates,
                           'meta': meta, 'id': self.obj_id}
 
         self.name_edit.setText('Без имени')

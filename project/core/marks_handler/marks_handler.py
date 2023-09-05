@@ -7,6 +7,7 @@ from ...database.entities.CoordinatesEntity import CoordinatesEntity
 from ...database.entities.MarkEntity import MarkEntity
 from ...database.entities.ObjectEntity import ObjectEntity
 from ...database.entities.RelatingObjectEntity import RelatingObjectEntity
+from ...gui.mark_reviewer.constants import VISIBILITY_VARIANTS
 from ...gui.mark_reviewer.mark_reviewer_controller import MarksReviewerController
 from ...gui.mark_reviewer.ownership_enum import int_to_ownership_type
 
@@ -19,7 +20,6 @@ class MarksHandler(QObject):
         self.map_marks = []
         self.__create_actions()
         self.dict_map_database_marks = {}
-        self.visibility_variants = [True, False]
 
     def __create_actions(self):
         self.controller.getShortMarkInfo.connect(self.get_short_mark_info)
@@ -56,9 +56,9 @@ class MarksHandler(QObject):
         ObjectEntity.delete_object(object_id)
         self.get_all_marks()
 
-    @pyqtSlot(int, int)
-    def show_visibility(self, object_id, index):
-        visibility = self.visibility_variants[index % len(self.visibility_variants)]
+    @pyqtSlot(int, int, dict)
+    def show_visibility(self, object_id, index, visibility_dict):
+        visibility = visibility_dict[index % VISIBILITY_VARIANTS]
         self.dict_map_database_marks[object_id].set_visibility(visibility)
 
     def get_all_marks(self):
