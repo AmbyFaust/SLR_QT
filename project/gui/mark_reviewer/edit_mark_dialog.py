@@ -105,30 +105,14 @@ class EditMarkDialogWindow(QDialogBase):
 
         meta = self.comment_text_edit.toPlainText()
 
-        name = self.name_edit.text()
-        object_type = self.object_type_edit.text()
-        relating_name = self.relating_name_edit.text()
-        relating_object_type = list(Ownership)[self.relating_object_type_box.currentIndex()].value
-
-        cur_coordinates_system = self.coordinates_tabs.cur_coordinates_system
-        geo_data = self.coordinates_tabs.get_coordinates_cur_tab()
-
-        coordinates = list(translate_coordinates(
-            cur_coordinates_system,
-            CoordinateSystemEpsg.sk_42,
-            (geo_data[0], geo_data[1])
-        )) + [geo_data[-1]]
-
-        meta = self.comment_text_edit.toPlainText()
-
         self.mark_info = MarkData(
             obj_id=self.obj_id,
             name=name,
             object_type=object_type,
             relating_name=relating_name,
             relating_type=relating_object_type,
-            latitude=coordinates[0],
-            longitude=coordinates[1],
+            longitude=coordinates[0],
+            latitude=coordinates[1],
             altitude=coordinates[2],
             comment=str(meta)
         )
@@ -139,20 +123,17 @@ class EditMarkDialogWindow(QDialogBase):
         self.comment_text_edit.setPlainText('Комментарий')
         self.accept()
 
-    def set_data(self, data):
+    def set_data(self, data: MarkData):
         self.setWindowTitle('Редактирование отметки')
-        self.obj_id = int(data['id'])
-        self.name_edit.setText(data['name'])
-        self.object_type_edit.setText(data['object_type'])
-        self.relating_name_edit.setText(data['relating_name'])
-        self.relating_object_type_box.setCurrentIndex(ownership_type_to_int(data['relating_type']))
+        self.obj_id = data.obj_id
+        self.name_edit.setText(data.name)
+        self.object_type_edit.setText(str(data.object_type))
+        self.relating_name_edit.setText(data.relating_name)
+        self.relating_object_type_box.setCurrentIndex(ownership_type_to_int(data.relating_type))
         self.coordinates_tabs.coordinates = list(translate_coordinates(
             CoordinateSystemEpsg.sk_42,
             CoordinateSystemEpsg.wgs_84,
-            (float(data['longitude']), float(data['latitude']))
-        )) + [float(data['altitude'])]
+            (data.longitude, data.latitude)
+        )) + [data.altitude]
         self.coordinates_tabs.set_coordinates_cur_tab()
-        self.comment_text_edit.setPlainText(data['comment'])
-
-
-
+        self.comment_text_edit.setPlainText(data.comment)

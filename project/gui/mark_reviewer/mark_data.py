@@ -9,8 +9,8 @@ class MarkData:
                  object_type=None,
                  relating_name=None,
                  relating_type=None,
-                 latitude=None,
                  longitude=None,
+                 latitude=None,
                  altitude=None,
                  comment=None):
         self.obj_id = obj_id
@@ -19,8 +19,8 @@ class MarkData:
         self.object_type = object_type
         self.relating_name = relating_name
         self.relating_type = relating_type
-        self.latitude = latitude
         self.longitude = longitude
+        self.latitude = latitude
         self.altitude = altitude
         self.comment = comment
 

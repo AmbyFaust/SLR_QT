@@ -35,7 +35,7 @@ class RealDegreesWidget(QWidgetBase):
     def get_coordinates(self) -> (float, float):
         return self.lat_spinbox.value(), self.lon_spinbox.value()
 
-    def set_coordinates(self, lat, lon):
+    def set_coordinates(self, lon, lat):
         self.lat_spinbox.setValue(lat)
         self.lon_spinbox.setValue(lon)
 
@@ -61,7 +61,7 @@ class DividedDegreesWidget(QWidgetBase):
     def get_coordinates(self) -> (float, float):
         return self.lat_line_edit.get_value(), self.lon_line_edit.get_value()
 
-    def set_coordinates(self, lat, lon):
+    def set_coordinates(self, lon, lat):
         self.lat_line_edit.set_value(lat)
         self.lon_line_edit.set_value(lon)
 
@@ -95,7 +95,7 @@ class DegreesModeWidget(QWidgetBase):
         self.real_widget.set_coordinates(0, 0)
         return coordinates
 
-    def set_coordinates(self, lat: float, lon: float):
+    def set_coordinates(self, lon: float, lat: float):
         self.divided_widget.set_coordinates(lat, lon)
         self.real_widget.set_coordinates(lat, lon)
 

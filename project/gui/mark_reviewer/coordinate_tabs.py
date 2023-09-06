@@ -36,10 +36,10 @@ class GeodesicTab(QWidget):
     def get_coordinates(self):
         latitude, longitude = self.degrees_widget.get_coordinates()
         height = self.height_spin_box.value()
-        return latitude, longitude, height
+        return longitude, latitude, height
 
-    def set_coordinates(self, latitude, longitude, height):
-        self.degrees_widget.set_coordinates(latitude, longitude)
+    def set_coordinates(self, longitude, latitude, height):
+        self.degrees_widget.set_coordinates(longitude, latitude)
         self.height_spin_box.setValue(height)
 
     def get_coordinates_system(self):

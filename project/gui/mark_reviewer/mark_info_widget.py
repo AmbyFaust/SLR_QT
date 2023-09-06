@@ -11,11 +11,14 @@ from project.gui.mark_reviewer.more_info_dialog import MoreInfoMarkDialogWindow
 
 
 class MarkInfoWidget(QFrame):
-    def __init__(self, obj_id_=None, controller_=None, name_='', datetime_='', parent=None):
+    def __init__(self, obj_id_=None, controller_=None, name_='', datetime_='', window_=None,
+                 parent=None):
         super(MarkInfoWidget, self).__init__(parent)
         self.obj_id = obj_id_
         self.controller = controller_
-        self.visibility_images = [os.path.join(IMAGE_DIRECTORY, filename) for filename in os.listdir(IMAGE_DIRECTORY)]
+        self.window = window_
+        self.visibility_images = [os.path.join(IMAGE_DIRECTORY, 'open_eye.png'),
+                                  os.path.join(IMAGE_DIRECTORY, 'closed_eye.png')]
         self.visibility_dict = dict(zip(range(VISIBILITY_VARIANTS),
                                         ['open_eye' in filename for filename in self.visibility_images]))
         self.image_visibility_index = 0
@@ -89,15 +92,16 @@ class MarkInfoWidget(QFrame):
     def open_more_info_dialog(self):
         more_info_dialog = MoreInfoMarkDialogWindow(self)
         self.controller.get_full_mark_info(self.obj_id)
-        more_info_dialog.set_info_in_widgets(self.controller.current_mark_full_info)
+        more_info_dialog.set_info_in_widgets(self.controller.current_mark_info)
         more_info_dialog.exec_()
 
     def open_edit_mark_dialog(self):
         edit_mark_dialog = EditMarkDialogWindow(self)
         self.controller.get_full_mark_info(self.obj_id)
-        edit_mark_dialog.set_data(self.controller.current_mark_full_info)
+        edit_mark_dialog.set_data(self.controller.current_mark_info)
         if edit_mark_dialog.exec_() == QDialogBase.Accepted:
-            self.controller.create_mark(edit_mark_dialog.mark_info)
+            self.controller.update_mark(edit_mark_dialog.mark_info)
+            self.window.showAllMarks.emit()
 
     def show_mark_visibility(self):
         self.image_visibility_index = (self.image_visibility_index + 1) % len(self.visibility_images)

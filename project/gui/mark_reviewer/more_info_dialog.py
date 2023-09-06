@@ -120,7 +120,7 @@ class MoreInfoMarkDialogWindow(QDialogBase):
         wgs_coordinates = list(translate_coordinates(
             CoordinateSystemEpsg.sk_42,
             CoordinateSystemEpsg.wgs_84,
-            (float(data.longitude), float(data.latitude))
+            (data.longitude, data.latitude)
         ))
         self.wgs_longitude_label.setText('Долгота, град: ' + str(wgs_coordinates[0]))
         self.wgs_latitude_label.setText('Широта, град: ' + str(wgs_coordinates[1]))
@@ -128,7 +128,7 @@ class MoreInfoMarkDialogWindow(QDialogBase):
         pz_coordinates = list(translate_coordinates(
             CoordinateSystemEpsg.sk_42,
             CoordinateSystemEpsg.pz_90,
-            (float(data.longitude), float(data.latitude))
+            (data.longitude, data.latitude)
         ))
         self.pz_longitude_label.setText('Долгота, град: ' + str(pz_coordinates[0]))
         self.pz_latitude_label.setText('Широта, град: ' + str(pz_coordinates[1]))
@@ -139,7 +139,7 @@ class MoreInfoMarkDialogWindow(QDialogBase):
         gauss_kruger_coordinates = list(translate_coordinates(
             CoordinateSystemEpsg.sk_42,
             CoordinateSystemEpsg.gauss_kruger,
-            (float(data.longitude), float(data.latitude))
+            (data.longitude, data.latitude)
         ))
         self.gauss_kruger_x_label.setText('X, м: ' + str(gauss_kruger_coordinates[0]))
         self.gauss_kruger_y_label.setText('Y, м: ' + str(gauss_kruger_coordinates[1]))
