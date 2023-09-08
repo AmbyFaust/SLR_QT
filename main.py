@@ -24,8 +24,17 @@ def main():
     # ------------------- соединения между объектами писать тут ------------------
     window = WorkspaceWindowTitled() # главное окно
 
-    marks_handler = MarksHandler(window.controller.gis_w.painter, window.controller.mark_reviewer_w.controller)
-    marks_handler.get_all_marks()
+    marks_handler = MarksHandler(window.controller.gis_w.painter)
+    marks_handler.putAllMarks.connect(window.controller.mark_reviewer_w.controller.put_all_marks)
+    window.controller.mark_reviewer_w.controller.getShortMarkInfo.connect(marks_handler.get_short_mark_info)
+    window.controller.mark_reviewer_w.controller.getFullMarkInfo.connect(marks_handler.get_full_mark_info)
+    window.controller.mark_reviewer_w.controller.createMark.connect(marks_handler.create_mark)
+    window.controller.mark_reviewer_w.controller.updateMark.connect(marks_handler.update_mark)
+    window.controller.mark_reviewer_w.controller.deleteMark.connect(marks_handler.delete_mark)
+    window.controller.mark_reviewer_w.controller.showVisibility.connect(marks_handler.show_visibility)
+    marks_handler.putShortMarkInfo.connect(window.controller.mark_reviewer_w.controller.put_short_mark_info)
+    marks_handler.putFullMarkInfo.connect(window.controller.mark_reviewer_w.controller.put_full_mark_info)
+    marks_handler.put_all_marks()
     window.controller.mark_reviewer_w.showAllMarks.emit()
 
     window.showMaximized()

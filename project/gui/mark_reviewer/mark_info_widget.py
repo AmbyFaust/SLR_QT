@@ -25,8 +25,11 @@ class MarkInfoWidget(QFrame):
         self.__create_widgets()
         self.__set_name(name_)
         self.__set_datetime(datetime_)
-        self.__actions()
         self.__create_layouts()
+
+        self.more_info_btn.clicked.connect(self.open_more_info_dialog)
+        self.redact_btn.clicked.connect(self.open_edit_mark_dialog)
+        self.show_visibility_btn.clicked.connect(self.show_mark_visibility)
 
     def __create_widgets(self):
 
@@ -69,11 +72,6 @@ class MarkInfoWidget(QFrame):
         common_h_layout.addLayout(common_v_layout)
         self.setLayout(common_h_layout)
 
-    def __actions(self):
-        self.more_info_btn.clicked.connect(self.open_more_info_dialog)
-        self.redact_btn.clicked.connect(self.open_edit_mark_dialog)
-        self.show_visibility_btn.clicked.connect(self.show_mark_visibility)
-
     def __set_name(self, name_):
         self.name_label.setText(name_)
 
@@ -101,7 +99,7 @@ class MarkInfoWidget(QFrame):
         edit_mark_dialog.set_data(self.controller.current_mark_info)
         if edit_mark_dialog.exec_() == QDialogBase.Accepted:
             self.controller.update_mark(edit_mark_dialog.mark_info)
-            self.window.showAllMarks.emit()
+            self.window.putAllMarks.emit()
 
     def show_mark_visibility(self):
         self.image_visibility_index = (self.image_visibility_index + 1) % len(self.visibility_images)

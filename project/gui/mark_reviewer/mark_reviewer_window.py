@@ -20,10 +20,11 @@ class MarksReviewerWindow(QMainWindowBase):
         self.controller = MarksReviewerController()
         self.__create_widgets()
         self.__create_layout()
-        self.__create_actions()
         self.setMinimumWidth(350)
 
         self.showAllMarks.connect(self.show_all_marks)
+        self.create_mark_btn.clicked.connect(self.open_create_mark_dialog)
+        self.delete_selected_btn.clicked.connect(self.delete_selected_marks)
 
     def __create_widgets(self):
         self.common_widget = QWidget()
@@ -54,10 +55,6 @@ class MarksReviewerWindow(QMainWindowBase):
 
         self.common_widget.setLayout(common_v_layout)
         self.setCentralWidget(self.common_widget)
-
-    def __create_actions(self):
-        self.create_mark_btn.clicked.connect(self.open_create_mark_dialog)
-        self.delete_selected_btn.clicked.connect(self.delete_selected_marks)
 
     def add_mark_info_widget(self, object_entity):
         self.controller.get_short_mark_info(object_entity.id)

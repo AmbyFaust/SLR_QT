@@ -2,25 +2,27 @@ from enum import Enum
 
 
 class Ownership(Enum):
-    FAMILIAR = 1
-    UNFAMILIAR = 2
-    UNKNOWN = 3
+    FAMILIAR = (1, 'Свой')
+    UNFAMILIAR = (2, 'Чужой')
+    UNKNOWN = (3, 'Неизвестно')
 
+    def __new__(cls, value, description):
+        obj = object.__new__(cls)
+        obj._value_ = value
+        obj.description = description
+        return obj
 
-def int_to_ownership_type(val):
-    if val == 1:
-        return 'Свой'
-    elif val == 2:
-        return 'Чужой'
-    else:
-        return 'Неизвестно'
+    @classmethod
+    def int_to_ownership_type(cls, value):
+        for item in cls:
+            if item.value == value:
+                return item.description
+        return None
 
-
-def ownership_type_to_int(val):
-    if val == 'Свой':
-        return 1
-    elif val == 'Чужой':
-        return 2
-    else:
-        return 3
+    @classmethod
+    def ownership_type_to_int(cls, ownership_name):
+        for item in cls:
+            if item.description == ownership_name:
+                return item.value
+        return None
 

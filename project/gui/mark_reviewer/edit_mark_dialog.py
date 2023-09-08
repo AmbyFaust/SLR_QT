@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QVBoxLayout, QPushButton, \
 from project.gui.form_classes_base import QDialogBase
 from project.gui.form_classes_base.qcombobox_base import QComboBoxBase
 from .mark_data import MarkData
-from .ownership_enum import Ownership, ownership_type_to_int
+from .ownership_enum import Ownership
 from project.gui.mark_reviewer.coordinates_tab_widget import CoordinatesTab
 from ..common.coordinates_translator import translate_coordinates, CoordinateSystemEpsg
 
@@ -41,9 +41,9 @@ class EditMarkDialogWindow(QDialogBase):
         self.relating_name_edit = QLineEdit('Неизвестно')
 
         self.relating_object_type_box = QComboBoxBase()
+
         for ownership in Ownership:
-            self.relating_object_type_box.addItem({'FAMILIAR': 'Свой', 'UNFAMILIAR': 'Чужой', 'UNKNOWN': 'Неизвестно'}
-                                                  [ownership.name])
+            self.relating_object_type_box.addItem(ownership.description)
 
         self.relating_object_type_box.adjustSize()
 
@@ -129,7 +129,7 @@ class EditMarkDialogWindow(QDialogBase):
         self.name_edit.setText(data.name)
         self.object_type_edit.setText(str(data.object_type))
         self.relating_name_edit.setText(data.relating_name)
-        self.relating_object_type_box.setCurrentIndex(ownership_type_to_int(data.relating_type))
+        self.relating_object_type_box.setCurrentIndex(Ownership.ownership_type_to_int(data.relating_type) - 1)
         self.coordinates_tabs.coordinates = list(translate_coordinates(
             CoordinateSystemEpsg.sk_42,
             CoordinateSystemEpsg.wgs_84,

@@ -9,6 +9,7 @@ from project.gui.mark_reviewer.mark_data import MarkData
 from project.gui.mark_reviewer.separator_widget import Separator
 from project.gui.common.coordinates_translator import CoordinateSystemEpsg, translate_coordinates
 
+
 class MoreInfoMarkDialogWindow(QDialogBase):
     def __init__(self, parent=None):
         super(MoreInfoMarkDialogWindow, self).__init__(parent)
