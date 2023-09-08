@@ -8,8 +8,9 @@ from project.gui.common import coordinates_translator
 
 
 class CoordinatesTab(QTabWidget):
-    def __init__(self):
+    def __init__(self, is_edit=True):
         super().__init__()
+        self.is_edit = is_edit
         self.__create_widgets()
         self.coordinates = self.widget(self.currentIndex()).get_coordinates()
         self.cur_coordinates_system = self.widget(self.currentIndex()).get_coordinates_system()
@@ -18,12 +19,10 @@ class CoordinatesTab(QTabWidget):
     def __create_widgets(self):
         # self.coordinates_tabs.currentChanged.connect(self.on_tab_changed)
 
-        self.wgs_tab = GeodesicTab(CoordinateSystemEpsg.wgs_84)
-        self.pz_tab = GeodesicTab(CoordinateSystemEpsg.pz_90)
-        self.sk_tab = GeodesicTab(CoordinateSystemEpsg.sk_42)
-
-        self.gauss_kruger_tab = GeocentricTab(CoordinateSystemEpsg.gauss_kruger)
-
+        self.wgs_tab = GeodesicTab(CoordinateSystemEpsg.wgs_84, self.is_edit)
+        self.pz_tab = GeodesicTab(CoordinateSystemEpsg.pz_90, self.is_edit)
+        self.sk_tab = GeodesicTab(CoordinateSystemEpsg.sk_42, self.is_edit)
+        self.gauss_kruger_tab = GeocentricTab(CoordinateSystemEpsg.gauss_kruger, self.is_edit)
         self.addTab(self.wgs_tab, 'WGS-84')
         self.addTab(self.pz_tab, 'ПЗ-90.11')
         self.addTab(self.sk_tab, 'СК-42')
@@ -52,7 +51,6 @@ class CoordinatesTab(QTabWidget):
     def on_tab_changed(self, index):
         changed_coordinates_system = self.currentWidget().get_coordinates_system()
         changed_coordinates = self.get_coordinates_cur_tab()
-
         self.coordinates = list(translate_coordinates(
             self.cur_coordinates_system,
             changed_coordinates_system,

@@ -1,110 +1,102 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QSizePolicy, QDoubleSpinBox, QVBoxLayout, QHBoxLayout
-
-from project.gui.common.coordinates_translator import CoordinateSystemEpsg
-from project.gui.common.degrees_widget import RealDegreesWidget
-from project.gui.common.ranges import LATITUDE_RANGE, DEGREES_DECIMALS
+from PyQt5.QtWidgets import QWidget, QLabel, QDoubleSpinBox, QVBoxLayout, QHBoxLayout, QFormLayout, QAbstractSpinBox
+from project.gui.common.ranges import LATITUDE_RANGE, DEGREES_DECIMALS, LONGITUDE_RANGE
 
 
 class GeodesicTab(QWidget):
-    def __init__(self, coordinates_system, coordinates=None):
-        super().__init__()
+    def __init__(self, coordinates_system, is_edit, coordinates=None, parent=None):
+        super(GeodesicTab, self).__init__(parent)
+        self.is_edit = is_edit
         self.__create_widgets()
         self.__create_layouts()
         self.coordinates_system = coordinates_system
 
     def __create_widgets(self):
-        self.degrees_widget = RealDegreesWidget()
+        self.longitude_spinbox = QDoubleSpinBox()
+        self.longitude_spinbox.setRange(*LONGITUDE_RANGE)
+        self.longitude_spinbox.setDecimals(DEGREES_DECIMALS)
 
-        self.height_label = QLabel('Высота, м:')
-        self.height_label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-        self.height_spin_box = QDoubleSpinBox()
-        self.height_spin_box.setRange(-10000000, 100000000)  # TODO значения поставил на обум
-        self.height_spin_box.setDecimals(3)
+        self.latitude_spinbox = QDoubleSpinBox()
+        self.latitude_spinbox.setRange(*LATITUDE_RANGE)
+        self.latitude_spinbox.setDecimals(DEGREES_DECIMALS)
+
+        self.height_spinbox = QDoubleSpinBox()
+        self.height_spinbox.setRange(-100000000, 100000000)  # TODO значения поставил на обум
+        self.height_spinbox.setDecimals(3)
+
+        if not self.is_edit:
+            self.longitude_spinbox.setReadOnly(not self.is_edit)
+            self.longitude_spinbox.setButtonSymbols(QAbstractSpinBox.NoButtons)
+            self.latitude_spinbox.setReadOnly(not self.is_edit)
+            self.latitude_spinbox.setButtonSymbols(QAbstractSpinBox.NoButtons)
+            self.height_spinbox.setReadOnly(not self.is_edit)
+            self.height_spinbox.setButtonSymbols(QAbstractSpinBox.NoButtons)
 
     def __create_layouts(self):
-        common_v_layout = QVBoxLayout()
-
-        height_h_layout = QHBoxLayout()
-        height_h_layout.addWidget(self.height_label)
-        height_h_layout.addWidget(self.height_spin_box)
-
-        common_v_layout.addWidget(self.degrees_widget)
-        common_v_layout.addLayout(height_h_layout)
-
-        self.setLayout(common_v_layout)
+        common_form_layout = QFormLayout()
+        common_form_layout.addRow('Долгота:', self.longitude_spinbox)
+        common_form_layout.addRow('Широта:', self.latitude_spinbox)
+        common_form_layout.addRow('Высота, м:', self.height_spinbox)
+        self.setLayout(common_form_layout)
 
     def get_coordinates(self):
-        latitude, longitude = self.degrees_widget.get_coordinates()
-        height = self.height_spin_box.value()
+        longitude = self.longitude_spinbox.value()
+        latitude = self.latitude_spinbox.value()
+        height = self.height_spinbox.value()
         return longitude, latitude, height
 
     def set_coordinates(self, longitude, latitude, height):
-        self.degrees_widget.set_coordinates(longitude, latitude)
-        self.height_spin_box.setValue(height)
+        self.longitude_spinbox.setValue(longitude)
+        self.latitude_spinbox.setValue(latitude)
+        self.height_spinbox.setValue(height)
 
     def get_coordinates_system(self):
         return self.coordinates_system
 
 
-
-
 class GeocentricTab(QWidget):
-    def __init__(self, coordinates_system, coordinates=None):
-        super().__init__()
+    def __init__(self, coordinates_system, is_edit, coordinates=None, parent=None):
+        super(GeocentricTab, self).__init__(parent)
+        self.is_edit = is_edit
         self.__create_widgets()
         self.__create_layouts()
         self.coordinates_system = coordinates_system
 
     def __create_widgets(self):
         self.x_label = QLabel('X, м:')
-        self.x_label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-        self.x_spin_box = QDoubleSpinBox()
-        self.x_spin_box.setRange(-10000000, 100000000)  # TODO значения поставил на обум
-        self.x_spin_box.setDecimals(3)
+        self.x_spinbox = QDoubleSpinBox()
+        self.x_spinbox.setReadOnly(not self.is_edit)
+        self.x_spinbox.setRange(-100000000, 100000000)  # TODO значения поставил на обум
+        self.x_spinbox.setDecimals(3)
 
         self.y_label = QLabel('Y, м:')
-        self.y_label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-        self.y_spin_box = QDoubleSpinBox()
-        self.y_spin_box.setRange(-10000000, 100000000)  # TODO значения поставил на обум
-        self.y_spin_box.setDecimals(3)
+        self.y_spinbox = QDoubleSpinBox()
+        self.y_spinbox.setReadOnly(not self.is_edit)
+        self.y_spinbox.setRange(-100000000, 100000000)  # TODO значения поставил на обум
+        self.y_spinbox.setDecimals(3)
 
         self.z_label = QLabel('Z, м:')
-        self.z_label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-        self.z_spin_box = QDoubleSpinBox()
-        self.z_spin_box.setRange(-10000000, 100000000)  # TODO значения поставил на обум
-        self.z_spin_box.setDecimals(3)
+        self.z_spinbox = QDoubleSpinBox()
+        self.z_spinbox.setReadOnly(not self.is_edit)
+        self.z_spinbox.setRange(-100000000, 100000000)  # TODO значения поставил на обум
+        self.z_spinbox.setDecimals(3)
 
     def __create_layouts(self):
-        common_v_layout = QVBoxLayout()
-
-        latitude_h_layout = QHBoxLayout()
-        latitude_h_layout.addWidget(self.x_label)
-        latitude_h_layout.addWidget(self.x_spin_box)
-
-        longitude_h_layout = QHBoxLayout()
-        longitude_h_layout.addWidget(self.y_label)
-        longitude_h_layout.addWidget(self.y_spin_box)
-
-        height_h_layout = QHBoxLayout()
-        height_h_layout.addWidget(self.z_label)
-        height_h_layout.addWidget(self.z_spin_box)
-
-        common_v_layout.addLayout(latitude_h_layout)
-        common_v_layout.addLayout(longitude_h_layout)
-        common_v_layout.addLayout(height_h_layout)
-
-        self.setLayout(common_v_layout)
+        common_form_layout = QFormLayout()
+        common_form_layout.addRow(self.x_label, self.x_spinbox)
+        common_form_layout.addRow(self.y_label, self.y_spinbox)
+        common_form_layout.addRow(self.z_label, self.z_spinbox)
+        self.setLayout(common_form_layout)
 
     def get_coordinates(self):
-        x = self.x_spin_box.value()
-        y = self.y_spin_box.value()
-        z = self.z_spin_box.value()
+        x = self.x_spinbox.value()
+        y = self.y_spinbox.value()
+        z = self.z_spinbox.value()
         return x, y, z
 
     def set_coordinates(self, x, y, z):
-        self.x_spin_box.setValue(x)
-        self.y_spin_box.setValue(y)
-        self.z_spin_box.setValue(z)
+        self.x_spinbox.setValue(x)
+        self.y_spinbox.setValue(y)
+        self.z_spinbox.setValue(z)
 
     def get_coordinates_system(self):
         return self.coordinates_system

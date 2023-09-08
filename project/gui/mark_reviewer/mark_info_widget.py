@@ -2,7 +2,7 @@ import os
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QIcon
-from PyQt5.QtWidgets import QCheckBox, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QSizePolicy, QFrame
+from PyQt5.QtWidgets import QCheckBox, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QSizePolicy, QFrame, QFormLayout
 
 from project.gui.form_classes_base import QDialogBase
 from project.gui.mark_reviewer.constants import IMAGE_DIRECTORY, VISIBILITY_VARIANTS
@@ -37,12 +37,9 @@ class MarkInfoWidget(QFrame):
         self.choice_checkbox.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 
         self.name_label = QLabel()
-        self.name_label.setMaximumWidth(195)
         self.name_label.setStyleSheet('font: bold')
-        self.name_label.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
 
         self.datetime_label = QLabel()
-        self.datetime_label.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
 
         self.show_visibility_btn = QPushButton()
         self.show_visibility_btn.setFixedSize(24, 24)
@@ -56,14 +53,16 @@ class MarkInfoWidget(QFrame):
         common_h_layout = QHBoxLayout()
 
         common_v_layout = QVBoxLayout()
+        common_form_layout = QFormLayout()
+        common_form_layout.addRow('Имя:', self.name_label)
+        common_form_layout.addRow('Дата и время:', self.datetime_label)
 
         btn_h_layout = QHBoxLayout()
         btn_h_layout.addWidget(self.show_visibility_btn)
         btn_h_layout.addWidget(self.more_info_btn)
         btn_h_layout.addWidget(self.redact_btn)
 
-        common_v_layout.addWidget(self.name_label)
-        common_v_layout.addWidget(self.datetime_label)
+        common_v_layout.addLayout(common_form_layout)
         common_v_layout.addLayout(btn_h_layout)
 
         common_v_layout.addStretch(1)
@@ -88,7 +87,7 @@ class MarkInfoWidget(QFrame):
         self.show_visibility_btn.setIconSize(visibility_image.size())
 
     def open_more_info_dialog(self):
-        more_info_dialog = MoreInfoMarkDialogWindow(self)
+        more_info_dialog = MoreInfoMarkDialogWindow(self, controller=self.controller)
         self.controller.get_full_mark_info(self.obj_id)
         more_info_dialog.set_info_in_widgets(self.controller.current_mark_info)
         more_info_dialog.exec_()
