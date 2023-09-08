@@ -60,8 +60,8 @@ class MarksReviewerWindow(QMainWindowBase):
         self.controller.get_short_mark_info(object_entity.id)
         name_ = self.controller.current_mark_short_info['name']
         datetime_ = self.controller.current_mark_short_info['datetime']
-        self.marks_info_layout.addWidget(MarkInfoWidget(object_entity.id, self.controller, name_, datetime_, self))
-        self.marks_info_layout.addWidget(Separator())
+        self.marks_info_layout.insertWidget(0, Separator())
+        self.marks_info_layout.insertWidget(0, MarkInfoWidget(object_entity.id, self.controller, name_, datetime_, self))
 
     def delete_selected_marks(self):
         selected_marks_and_separators = []

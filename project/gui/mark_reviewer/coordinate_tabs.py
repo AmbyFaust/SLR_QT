@@ -1,9 +1,10 @@
 from PyQt5.QtWidgets import QWidget, QLabel, QDoubleSpinBox, QVBoxLayout, QHBoxLayout, QFormLayout, QAbstractSpinBox
 from project.gui.common.ranges import LATITUDE_RANGE, DEGREES_DECIMALS, LONGITUDE_RANGE
 
+HEIGHT_RANGE = (-6378000, 6378000)
 
 class GeodesicTab(QWidget):
-    def __init__(self, coordinates_system, is_edit, coordinates=None, parent=None):
+    def __init__(self, coordinates_system, is_edit, parent=None):
         super(GeodesicTab, self).__init__(parent)
         self.is_edit = is_edit
         self.__create_widgets()
@@ -20,7 +21,7 @@ class GeodesicTab(QWidget):
         self.latitude_spinbox.setDecimals(DEGREES_DECIMALS)
 
         self.height_spinbox = QDoubleSpinBox()
-        self.height_spinbox.setRange(-100000000, 100000000)  # TODO значения поставил на обум
+        self.height_spinbox.setRange(*HEIGHT_RANGE)
         self.height_spinbox.setDecimals(3)
 
         if not self.is_edit:
@@ -54,7 +55,7 @@ class GeodesicTab(QWidget):
 
 
 class GeocentricTab(QWidget):
-    def __init__(self, coordinates_system, is_edit, coordinates=None, parent=None):
+    def __init__(self, coordinates_system, is_edit, parent=None):
         super(GeocentricTab, self).__init__(parent)
         self.is_edit = is_edit
         self.__create_widgets()
@@ -77,7 +78,7 @@ class GeocentricTab(QWidget):
         self.z_label = QLabel('Z, м:')
         self.z_spinbox = QDoubleSpinBox()
         self.z_spinbox.setReadOnly(not self.is_edit)
-        self.z_spinbox.setRange(-100000000, 100000000)  # TODO значения поставил на обум
+        self.z_spinbox.setRange(*HEIGHT_RANGE)
         self.z_spinbox.setDecimals(3)
 
     def __create_layouts(self):

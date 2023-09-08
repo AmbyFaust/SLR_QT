@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt
 
 from PyQt5.QtWidgets import QVBoxLayout, QPushButton, \
-    QHBoxLayout, QLabel, QLineEdit, QPlainTextEdit
+    QHBoxLayout, QLabel, QLineEdit, QPlainTextEdit, QFormLayout
 
 from project.gui.form_classes_base import QDialogBase
 from project.gui.form_classes_base.qcombobox_base import QComboBoxBase
@@ -26,18 +26,9 @@ class EditMarkDialogWindow(QDialogBase):
 
     def __create_widgets(self):
         self.name_label = QLabel()
-        self.name_label.setText('Имя объекта:')
 
         self.name_edit = QLineEdit('Без имени')
-
-        self.object_type_label = QLabel()
-        self.object_type_label.setText('Тип объекта:')
-
         self.object_type_edit = QLineEdit('Неизвестно')
-
-        self.relating_name_label = QLabel()
-        self.relating_name_label.setText('Имя принадлежности объекта:')
-
         self.relating_name_edit = QLineEdit('Неизвестно')
 
         self.relating_object_type_box = QComboBoxBase()
@@ -58,27 +49,17 @@ class EditMarkDialogWindow(QDialogBase):
 
     def __create_layout(self):
         common_v_layout = QVBoxLayout()
-
-        name_h_layout = QHBoxLayout()
-        name_h_layout.addWidget(self.name_label)
-        name_h_layout.addWidget(self.name_edit)
-
-        object_type_h_layout = QHBoxLayout()
-        object_type_h_layout.addWidget(self.object_type_label)
-        object_type_h_layout.addWidget(self.object_type_edit)
-
-        relating_name_h_layout = QHBoxLayout()
-        relating_name_h_layout.addWidget(self.relating_name_label)
-        relating_name_h_layout.addWidget(self.relating_name_edit)
+        common_form_layout = QFormLayout()
+        common_form_layout.addRow('Имя:', self.name_edit)
+        common_form_layout.addRow('Тип объекта:', self.object_type_edit)
+        common_form_layout.addRow('Имя принадлежности:', self.relating_name_edit)
+        common_form_layout.addRow('Тип принадлежности:', self.relating_object_type_box)
 
         btn_h_layout = QHBoxLayout()
         btn_h_layout.addWidget(self.create_btn)
         btn_h_layout.addWidget(self.cancel_btn)
 
-        common_v_layout.addLayout(name_h_layout)
-        common_v_layout.addLayout(object_type_h_layout)
-        common_v_layout.addLayout(relating_name_h_layout)
-        common_v_layout.addWidget(self.relating_object_type_box)
+        common_v_layout.addLayout(common_form_layout)
         common_v_layout.addWidget(self.coordinates_tabs)
         common_v_layout.addWidget(self.comment_text_edit)
         common_v_layout.addLayout(btn_h_layout)
