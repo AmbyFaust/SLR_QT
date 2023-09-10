@@ -17,6 +17,9 @@ class MarksHandler(QObject):
     putShortMarkInfo = pyqtSignal(dict)
     putFullMarkInfo = pyqtSignal(MarkData)
     putAllMarks = pyqtSignal(list)
+    addMark = pyqtSignal(ObjectEntity)
+    removeMark = pyqtSignal(int)
+    updateMark = pyqtSignal(int)
 
     def __init__(self, painter: CanvasPainter, parent=None):
         super().__init__(parent)
@@ -24,6 +27,7 @@ class MarksHandler(QObject):
         self.all_marks = []
         self.map_marks = []
         self.dict_map_database_marks = {}
+        self.session = session_controller.get_session()
 
     @pyqtSlot(MarkData)
     def create_mark(self, mark_info: MarkData):
@@ -34,16 +38,26 @@ class MarksHandler(QObject):
             create_relating_object(type_relating=mark_info.relating_type,
                                    name=mark_info.relating_name)
 
-        ObjectEntity.create_object(mark_id=mark_id, name=mark_info.name,
-                                   object_type=mark_info.object_type,
-                                   relating_object_id=relating_object_id,
-                                   meta=mark_info.comment)
-        self.put_all_marks()
+        object_id = ObjectEntity.create_object(mark_id=mark_id, name=mark_info.name,
+                                               object_type=mark_info.object_type,
+                                               relating_object_id=relating_object_id,
+                                               meta=mark_info.comment)
+
+        new_map_mark = CanvasMark(object_id, mark_info.name, mark_info.latitude,
+                                  mark_info.longitude, self.painter)
+
+        object_ = self.session.query(ObjectEntity).get(object_id)
+
+        self.all_marks.append(object_)
+        self.map_marks.append(new_map_mark)
+        self.dict_map_database_marks[object_id] = new_map_mark
+        new_map_mark.draw(draw_hidden=False)
+        self.addMark.emit(object_)
 
     @pyqtSlot(MarkData)
     def update_mark(self, mark_info: MarkData):
-        session = session_controller.get_session()
-        object_ = session.query(ObjectEntity).get(mark_info.obj_id)
+        object_ = self.session.query(ObjectEntity).get(mark_info.obj_id)
+
         old_mark_id = object_.mark.id
         old_relating_object_id = object_.relating_object.id
         MarkEntity.delete_mark(old_mark_id)
@@ -61,12 +75,30 @@ class MarksHandler(QObject):
                                    new_relating_object_id=new_relating_object_id,
                                    new_meta=mark_info.comment)
 
-        self.put_all_marks()
+        for mark in self.map_marks:
+            if mark.id == mark_info.obj_id:
+                mark.mark_name = mark_info.name
+                mark.latitude = mark_info.latitude
+                mark.longitude = mark_info.longitude
+                mark.redraw()
+                break
+
+        self.get_short_mark_info(mark_info.obj_id)
 
     @pyqtSlot(int)
     def delete_mark(self, object_id):
+        del self.dict_map_database_marks[object_id]
+
+        for mark in self.map_marks:
+            if mark.id == object_id:
+                self.map_marks.remove(mark)
+                mark.remove()
+                self.removeMark.emit(object_id)
+                break
+
+    @pyqtSlot(int)
+    def remove_mark_from_database(self, object_id):
         ObjectEntity.delete_object(object_id)
-        self.put_all_marks()
 
     @pyqtSlot(int, int, dict)
     def show_visibility(self, object_id, index, visibility_dict):
@@ -75,12 +107,9 @@ class MarksHandler(QObject):
 
     def put_all_marks(self):
         self.all_marks = ObjectEntity.get_all_objects()
-        if self.map_marks:
-            self.map_marks = list(map(lambda current_map_mark: current_map_mark.remove(), self.map_marks))
-
-        coordinates = [mark.mark.coordinates for mark in self.all_marks]
-        self.map_marks = [CanvasMark(coordinate.latitude, coordinate.longitude, self.painter)
-                          for coordinate in coordinates]
+        self.map_marks = [CanvasMark(mark.id, mark.name, mark.mark.coordinates.latitude,
+                                     mark.mark.coordinates.longitude, self.painter)
+                          for mark in self.all_marks]
 
         self.dict_map_database_marks = dict(zip([mark.id for mark in self.all_marks], self.map_marks))
 

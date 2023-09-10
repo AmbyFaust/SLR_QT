@@ -32,8 +32,11 @@ def main():
     window.controller.mark_reviewer_w.controller.updateMark.connect(marks_handler.update_mark)
     window.controller.mark_reviewer_w.controller.deleteMark.connect(marks_handler.delete_mark)
     window.controller.mark_reviewer_w.controller.showVisibility.connect(marks_handler.show_visibility)
+    window.controller.mark_reviewer_w.controller.removeMarkFromDatabase.connect(marks_handler.remove_mark_from_database)
     marks_handler.putShortMarkInfo.connect(window.controller.mark_reviewer_w.controller.put_short_mark_info)
     marks_handler.putFullMarkInfo.connect(window.controller.mark_reviewer_w.controller.put_full_mark_info)
+    marks_handler.addMark.connect(window.controller.mark_reviewer_w.controller.add_mark)
+    marks_handler.removeMark.connect(window.controller.mark_reviewer_w.controller.remove_mark)
     marks_handler.put_all_marks()
     window.controller.mark_reviewer_w.showAllMarks.emit()
 

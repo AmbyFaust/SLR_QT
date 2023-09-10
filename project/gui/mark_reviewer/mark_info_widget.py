@@ -75,6 +75,9 @@ class MarkInfoWidget(QFrame):
     def __set_name(self, name_):
         self.name_label.setText(name_)
 
+    def __set_current_image_visibility_index(self, index):
+        self.image_visibility_index = index
+
     def __set_datetime(self, datetime_):
         self.datetime_label.setText(str(datetime_)[:19])
 
@@ -98,8 +101,9 @@ class MarkInfoWidget(QFrame):
         self.controller.get_full_mark_info(self.obj_id)
         edit_mark_dialog.set_data(self.controller.current_mark_info)
         if edit_mark_dialog.exec_() == QDialogBase.Accepted:
-            self.controller.update_mark(edit_mark_dialog.mark_info)
-            self.window.putAllMarks.emit()
+            self.controller.get_updated_mark(edit_mark_dialog.mark_info)
+            self.__set_name(self.controller.current_mark_short_info['name'])
+            self.__set_datetime(self.controller.current_mark_short_info['datetime'])
 
     def show_mark_visibility(self):
         self.image_visibility_index = (self.image_visibility_index + 1) % len(self.visibility_images)

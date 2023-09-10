@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QAction, QWidget, QVBoxLayout, QPushButton, QScrollA
 
 from project.gui.form_classes_base import QMainWindowBase, Toolbar, QDialogBase
 from .edit_mark_dialog import EditMarkDialogWindow
+from ...database.entities.ObjectEntity import ObjectEntity
 
 from .mark_reviewer_controller import MarksReviewerController
 from .mark_info_widget import MarkInfoWidget
@@ -25,6 +26,7 @@ class MarksReviewerWindow(QMainWindowBase):
         self.showAllMarks.connect(self.show_all_marks)
         self.create_mark_btn.clicked.connect(self.open_create_mark_dialog)
         self.delete_selected_btn.clicked.connect(self.delete_selected_marks)
+        self.controller.addMark.connect(self.add_mark_info_widget)
 
     def __create_widgets(self):
         self.common_widget = QWidget()
@@ -78,23 +80,8 @@ class MarksReviewerWindow(QMainWindowBase):
             else:
                 self.marks_info_layout.removeWidget(selected_widget)
 
-        self.showAllMarks.emit()
-
     @pyqtSlot()
     def show_all_marks(self):
-        widgets_to_remove = []
-
-        for index in range(self.marks_info_layout.count()):
-            item = self.marks_info_layout.itemAt(index)
-            if item:
-                widget = item.widget()
-                if widget and isinstance(widget, (Separator, MarkInfoWidget)):
-                    widgets_to_remove.append(widget)
-
-        for widget in widgets_to_remove:
-            self.marks_info_layout.removeWidget(widget)
-            widget.deleteLater()
-
         for object_entity in self.controller.all_marks:
             self.add_mark_info_widget(object_entity)
 
@@ -102,4 +89,4 @@ class MarksReviewerWindow(QMainWindowBase):
         dialog = EditMarkDialogWindow(self)
         if dialog.exec_() == QDialogBase.Accepted:
             self.controller.create_mark(dialog.mark_info)
-            self.showAllMarks.emit()
+

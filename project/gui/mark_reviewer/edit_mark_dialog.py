@@ -99,7 +99,7 @@ class EditMarkDialogWindow(QDialogBase):
 
         coordinates = list(translate_coordinates(
             cur_coordinates_system,
-            CoordinateSystemEpsg.sk_42,
+            CoordinateSystemEpsg.wgs_84,
             (geo_data[0], geo_data[1])
         )) + [geo_data[-1]]
 
@@ -130,10 +130,6 @@ class EditMarkDialogWindow(QDialogBase):
         self.object_type_edit.setText(str(data.object_type))
         self.relating_name_edit.setText(data.relating_name)
         self.relating_object_type_box.setCurrentIndex(Ownership.ownership_type_to_int(data.relating_type) - 1)
-        self.coordinates_tabs.coordinates = list(translate_coordinates(
-            CoordinateSystemEpsg.sk_42,
-            CoordinateSystemEpsg.wgs_84,
-            (data.longitude, data.latitude)
-        )) + [data.altitude]
+        self.coordinates_tabs.coordinates = [data.longitude, data.latitude, data.altitude]
         self.coordinates_tabs.set_coordinates_cur_tab()
         self.comment_text_edit.setPlainText(data.comment)

@@ -118,27 +118,28 @@ class MoreInfoMarkDialogWindow(QDialogBase):
         self.relating_name_label.setText('Имя принадлежности объекта: ' + data.relating_name)
         self.relating_type_label.setText('Тип принадлежности объекта: ' + str(data.relating_type))
 
-        wgs_coordinates = list(translate_coordinates(
-            CoordinateSystemEpsg.sk_42,
-            CoordinateSystemEpsg.wgs_84,
-            (data.longitude, data.latitude)
-        ))
-        self.wgs_longitude_label.setText('Долгота, град: ' + str(wgs_coordinates[0]))
-        self.wgs_latitude_label.setText('Широта, град: ' + str(wgs_coordinates[1]))
+        self.wgs_longitude_label.setText('Долгота, град: ' + str(data.longitude))
+        self.wgs_latitude_label.setText('Широта, град: ' + str(data.latitude))
 
         pz_coordinates = list(translate_coordinates(
-            CoordinateSystemEpsg.sk_42,
+            CoordinateSystemEpsg.wgs_84,
             CoordinateSystemEpsg.pz_90,
             (data.longitude, data.latitude)
         ))
         self.pz_longitude_label.setText('Долгота, град: ' + str(pz_coordinates[0]))
         self.pz_latitude_label.setText('Широта, град: ' + str(pz_coordinates[1]))
 
-        self.sk_longitude_label.setText('Долгота, град: ' + str(data.longitude))
-        self.sk_latitude_label.setText('Широта, град: ' + str(data.latitude))
+        sk_coordinates = list(translate_coordinates(
+            CoordinateSystemEpsg.wgs_84,
+            CoordinateSystemEpsg.sk_42,
+            (data.longitude, data.latitude)
+        ))
+
+        self.sk_longitude_label.setText('Долгота, град: ' + str(sk_coordinates[0]))
+        self.sk_latitude_label.setText('Широта, град: ' + str(sk_coordinates[1]))
 
         gauss_kruger_coordinates = list(translate_coordinates(
-            CoordinateSystemEpsg.sk_42,
+            CoordinateSystemEpsg.wgs_84,
             CoordinateSystemEpsg.gauss_kruger,
             (data.longitude, data.latitude)
         ))
