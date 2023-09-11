@@ -11,7 +11,7 @@ from project.gui.mark_reviewer.more_info_dialog import MoreInfoMarkDialogWindow
 
 
 class MarkInfoWidget(QFrame):
-    def __init__(self, obj_id_=None, controller_=None, name_='', datetime_='', window_=None,
+    def __init__(self, obj_id_=None, controller_=None, name_='', datetime_=None, window_=None,
                  parent=None):
         super(MarkInfoWidget, self).__init__(parent)
         self.obj_id = obj_id_
@@ -23,8 +23,7 @@ class MarkInfoWidget(QFrame):
                                         ['open_eye' in filename for filename in self.visibility_images]))
         self.image_visibility_index = 0
         self.__create_widgets()
-        self.__set_name(name_)
-        self.__set_datetime(datetime_)
+        self.__set_data(datetime_, name_)
         self.__create_layouts()
 
         self.more_info_btn.clicked.connect(self.open_more_info_dialog)
@@ -39,7 +38,8 @@ class MarkInfoWidget(QFrame):
         self.name_label = QLabel()
         self.name_label.setStyleSheet('font: bold')
 
-        self.datetime_label = QLabel()
+        self.date_label = QLabel()
+        self.time_label = QLabel()
 
         self.show_visibility_btn = QPushButton()
         self.show_visibility_btn.setFixedSize(24, 24)
@@ -55,7 +55,8 @@ class MarkInfoWidget(QFrame):
         common_v_layout = QVBoxLayout()
         common_form_layout = QFormLayout()
         common_form_layout.addRow('Имя:', self.name_label)
-        common_form_layout.addRow('Дата и время:', self.datetime_label)
+        common_form_layout.addRow('Дата:', self.date_label)
+        common_form_layout.addRow('Время:', self.time_label)
 
         btn_h_layout = QHBoxLayout()
         btn_h_layout.addWidget(self.show_visibility_btn)
@@ -71,11 +72,13 @@ class MarkInfoWidget(QFrame):
         common_h_layout.addLayout(common_v_layout)
         self.setLayout(common_h_layout)
 
-    def __set_name(self, name_):
-        self.name_label.setText(name_)
+    def __set_current_image_visibility_index(self, index):
+        self.image_visibility_index = index
 
-    def __set_datetime(self, datetime_):
-        self.datetime_label.setText(str(datetime_)[:19])
+    def __set_data(self, datetime_, name_):
+        self.date_label.setText(str(datetime_.date()))
+        self.time_label.setText(str(datetime_.time()))
+        self.name_label.setText(name_)
 
     def __load_current_visibility_image(self):
         visibility_image = QPixmap(self.visibility_images[self.image_visibility_index])
@@ -97,8 +100,9 @@ class MarkInfoWidget(QFrame):
         self.controller.get_full_mark_info(self.obj_id)
         edit_mark_dialog.set_data(self.controller.current_mark_info)
         if edit_mark_dialog.exec_() == QDialogBase.Accepted:
-            self.controller.update_mark(edit_mark_dialog.mark_info)
-            self.window.putAllMarks.emit()
+            self.controller.get_updated_mark(edit_mark_dialog.mark_info)
+            self.__set_data(self.controller.current_mark_short_info['datetime'],
+                            self.controller.current_mark_short_info['name'])
 
     def show_mark_visibility(self):
         self.image_visibility_index = (self.image_visibility_index + 1) % len(self.visibility_images)

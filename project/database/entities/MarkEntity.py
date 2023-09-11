@@ -5,6 +5,7 @@ from sqlalchemy.orm import relationship
 
 from project.database.session_controller import session_controller
 from project.database.BaseEntity import BaseEntity
+from datetime import datetime
 
 
 class MarkEntity(BaseEntity):
@@ -19,7 +20,7 @@ class MarkEntity(BaseEntity):
     def create_mark(cls, coordinates_id):
         with cls.mutex:
             session = session_controller.get_session()
-            new_mark = cls(coordinates_id=coordinates_id, datetime=datetime.now())
+            new_mark = cls(coordinates_id=coordinates_id, datetime=datetime.now().replace(microsecond=0))
             session.add(new_mark)
             session.commit()
             return new_mark.id

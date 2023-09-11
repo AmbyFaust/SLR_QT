@@ -10,6 +10,7 @@ from project.gui.mark_reviewer.edit_mark_dialog import EditMarkDialogWindow
 from project.gui.mark_reviewer.mark_data import MarkData
 from project.gui.mark_reviewer.separator_widget import Separator
 from project.gui.common.coordinates_translator import CoordinateSystemEpsg, translate_coordinates
+from datetime import datetime
 
 
 class MoreInfoMarkDialogWindow(QDialogBase):
@@ -20,26 +21,24 @@ class MoreInfoMarkDialogWindow(QDialogBase):
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowContextHelpButtonHint)
         self.setWindowTitle('Подробная информация')
         self.setMinimumSize(400, 0)
-        print(1)
         self.__create_widgets()
-        print(2)
         self.__create_layout()
-        print(3)
 
         self.close_btn.clicked.connect(self.reject)
         self.redact_btn.clicked.connect(self.redact_mark)
 
     def __create_widgets(self):
-        self.name_label = QLabel('Имя объекта:')
-        self.datetime_label = QLabel('Дата и время записи:')
-        self.object_type_label = QLabel('Тип объекта:')
-        self.relating_name_label = QLabel('Имя принадлежности объекта:')
-        self.relating_type_label = QLabel('Тип принадлежности объекта:')
+        self.name_label = QLabel()
+        self.date_label = QLabel()
+        self.time_label = QLabel()
+        self.object_type_label = QLabel()
+        self.relating_name_label = QLabel()
+        self.relating_type_label = QLabel()
 
         self.coordinates_tabs = CoordinatesTab(is_edit=False)
         self.coordinates_tabs.setCurrentIndex(0)
 
-        self.comment_text_edit = QTextEdit('Комментарий:')
+        self.comment_text_edit = QTextEdit()
         self.comment_text_edit.setReadOnly(True)
         self.redact_btn = QPushButton('Редактировать')
         self.close_btn = QPushButton('Закрыть')
@@ -49,7 +48,8 @@ class MoreInfoMarkDialogWindow(QDialogBase):
 
         common_form_layout = QFormLayout()
         common_form_layout.addRow('Имя:', self.name_label)
-        common_form_layout.addRow('Дата и время:', self.datetime_label)
+        common_form_layout.addRow('Дата:', self.date_label)
+        common_form_layout.addRow('Время:', self.time_label)
         common_form_layout.addRow('Тип объекта:', self.object_type_label)
         common_form_layout.addRow('Принадлежность:', self.relating_name_label)
         common_form_layout.addRow('Тип принадлежности:', self.relating_type_label)
@@ -70,7 +70,8 @@ class MoreInfoMarkDialogWindow(QDialogBase):
     def set_info_in_widgets(self, data: MarkData):
         self.obj_id = data.obj_id
         self.name_label.setText(data.name)
-        self.datetime_label.setText(str(data.datetime)[:19])
+        self.date_label.setText(str(data.datetime.date()))
+        self.time_label.setText(str(data.datetime.time()))
         self.object_type_label.setText(str(data.object_type))
         self.relating_name_label.setText(data.relating_name)
         self.relating_type_label.setText(str(data.relating_type))

@@ -13,8 +13,9 @@ class CanvasMark(MapPoint):
     POINT_COLOR = QColor(Qt.red)
     POINT_SIZE = 4
 
-    def __init__(self, latitude: float, longitude: float, painter):
-        self.mark_name = '...'
+    def __init__(self, map_mark_id: int, mark_name: str, latitude: float, longitude: float, painter):
+        self.id = map_mark_id
+        self.mark_name = mark_name
         style = PointStyle(
             color=self.POINT_COLOR,
             size=self.POINT_SIZE,
@@ -23,4 +24,9 @@ class CanvasMark(MapPoint):
             image = ''
         )
         super(CanvasMark, self).__init__(latitude, longitude, style, painter)
+
+    def redraw(self):
+        self.style.label = f'Отметка {self.mark_name}'
+        super(CanvasMark, self).redraw()
+
 
