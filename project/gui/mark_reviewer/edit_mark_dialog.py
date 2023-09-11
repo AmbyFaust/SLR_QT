@@ -52,7 +52,7 @@ class EditMarkDialogWindow(QDialogBase):
         common_form_layout = QFormLayout()
         common_form_layout.addRow('Имя:', self.name_edit)
         common_form_layout.addRow('Тип объекта:', self.object_type_edit)
-        common_form_layout.addRow('Имя принадлежности:', self.relating_name_edit)
+        common_form_layout.addRow('Принадлежность:', self.relating_name_edit)
         common_form_layout.addRow('Тип принадлежности:', self.relating_object_type_box)
 
         btn_h_layout = QHBoxLayout()

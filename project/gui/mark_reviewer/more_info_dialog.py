@@ -51,7 +51,7 @@ class MoreInfoMarkDialogWindow(QDialogBase):
         common_form_layout.addRow('Имя:', self.name_label)
         common_form_layout.addRow('Дата и время:', self.datetime_label)
         common_form_layout.addRow('Тип объекта:', self.object_type_label)
-        common_form_layout.addRow('Имя принадлежности:', self.relating_name_label)
+        common_form_layout.addRow('Принадлежность:', self.relating_name_label)
         common_form_layout.addRow('Тип принадлежности:', self.relating_type_label)
 
         common_v_layout.addLayout(common_form_layout)
