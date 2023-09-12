@@ -1,5 +1,8 @@
 import sys
+
 import urllib3
+
+from project.database import DBManager
 
 from qgis.core import QgsApplication
 
@@ -8,12 +11,13 @@ from project.gui.workspace_window import WorkspaceWindowTitled
 from project.core.marks_handler.marks_handler import MarksHandler
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
-from project.database.database_manager import db_manager
 
 
 def main():
     urllib3.disable_warnings()
 
+    db_manager = DBManager()
+    db_manager.init('sessions')
     db_manager.start_app()
 
     qgs_app = QgsApplication([], True)

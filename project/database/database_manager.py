@@ -1,48 +1,44 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from datetime import datetime
-from os.path import abspath
 from .session_controller import session_controller
-from .entities import CoordinatesEntity, ExtentEntity, FileEntity, LinkedRLIEntity, MarkEntity, ObjectEntity,\
-    RasterRLIEntity, RawRLIEntity, RegionEntity, RelatingObjectEntity, RLIEntity, TargetEntity,\
-    TypeBindingMethodEntity, TypeSessionEntity, TypeSourceRLIEntity
-from project.database.BaseEntity import Base
+
+from .dto.BaseDto import Base
 
 import os
 
 
 class DBManager:
-    def __init__(self):
-        self.project_path = os.path.abspath(os.curdir) + '\\'
-        self.sessions_directory = 'sessions\\'
-        self.session_name_prefix = 'session_'
-        self.session_name_format = '.db'
 
-    def get_session(self):
+    def __init__(self):
+        self.root_dir = None
+
+    def init(self, root_dir: str = '.'):
+        self.root_dir = root_dir
+
+    @staticmethod
+    def get_session():
         return session_controller.get_session()
 
-    def set_session(self, path):
-        session_controller.set_session(path)
+    def start_app(self, db_file_name: str = '') -> bool:
+        try:
+            if db_file_name == '' or db_file_name is None:
+                db_file_name = self.__default_db_name()
 
-    def create_db_path(self):
-        return self.project_path + self.sessions_directory + self.session_name_prefix +\
-                  str(datetime.now().date()) + self.session_name_format
+            db_path = os.path.abspath(os.path.join(self.root_dir, db_file_name))
 
-    def create_and_set_session(self):
-        db_path = self.create_db_path()
-        engine = session_controller.set_session(db_path)
-        Base.metadata.create_all(bind=engine)
+            if os.path.isfile(db_path):
+                session_controller.set_session(db_path)
+            else:
+                engine = session_controller.set_session(db_path)
+                Base.metadata.create_all(bind=engine)
+                return True
+        except BaseException as exc:
+            print(f'Не удалось запустить БД-менеджер. {exc}')
+            return False
 
-    def start_app(self):
-        db_path = self.create_db_path()
-        if os.path.isfile(db_path):
-            print('Продолжение последней сессии')
-            self.set_session(db_path)
-        else:
-            print('Начало новой сессии')
-            self.create_and_set_session()
+    @staticmethod
+    def __default_db_name() -> str:
+        dtt = datetime.now().date()
+        return f'{dtt.year}_{dtt.month}_{dtt.day}.db'
 
-
-db_manager = DBManager()
 
 

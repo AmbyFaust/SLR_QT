@@ -4,10 +4,7 @@ from project.gui.gis import CanvasPainter
 
 from .canvas_mark import CanvasMark
 from project.database.session_controller import session_controller
-from ...database.entities.CoordinatesEntity import CoordinatesEntity
-from ...database.entities.MarkEntity import MarkEntity
-from ...database.entities.ObjectEntity import ObjectEntity
-from ...database.entities.RelatingObjectEntity import RelatingObjectEntity
+from ...database import CoordinatesDto, MarkDto, ObjectDto, RelatingObjectDto
 from ...gui.mark_reviewer.constants import VISIBILITY_VARIANTS
 from ...gui.mark_reviewer.mark_data import MarkData
 from ...gui.mark_reviewer.ownership_enum import Ownership
@@ -17,7 +14,7 @@ class MarksHandler(QObject):
     putShortMarkInfo = pyqtSignal(dict)
     putFullMarkInfo = pyqtSignal(MarkData)
     putAllMarks = pyqtSignal(list)
-    addMark = pyqtSignal(ObjectEntity)
+    addMark = pyqtSignal(ObjectDto)
     removeMark = pyqtSignal(int)
     updateMark = pyqtSignal(int)
 
@@ -32,13 +29,13 @@ class MarksHandler(QObject):
     @pyqtSlot(MarkData)
     def create_mark(self, mark_info: MarkData):
         geo_data = [mark_info.longitude, mark_info.latitude, mark_info.altitude]
-        coordinates_id = CoordinatesEntity.create_coordinates(*geo_data)
-        mark_id = MarkEntity.create_mark(coordinates_id=coordinates_id)
-        relating_object_id = RelatingObjectEntity. \
+        coordinates_id = CoordinatesDto.create_coordinates(*geo_data)
+        mark_id = MarkDto.create_mark(coordinates_id=coordinates_id)
+        relating_object_id = RelatingObjectDto. \
             create_relating_object(type_relating=mark_info.relating_type,
                                    name=mark_info.relating_name)
 
-        object_id = ObjectEntity.create_object(mark_id=mark_id, name=mark_info.name,
+        object_id = ObjectDto.create_object(mark_id=mark_id, name=mark_info.name,
                                                object_type=mark_info.object_type,
                                                relating_object_id=relating_object_id,
                                                meta=mark_info.comment)
@@ -46,7 +43,7 @@ class MarksHandler(QObject):
         new_map_mark = CanvasMark(object_id, mark_info.name, mark_info.latitude,
                                   mark_info.longitude, self.painter)
 
-        object_ = self.session.query(ObjectEntity).get(object_id)
+        object_ = self.session.query(ObjectDto).get(object_id)
 
         self.all_marks.append(object_)
         self.map_marks.append(new_map_mark)
@@ -56,21 +53,21 @@ class MarksHandler(QObject):
 
     @pyqtSlot(MarkData)
     def update_mark(self, mark_info: MarkData):
-        object_ = self.session.query(ObjectEntity).get(mark_info.obj_id)
+        object_ = self.session.query(ObjectDto).get(mark_info.obj_id)
 
         old_mark_id = object_.mark.id
         old_relating_object_id = object_.relating_object.id
-        MarkEntity.delete_mark(old_mark_id)
-        RelatingObjectEntity.delete_relating_object(old_relating_object_id)
+        MarkDto.delete_mark(old_mark_id)
+        RelatingObjectDto.delete_relating_object(old_relating_object_id)
 
         new_geo_data = [mark_info.longitude, mark_info.latitude, mark_info.altitude]
-        new_coordinates_id = CoordinatesEntity.create_coordinates(*new_geo_data)
-        new_mark_id = MarkEntity.create_mark(coordinates_id=new_coordinates_id)
-        new_relating_object_id = RelatingObjectEntity. \
+        new_coordinates_id = CoordinatesDto.create_coordinates(*new_geo_data)
+        new_mark_id = MarkDto.create_mark(coordinates_id=new_coordinates_id)
+        new_relating_object_id = RelatingObjectDto. \
             create_relating_object(type_relating=mark_info.relating_type,
                                    name=mark_info.relating_name)
 
-        ObjectEntity.update_object(object_id=mark_info.obj_id, new_mark_id=new_mark_id,
+        ObjectDto.update_object(object_id=mark_info.obj_id, new_mark_id=new_mark_id,
                                    new_name=mark_info.name, new_object_type=mark_info.object_type,
                                    new_relating_object_id=new_relating_object_id,
                                    new_meta=mark_info.comment)
@@ -98,7 +95,7 @@ class MarksHandler(QObject):
 
     @pyqtSlot(int)
     def remove_mark_from_database(self, object_id):
-        ObjectEntity.delete_object(object_id)
+        ObjectDto.delete_object(object_id)
 
     @pyqtSlot(int, int, dict)
     def show_visibility(self, object_id, index, visibility_dict):
@@ -106,7 +103,7 @@ class MarksHandler(QObject):
         self.dict_map_database_marks[object_id].set_visibility(visibility)
 
     def put_all_marks(self):
-        self.all_marks = ObjectEntity.get_all_objects()
+        self.all_marks = ObjectDto.get_all_objects()
         self.map_marks = [CanvasMark(mark.id, mark.name, mark.mark.coordinates.latitude,
                                      mark.mark.coordinates.longitude, self.painter)
                           for mark in self.all_marks]
