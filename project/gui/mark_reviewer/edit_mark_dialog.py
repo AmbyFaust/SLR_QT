@@ -1,13 +1,14 @@
 from PyQt5.QtCore import Qt
 
 from PyQt5.QtWidgets import QVBoxLayout, QPushButton, \
-    QHBoxLayout, QLabel, QLineEdit, QPlainTextEdit, QFormLayout
+    QHBoxLayout, QLabel, QLineEdit, QPlainTextEdit, QFormLayout, QWidget
 
 from project.gui.form_classes_base import QDialogBase
 from project.gui.form_classes_base.qcombobox_base import QComboBoxBase
 from .mark_data import MarkData
 from .ownership_enum import Ownership
 from project.gui.mark_reviewer.coordinates_tab_widget import CoordinatesTab
+from ..common import LABEL_FONT
 from ..common.coordinates_translator import translate_coordinates, CoordinateSystemEpsg
 
 
@@ -16,7 +17,7 @@ class EditMarkDialogWindow(QDialogBase):
         super(EditMarkDialogWindow, self).__init__(parent)
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowContextHelpButtonHint)
         self.setWindowTitle('Создание отметки')
-        self.setMinimumSize(400, 0)
+        self.setMinimumSize(500, 0)
         self.obj_id = None
         self.__create_widgets()
         self.__create_layout()
@@ -25,6 +26,9 @@ class EditMarkDialogWindow(QDialogBase):
         self.mark_info = None
 
     def __create_widgets(self):
+        self.common_widget = QWidget()
+        self.common_widget.setFont(LABEL_FONT)
+
         self.name_label = QLabel()
 
         self.name_edit = QLineEdit('Без имени')
@@ -32,6 +36,8 @@ class EditMarkDialogWindow(QDialogBase):
         self.relating_name_edit = QLineEdit('Неизвестно')
 
         self.relating_object_type_box = QComboBoxBase()
+        self.relating_object_type_box.setFont(LABEL_FONT)
+
 
         for ownership in Ownership:
             self.relating_object_type_box.addItem(ownership.description)
@@ -50,6 +56,7 @@ class EditMarkDialogWindow(QDialogBase):
     def __create_layout(self):
         common_v_layout = QVBoxLayout()
         common_form_layout = QFormLayout()
+        common_form_layout.setLabelAlignment(Qt.AlignLeft)
         common_form_layout.addRow('Имя:', self.name_edit)
         common_form_layout.addRow('Тип объекта:', self.object_type_edit)
         common_form_layout.addRow('Принадлежность:', self.relating_name_edit)
@@ -63,7 +70,13 @@ class EditMarkDialogWindow(QDialogBase):
         common_v_layout.addWidget(self.coordinates_tabs)
         common_v_layout.addWidget(self.comment_text_edit)
         common_v_layout.addLayout(btn_h_layout)
-        self.setLayout(common_v_layout)
+
+        base_layout = QHBoxLayout()
+        base_layout.addWidget(self.common_widget)
+        self.common_widget.setLayout(common_v_layout)
+
+        self.setLayout(base_layout)
+
 
     def __create_actions(self):
         self.cancel_btn.clicked.connect(self.reject)
