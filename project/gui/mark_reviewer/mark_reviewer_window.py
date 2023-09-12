@@ -2,15 +2,15 @@ import os
 
 from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QAction, QWidget, QVBoxLayout, QPushButton, QScrollArea, QSizePolicy, QHBoxLayout
+from PyQt5.QtWidgets import QAction, QWidget, QVBoxLayout, QScrollArea
 
 from project.gui.form_classes_base import QMainWindowBase, Toolbar, QDialogBase
 from .edit_mark_dialog import EditMarkDialogWindow
-from ...database.entities.ObjectEntity import ObjectEntity
 
 from .mark_reviewer_controller import MarksReviewerController
 from .mark_info_widget import MarkInfoWidget
 from .separator_widget import Separator
+
 
 class MarksReviewerWindow(QMainWindowBase):
     showAllMarks = pyqtSignal()

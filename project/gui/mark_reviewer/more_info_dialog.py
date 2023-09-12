@@ -25,7 +25,7 @@ class MoreInfoMarkDialogWindow(QDialogBase):
         self.__create_layout()
 
         self.close_btn.clicked.connect(self.reject)
-        self.redact_btn.clicked.connect(self.redact_mark)
+        self.redact_btn.clicked.connect(self.open_edit_mark_dialog)
 
     def __create_widgets(self):
         self.name_label = QLabel()
@@ -80,7 +80,7 @@ class MoreInfoMarkDialogWindow(QDialogBase):
         self.coordinates_tabs.set_coordinates_cur_tab()
         self.comment_text_edit.setText(data.comment)
 
-    def redact_mark(self):
+    def open_edit_mark_dialog(self):
         edit_mark_dialog = EditMarkDialogWindow(self)
         self.controller.get_full_mark_info(self.obj_id)
         edit_mark_dialog.set_data(self.controller.current_mark_info)

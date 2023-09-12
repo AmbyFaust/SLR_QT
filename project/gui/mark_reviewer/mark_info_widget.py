@@ -2,7 +2,8 @@ import os
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QIcon
-from PyQt5.QtWidgets import QCheckBox, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QSizePolicy, QFrame, QFormLayout
+from PyQt5.QtWidgets import QCheckBox, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QSizePolicy, QFrame, QFormLayout, \
+    QWidget, QAction, QMenu
 
 from project.gui.form_classes_base import QDialogBase
 from project.gui.mark_reviewer.constants import IMAGE_DIRECTORY, VISIBILITY_VARIANTS
@@ -10,7 +11,7 @@ from project.gui.mark_reviewer.edit_mark_dialog import EditMarkDialogWindow
 from project.gui.mark_reviewer.more_info_dialog import MoreInfoMarkDialogWindow
 
 
-class MarkInfoWidget(QFrame):
+class MarkInfoWidget(QWidget):
     def __init__(self, obj_id_=None, controller_=None, name_='', datetime_=None, window_=None,
                  parent=None):
         super(MarkInfoWidget, self).__init__(parent)
@@ -25,21 +26,25 @@ class MarkInfoWidget(QFrame):
         self.__create_widgets()
         self.__set_data(datetime_, name_)
         self.__create_layouts()
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.__create_actions()
 
         self.more_info_btn.clicked.connect(self.open_more_info_dialog)
         self.redact_btn.clicked.connect(self.open_edit_mark_dialog)
         self.show_visibility_btn.clicked.connect(self.show_mark_visibility)
+        self.customContextMenuRequested.connect(self.show_context_menu)
 
     def __create_widgets(self):
 
         self.choice_checkbox = QCheckBox('')
-        self.choice_checkbox.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 
         self.name_label = QLabel()
         self.name_label.setStyleSheet('font: bold')
-
+        self.name_label.customContextMenuRequested.connect(self.show_context_menu)
         self.date_label = QLabel()
+        self.date_label.customContextMenuRequested.connect(self.show_context_menu)
         self.time_label = QLabel()
+        self.time_label.customContextMenuRequested.connect(self.show_context_menu)
 
         self.show_visibility_btn = QPushButton()
         self.show_visibility_btn.setFixedSize(24, 24)
@@ -71,6 +76,19 @@ class MarkInfoWidget(QFrame):
         common_h_layout.addWidget(self.choice_checkbox)
         common_h_layout.addLayout(common_v_layout)
         self.setLayout(common_h_layout)
+
+    def __create_actions(self):
+        self.more_info_action = QAction("Подробнее", self)
+        self.more_info_action.triggered.connect(self.open_more_info_dialog)
+        self.redact_action = QAction("Редактировать", self)
+        self.redact_action.triggered.connect(self.open_edit_mark_dialog)
+        self.delete_action = QAction("Удалить", self)
+    def show_context_menu(self, position):
+        context_menu = QMenu(self)
+        context_menu.addAction(self.more_info_action)
+        context_menu.addAction(self.redact_action)
+        context_menu.addAction(self.delete_action)
+        context_menu.exec(self.mapToGlobal(position))
 
     def __set_current_image_visibility_index(self, index):
         self.image_visibility_index = index
