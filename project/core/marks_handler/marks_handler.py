@@ -120,31 +120,37 @@ class MarksHandler(QObject):
 
     @pyqtSlot(int)
     def get_short_mark_info(self, object_id):
-        object_entity = list(filter(lambda obj_entity: obj_entity.id == object_id, self.all_marks))[0]
-        mark = object_entity.mark
-        current_mark_short_info = {'id': object_id, 'name': object_entity.name,
-                                   'datetime': mark.datetime}
+        try:
+            object_entity = list(filter(lambda obj_entity: obj_entity.id == object_id, self.all_marks))[0]
+            mark = object_entity.mark
+            current_mark_short_info = {'id': object_id, 'name': object_entity.name,
+                                       'datetime': mark.datetime}
 
-        self.putShortMarkInfo.emit(current_mark_short_info)
+            self.putShortMarkInfo.emit(current_mark_short_info)
+        except Exception as e:
+            print(f'Такого объекта не существует: ({e})')
 
     @pyqtSlot(int)
     def get_full_mark_info(self, object_id):
-        object_entity = list(filter(lambda obj_entity: obj_entity.id == object_id, self.all_marks))[0]
-        mark = object_entity.mark
-        coordinates = mark.coordinates
-        relating_object = object_entity.relating_object
+        try:
+            object_entity = list(filter(lambda obj_entity: obj_entity.id == object_id, self.all_marks))[0]
+            mark = object_entity.mark
+            coordinates = mark.coordinates
+            relating_object = object_entity.relating_object
 
-        current_mark_info = MarkData(
-            obj_id=object_id,
-            name=object_entity.name,
-            object_type=object_entity.type,
-            datetime=mark.datetime,
-            relating_name=relating_object.name,
-            relating_type=Ownership.int_to_ownership_type(relating_object.type_relating),
-            longitude=coordinates.longitude,
-            latitude=coordinates.latitude,
-            altitude=coordinates.altitude,
-            comment=str(object_entity.meta)
-        )
+            current_mark_info = MarkData(
+                obj_id=object_id,
+                name=object_entity.name,
+                object_type=object_entity.type,
+                datetime=mark.datetime,
+                relating_name=relating_object.name,
+                relating_type=Ownership.int_to_ownership_type(relating_object.type_relating),
+                longitude=coordinates.longitude,
+                latitude=coordinates.latitude,
+                altitude=coordinates.altitude,
+                comment=str(object_entity.meta)
+            )
 
-        self.putFullMarkInfo.emit(current_mark_info)
+            self.putFullMarkInfo.emit(current_mark_info)
+        except Exception as e:
+            print(f'Такого объекта не существует: ({e})')

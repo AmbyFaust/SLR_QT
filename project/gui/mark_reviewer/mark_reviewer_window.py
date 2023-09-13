@@ -26,6 +26,7 @@ class MarksReviewerWindow(QMainWindowBase):
 
         self.showAllMarks.connect(self.show_all_marks)
         self.controller.addMark.connect(self.add_mark_info_widget)
+        self.controller.deleteSingleMark.connect(self.delete_single_mark)
 
     def __create_widgets(self):
         self.common_widget = QWidget()
@@ -83,6 +84,20 @@ class MarksReviewerWindow(QMainWindowBase):
         datetime_ = self.controller.current_mark_short_info['datetime']
         self.marks_info_layout.insertWidget(0, Separator())
         self.marks_info_layout.insertWidget(0, MarkInfoWidget(object_entity.id, self.controller, name_, datetime_, self))
+
+    @pyqtSlot(int)
+    def delete_single_mark(self, object_id):
+        for index in range(self.marks_info_layout.count()):
+            item = self.marks_info_layout.itemAt(index)
+            if item:
+                mark_info_widget = item.widget()
+                if isinstance(mark_info_widget, MarkInfoWidget) and mark_info_widget.obj_id == object_id:
+                    separator = self.marks_info_layout.itemAt(index + 1).widget()
+                    self.controller.delete_mark(mark_info_widget.obj_id)
+                    self.marks_info_layout.removeWidget(mark_info_widget)
+                    self.marks_info_layout.removeWidget(separator)
+                    mark_info_widget.deleteLater()
+                    separator.deleteLater()
 
     def delete_selected_marks(self):
         selected_marks_and_separators = []

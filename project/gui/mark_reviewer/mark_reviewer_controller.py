@@ -10,6 +10,7 @@ class MarksReviewerController(QObject):
     addMark = pyqtSignal(ObjectEntity)
     updateMark = pyqtSignal(MarkData)
     deleteMark = pyqtSignal(int)
+    deleteSingleMark = pyqtSignal(int)
     removeMarkFromDatabase = pyqtSignal(int)
     getShortMarkInfo = pyqtSignal(int)
     getFullMarkInfo = pyqtSignal(int)
@@ -31,6 +32,9 @@ class MarksReviewerController(QObject):
 
     def get_updated_mark(self, mark_info):
         self.updateMark.emit(mark_info)
+
+    def delete_single_mark(self, object_id):
+        self.deleteSingleMark.emit(object_id)
 
     def delete_mark(self, object_id):
         self.deleteMark.emit(object_id)
