@@ -50,18 +50,9 @@ class RLIDto(BaseDto):
                 session.commit()
 
     # Функция для получения РЛИ в сессии TODO удалена SessionDto => переделать
-    # @classmethod
-    # def get_rli_by_session_id(cls, session_id):
-    #     with cls.mutex:
-    #         session = sessionmaker(bind=engine)()
-    #         # Выбираем id файлов с соответствующим session_id
-    #         ids_of_files_with_session_id = list(map(lambda x: x.id, session.query(FileDto).
-    #                                                 filter_by(session_id=session_id).all()))
-    #
-    #         # Получаем RawRLIDto по соответсвующим file_id
-    #         raw_rli_ids_with_session_id = list(map(lambda x: x.id, session.query(RawRLIDto).
-    #                                                filter(
-    #             RawRLIDto.file_id.in_(ids_of_files_with_session_id)).all()))
-    #
-    #         # Возваращаем соответствующие RLIs по id RawRLIs
-    #         return session.query(cls).filter(cls.raw_rli_id.in_(raw_rli_ids_with_session_id)).all()
+    @classmethod
+    def get_all_rli(cls):
+        with cls.mutex:
+            session = session_controller.get_session()
+            return session.query(cls).all()
+

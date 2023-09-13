@@ -4,19 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0e491e98-e25c-4ccf-97d7-632153a47184" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/111.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/SLR_QT.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SLR_QT.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="cb1c4e7c-f9eb-41fd-bf6b-8b26d2d7dec0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/project/database/xls_cls_reporter/rli_target_reporter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/core/marks_handler/marks_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/core/marks_handler/marks_handler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/coordinate_tabs.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/coordinate_tabs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/database/dto/LinkedRLIDto.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/database/dto/LinkedRLIDto.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/database/dto/MarkDto.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/database/dto/MarkDto.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/database/dto/ObjectDto.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/database/dto/ObjectDto.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/database/dto/RLIDto.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/database/dto/RLIDto.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/database/dto/TargetDto.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/database/dto/TargetDto.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_info_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_info_widget.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/more_info_dialog.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/more_info_dialog.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +38,13 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="hiddenUrls">
+      <set>
+        <option value="https://github.com/AmbyFaust/SLR_QT" />
+      </set>
+    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -65,7 +70,7 @@
       <recent name="C:\Projects\SLR_QT_Project\SLR_QT\project\database\" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.111">
+  <component name="RunManager" selected="Python.main">
     <configuration name="111" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SLR_QT" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -152,8 +157,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.111" />
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.111" />
         <item itemvalue="Python.targets_reviewer_window" />
         <item itemvalue="Python.ownership_enum" />
         <item itemvalue="Python.main" />

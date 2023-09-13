@@ -55,14 +55,9 @@ class LinkedRLIDto(BaseDto):
                 linked_rli.type_binding_method_id = new_type_binding_method_id
                 session.commit()
 
-    # Функция для получения привязанных РЛИ в сессии TODO удалена SessionDto => переделать
-    # @classmethod
-    # def get_linked_rli_by_session_id(cls, session_id):
-    #     with cls.mutex:
-    #         session = sessionmaker(bind=engine)()
-    #         # Выбираем id файлов с соответствующим session_id
-    #         ids_of_files_with_session_id = list(map(lambda x: x.id, session.query(FileDto).
-    #                                                 filter_by(session_id=session_id).all()))
-    #
-    #         # Возвращаем соответствующие LinkedRLIs по file_id
-    #         return session.query(cls).filter(cls.file_id.in_(ids_of_files_with_session_id)).all()
+    # Функция для получения привязанных РЛИ в сессии
+    @classmethod
+    def get_all_linked_rli(cls):
+        with cls.mutex:
+            session = session_controller.get_session()
+            return session.query(cls).all()

@@ -38,8 +38,8 @@ class MarkInfoWidget(QWidget):
                                       os.path.join(IMAGE_DIRECTORY, 'closed_eye.png')]
             self.visibility_dict = dict(zip(range(VISIBILITY_VARIANTS),
                                             ['open_eye' in filename for filename in self.visibility_images]))
-        except Exception as e:
-            print(f'Таких изображений нет/путь указан неправильно: ({e})')
+        except Exception:
+            raise Exception(f'Ошибка: таких изображений нет/путь указан неправильно')
 
     def __create_widgets(self):
 

@@ -36,9 +36,9 @@ class MarksHandler(QObject):
                                    name=mark_info.relating_name)
 
         object_id = ObjectDto.create_object(mark_id=mark_id, name=mark_info.name,
-                                               object_type=mark_info.object_type,
-                                               relating_object_id=relating_object_id,
-                                               meta=mark_info.comment)
+                                            object_type=mark_info.object_type,
+                                            relating_object_id=relating_object_id,
+                                            meta=mark_info.comment)
 
         new_map_mark = CanvasMark(object_id, mark_info.name, mark_info.latitude,
                                   mark_info.longitude, self.painter)
@@ -68,9 +68,9 @@ class MarksHandler(QObject):
                                    name=mark_info.relating_name)
 
         ObjectDto.update_object(object_id=mark_info.obj_id, new_mark_id=new_mark_id,
-                                   new_name=mark_info.name, new_object_type=mark_info.object_type,
-                                   new_relating_object_id=new_relating_object_id,
-                                   new_meta=mark_info.comment)
+                                new_name=mark_info.name, new_object_type=mark_info.object_type,
+                                new_relating_object_id=new_relating_object_id,
+                                new_meta=mark_info.comment)
 
         for mark in self.map_marks:
             if mark.id == mark_info.obj_id:
@@ -124,8 +124,8 @@ class MarksHandler(QObject):
                                        'datetime': mark.datetime}
 
             self.putShortMarkInfo.emit(current_mark_short_info)
-        except Exception as e:
-            print(f'Такого объекта не существует: ({e})')
+        except Exception:
+            raise Exception(f'Ошибка получения краткой информации об объекте')
 
     @pyqtSlot(int)
     def get_full_mark_info(self, object_id):
@@ -149,5 +149,5 @@ class MarksHandler(QObject):
             )
 
             self.putFullMarkInfo.emit(current_mark_info)
-        except Exception as e:
-            print(f'Такого объекта не существует: ({e})')
+        except Exception:
+            raise Exception(f'Ошибка получения полной информации об объекте')

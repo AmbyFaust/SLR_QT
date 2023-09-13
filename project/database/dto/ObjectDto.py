@@ -51,6 +51,7 @@ class ObjectDto(BaseDto):
                 object_.meta = new_meta
                 session.commit()
 
+    # Функция получения объектов сессии
     @classmethod
     def get_all_objects(cls):
         with cls.mutex:

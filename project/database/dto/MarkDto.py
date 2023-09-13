@@ -19,7 +19,7 @@ class MarkDto(BaseDto):
     def create_mark(cls, coordinates_id):
         with cls.mutex:
             session = session_controller.get_session()
-            new_mark = cls(coordinates_id=coordinates_id, datetime=datetime.now())
+            new_mark = cls(coordinates_id=coordinates_id, datetime=datetime.now().replace(microsecond=0))
             session.add(new_mark)
             session.commit()
             return new_mark.id
@@ -52,8 +52,9 @@ class MarkDto(BaseDto):
             session = session_controller.get_session()
             return session.query(cls).all()
 
-    # Функция получения отметок сессии TODO удалена модель SessionDto => переделать
-    # @classmethod
-    # def get_marks_by_session_id(cls, session_id):
-    #     session = sessionmaker(bind=engine)()
-    #     return session.query(cls).filter(cls.session_id == session_id).all()
+    # Функция получения отметок сессии
+    @classmethod
+    def get_all_marks(cls):
+        with cls.mutex:
+            session = session_controller.get_session()
+            return session.query(cls).all()

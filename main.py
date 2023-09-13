@@ -6,12 +6,14 @@ from qgis.core import QgsApplication
 from project.settings import QGIS_PATH, QGIS_PLUGINS
 from project.gui.workspace_window import WorkspaceWindowTitled
 from project.core.marks_handler.marks_handler import MarksHandler
-from project.database.database_manager import db_manager
+from project.database.database_manager import DBManager
 
 
 def main():
     urllib3.disable_warnings()
 
+    db_manager = DBManager()
+    db_manager.init('sessions')
     db_manager.start_app()
 
     qgs_app = QgsApplication([], True)
