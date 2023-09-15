@@ -1,15 +1,16 @@
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 from project.database.session_controller import session_controller
-from ...database.entities.ObjectEntity import ObjectEntity
+from ...database.dto.ObjectDto import ObjectDto
 
 from project.gui.mark_reviewer.mark_data import MarkData
 
 
 class MarksReviewerController(QObject):
     createMark = pyqtSignal(MarkData)
-    addMark = pyqtSignal(ObjectEntity)
+    addMark = pyqtSignal(ObjectDto)
     updateMark = pyqtSignal(MarkData)
     deleteMark = pyqtSignal(int)
+    deleteSingleMark = pyqtSignal(int)
     removeMarkFromDatabase = pyqtSignal(int)
     getShortMarkInfo = pyqtSignal(int)
     getFullMarkInfo = pyqtSignal(int)
@@ -24,7 +25,7 @@ class MarksReviewerController(QObject):
     def create_mark(self, mark_info):
         self.createMark.emit(mark_info)
 
-    @pyqtSlot(ObjectEntity)
+    @pyqtSlot(ObjectDto)
     def add_mark(self, object_):
         self.all_marks.append(object_)
         self.addMark.emit(object_)
@@ -32,13 +33,16 @@ class MarksReviewerController(QObject):
     def get_updated_mark(self, mark_info):
         self.updateMark.emit(mark_info)
 
+    def delete_single_mark(self, object_id):
+        self.deleteSingleMark.emit(object_id)
+
     def delete_mark(self, object_id):
         self.deleteMark.emit(object_id)
 
     @pyqtSlot(int)
     def remove_mark(self, object_id):
         session = session_controller.get_session()
-        object_ = session.query(ObjectEntity).get(object_id)
+        object_ = session.query(ObjectDto).get(object_id)
         self.all_marks.remove(object_)
         self.removeMarkFromDatabase.emit(object_id)
 

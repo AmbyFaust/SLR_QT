@@ -4,18 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0e491e98-e25c-4ccf-97d7-632153a47184" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="cb1c4e7c-f9eb-41fd-bf6b-8b26d2d7dec0" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/core/marks_handler/canvas_mark.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/core/marks_handler/canvas_mark.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/core/marks_handler/marks_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/core/marks_handler/marks_handler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/database/entities/MarkEntity.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/database/entities/MarkEntity.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/edit_mark_dialog.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/edit_mark_dialog.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_info_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_info_widget.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/database/dto/RasterRLIDto.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/database/dto/RasterRLIDto.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/database/xls_cls_reporter/rli_target_reporter.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/database/xls_cls_reporter/rli_target_reporter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_reviewer_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/more_info_dialog.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/more_info_dialog.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sessions/session_2023-09-11.db" beforeDir="false" afterPath="$PROJECT_DIR$/sessions/session_2023-09-11.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,15 +24,22 @@
     </option>
   </component>
   <component name="Git.Merge.Settings">
-    <option name="BRANCH" value="origin/backend" />
+    <option name="BRANCH" value="origin/main" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="backend" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="hiddenUrls">
+      <set>
+        <option value="https://github.com/AmbyFaust/SLR_QT" />
+      </set>
+    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -51,11 +52,9 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "git-widget-placeholder": "Merging main"
-  }
-}]]></component>
+  <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+  </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Projects\SLR_QT_Project\SLR_QT\project\gui\mark_reviewer" />
@@ -67,6 +66,27 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.main">
+    <configuration name="111" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="SLR_QT" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/111.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SLR_QT" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -133,10 +153,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.111" />
+        <item itemvalue="Python.targets_reviewer_window" />
         <item itemvalue="Python.ownership_enum" />
-        <item itemvalue="Python.targets_reviewer_window" />
         <item itemvalue="Python.main" />
-        <item itemvalue="Python.targets_reviewer_window" />
       </list>
     </recent_temporary>
   </component>
@@ -161,5 +181,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

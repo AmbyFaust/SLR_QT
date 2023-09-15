@@ -3,6 +3,7 @@ from project.gui.common.ranges import LATITUDE_RANGE, DEGREES_DECIMALS, LONGITUD
 
 HEIGHT_RANGE = (-6378000, 6378000)
 
+
 class GeodesicTab(QWidget):
     def __init__(self, coordinates_system, is_edit, parent=None):
         super(GeodesicTab, self).__init__(parent)
