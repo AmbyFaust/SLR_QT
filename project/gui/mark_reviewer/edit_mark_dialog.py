@@ -53,9 +53,11 @@ class EditMarkDialogWindow(QDialogBase):
         self.create_btn = QPushButton('Принять')
         self.cancel_btn = QPushButton('Отмена')
 
+
     def __create_layout(self):
         common_v_layout = QVBoxLayout()
         common_form_layout = QFormLayout()
+        common_form_layout.setLabelAlignment(Qt.AlignLeft)
         common_form_layout.setLabelAlignment(Qt.AlignLeft)
         common_form_layout.addRow('Имя:', self.name_edit)
         common_form_layout.addRow('Тип объекта:', self.object_type_edit)

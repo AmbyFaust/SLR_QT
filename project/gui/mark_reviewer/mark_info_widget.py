@@ -5,6 +5,7 @@ from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import QCheckBox, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QSizePolicy, QFrame, QFormLayout, \
     QWidget, QAction, QMenu
 
+from project.gui.common import LABEL_FONT
 from project.gui.form_classes_base import QDialogBase
 from project.gui.mark_reviewer.constants import IMAGE_DIRECTORY, VISIBILITY_VARIANTS
 from project.gui.mark_reviewer.edit_mark_dialog import EditMarkDialogWindow
@@ -15,6 +16,7 @@ class MarkInfoWidget(QWidget):
     def __init__(self, obj_id_=None, controller_=None, name_='', datetime_=None, window_=None,
                  parent=None):
         super(MarkInfoWidget, self).__init__(parent)
+        self.setFont(LABEL_FONT)
         self.obj_id = obj_id_
         self.controller = controller_
         self.window = window_
@@ -54,7 +56,7 @@ class MarkInfoWidget(QWidget):
         self.time_label.customContextMenuRequested.connect(self.show_context_menu)
 
         self.show_visibility_btn = QPushButton()
-        self.show_visibility_btn.setFixedSize(24, 24)
+        self.show_visibility_btn.setFixedSize(29, 29)
         self.__load_current_visibility_image()
 
         self.more_info_btn = QPushButton('Подробнее')
@@ -66,6 +68,7 @@ class MarkInfoWidget(QWidget):
 
         common_v_layout = QVBoxLayout()
         common_form_layout = QFormLayout()
+        common_form_layout.setLabelAlignment(Qt.AlignLeft)
         common_form_layout.addRow('Имя:', self.name_label)
         common_form_layout.addRow('Дата:', self.date_label)
         common_form_layout.addRow('Время:', self.time_label)

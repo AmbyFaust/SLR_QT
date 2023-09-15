@@ -2,8 +2,9 @@ from enum import Enum
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QVBoxLayout, QPushButton, \
-    QHBoxLayout, QLabel, QTextEdit, QFormLayout
+    QHBoxLayout, QLabel, QTextEdit, QFormLayout, QWidget
 
+from project.gui.common import LABEL_FONT
 from project.gui.form_classes_base import QDialogBase
 from project.gui.mark_reviewer.coordinates_tab_widget import CoordinatesTab
 from project.gui.mark_reviewer.edit_mark_dialog import EditMarkDialogWindow
@@ -18,7 +19,7 @@ class MoreInfoMarkDialogWindow(QDialogBase):
         self.obj_id = self.info_widget.obj_id
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowContextHelpButtonHint)
         self.setWindowTitle('Подробная информация')
-        self.setMinimumSize(400, 0)
+        self.setMinimumSize(500, 0)
         self.__create_widgets()
         self.__create_layout()
 
@@ -26,6 +27,9 @@ class MoreInfoMarkDialogWindow(QDialogBase):
         self.redact_btn.clicked.connect(self.open_edit_mark_dialog)
 
     def __create_widgets(self):
+        self.common_widget = QWidget()
+        self.common_widget.setFont(LABEL_FONT)
+
         self.name_label = QLabel()
         self.date_label = QLabel()
         self.time_label = QLabel()
@@ -45,6 +49,7 @@ class MoreInfoMarkDialogWindow(QDialogBase):
         common_v_layout = QVBoxLayout()
 
         common_form_layout = QFormLayout()
+        common_form_layout.setLabelAlignment(Qt.AlignLeft)
         common_form_layout.addRow('Имя:', self.name_label)
         common_form_layout.addRow('Дата:', self.date_label)
         common_form_layout.addRow('Время:', self.time_label)
@@ -63,7 +68,11 @@ class MoreInfoMarkDialogWindow(QDialogBase):
 
         common_v_layout.addLayout(btn_h_layout)
 
-        self.setLayout(common_v_layout)
+        base_layout = QHBoxLayout()
+        base_layout.addWidget(self.common_widget)
+        self.common_widget.setLayout(common_v_layout)
+
+        self.setLayout(base_layout)
 
     def set_info_in_widgets(self, data: MarkData):
         self.name_label.setText(data.name)
