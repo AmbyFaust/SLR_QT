@@ -1,5 +1,3 @@
-import os
-
 from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QAction, QWidget, QVBoxLayout, QScrollArea
@@ -18,21 +16,19 @@ class MarksReviewerWindow(QMainWindowBase):
     def __init__(self, parent=None):
         super(MarksReviewerWindow, self).__init__(parent)
         self.controller = MarksReviewerController()
+        self.__init_ui()
+
+    def __init_ui(self):
+        self.setMinimumWidth(350)
         self.__create_widgets()
         self.__create_layout()
         self.__create_actions()
         self.__create_toolbar()
-        self.setMinimumWidth(350)
-
-        self.showAllMarks.connect(self.show_all_marks)
-        self.controller.addMark.connect(self.add_mark_info_widget)
-        self.controller.deleteSingleMark.connect(self.delete_single_mark)
+        self.__setup_connections()
 
     def __create_widgets(self):
         self.common_widget = QWidget()
-
         self.marks_info_container_widget = QWidget()
-
         self.marks_info_scroll_area = QScrollArea()
         self.marks_info_scroll_area.setAlignment(Qt.AlignTop)
         self.marks_info_scroll_area.setWidgetResizable(True)
@@ -40,50 +36,42 @@ class MarksReviewerWindow(QMainWindowBase):
 
     def __create_layout(self):
         common_v_layout = QVBoxLayout()
-
         self.marks_info_layout = QVBoxLayout()
         self.marks_info_layout.setAlignment(Qt.AlignTop)
         self.marks_info_layout.addStretch(1)
-
         self.marks_info_container_widget.setLayout(self.marks_info_layout)
-
         common_v_layout.addWidget(self.marks_info_scroll_area)
-
         self.common_widget.setLayout(common_v_layout)
         self.setCentralWidget(self.common_widget)
 
     def __create_actions(self):
-        self.target_tool_action = QAction()
-        self.target_tool_action.setText('Создать отметку')
+        self.target_tool_action = QAction('Создать отметку', self)
         self.target_tool_action.setIcon(QIcon(":/images/position3.svg"))
-        self.target_tool_action.triggered.connect(self.open_create_mark_dialog)
-
         self.remove_target_action = QAction('Удалить выбранные отметки', self)
         self.remove_target_action.setIcon(QIcon(':/images/delete.svg'))
-        # self.remove_target_action.setEnabled(False)
-        self.remove_target_action.triggered.connect(self.delete_selected_marks)
 
     def __create_toolbar(self):
         self.tool_bar = Toolbar()
-
         self.tool_bar.addAction(self.target_tool_action)
         self.tool_bar.addSeparator()
         self.tool_bar.addAction(self.remove_target_action)
-
         self.addToolBar(self.tool_bar)
 
-    def __create_mark_action(self):
-        self.controller.targets_tool_activated()
-
-    def __remove_action_triggered(self):
-        self.controller.remove_selected()
+    def __setup_connections(self):
+        self.showAllMarks.connect(self.show_all_marks)
+        self.target_tool_action.triggered.connect(self.open_create_mark_dialog)
+        self.remove_target_action.triggered.connect(self.delete_selected_marks)
+        self.controller.addMark.connect(self.add_mark_info_widget)
+        self.controller.deleteSingleMark.connect(self.delete_single_mark)
 
     def add_mark_info_widget(self, object_entity):
         self.controller.get_short_mark_info(object_entity.id)
         name_ = self.controller.current_mark_short_info['name']
         datetime_ = self.controller.current_mark_short_info['datetime']
-        self.marks_info_layout.insertWidget(0, Separator())
-        self.marks_info_layout.insertWidget(0, MarkInfoWidget(object_entity.id, self.controller, name_, datetime_, self))
+        separator = Separator()
+        mark_info_widget = MarkInfoWidget(object_entity.id, self.controller, name_, datetime_, self)
+        self.marks_info_layout.insertWidget(0, separator)
+        self.marks_info_layout.insertWidget(0, mark_info_widget)
 
     @pyqtSlot(int)
     def delete_single_mark(self, object_id):
