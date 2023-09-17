@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb1c4e7c-f9eb-41fd-bf6b-8b26d2d7dec0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/edit_mark_dialog.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/edit_mark_dialog.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_info_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/mark_info_widget.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/gui/mark_reviewer/more_info_dialog.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/gui/mark_reviewer/more_info_dialog.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +50,8 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "git-widget-placeholder": "backend"
+    "git-widget-placeholder": "backend",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
 }]]></component>
   <component name="RecentsManager">

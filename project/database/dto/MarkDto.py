@@ -45,16 +45,9 @@ class MarkDto(BaseDto):
                 mark.datetime = datetime.now()
                 session.commit()
 
-    # Функция получения отметок
-    @classmethod
-    def get_all_marks(cls):
-        with cls.mutex:
-            session = session_controller.get_session()
-            return session.query(cls).all()
-
     # Функция получения отметок сессии
     @classmethod
-    def get_all_marks(cls):
+    def get_all_marks(cls, required_session=None):
         with cls.mutex:
-            session = session_controller.get_session()
+            session = required_session if required_session else session_controller.get_session()
             return session.query(cls).all()
