@@ -53,7 +53,7 @@ class ObjectDto(BaseDto):
 
     # Функция получения объектов сессии
     @classmethod
-    def get_all_objects(cls):
+    def get_all_objects(cls, required_session=None):
         with cls.mutex:
-            session = session_controller.get_session()
+            session = required_session if required_session else session_controller.get_session()
             return session.query(cls).all()

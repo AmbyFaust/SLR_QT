@@ -5,17 +5,19 @@ import xlwt
 import csv
 
 from project.database import RLIDto, TargetDto
+from project.database.database_manager import db_manager
 from project.gui.mark_reviewer.ownership_enum import Ownership
 
 
 class ReportGenerator:
-    def __init__(self, output_dir='xls_csv_report', filename='report'):
+    def __init__(self, db_file_name, output_dir='xls_csv_report', filename='report'):
         self.output_dir = os.path.abspath(__file__).replace('.py', '_') + output_dir
         self.create_directory()
+        self.session = db_manager.get_session_by_file_name(db_file_name)
         self.filename = filename
-        self.xls_filename = os.path.join(self.output_dir, 'rli_and_targets_' + self.filename + '.xls')
-        self.csv_rli_filename = os.path.join(self.output_dir, 'rli_' + self.filename + '.csv')
-        self.csv_targets_filename = os.path.join(self.output_dir, 'targets_' + self.filename + '.csv')
+        self.xls_filename = os.path.join(self.output_dir, db_file_name + '_rli_and_targets_' + self.filename + '.xls')
+        self.csv_rli_filename = os.path.join(self.output_dir, db_file_name + '_rli_' + self.filename + '.csv')
+        self.csv_targets_filename = os.path.join(self.output_dir, db_file_name + '_targets_' + self.filename + '.csv')
 
         self.workbook = xlwt.Workbook()
 
@@ -101,7 +103,7 @@ class ReportGenerator:
     def generate_xls_rli_report(self):
         worksheet = self.workbook.add_sheet('Отчет по РЛИ за сессию')
 
-        list_of_rli = RLIDto.get_all_rli()
+        list_of_rli = RLIDto.get_all_rli(required_session=self.session)
 
         self.write_xls_header_row(worksheet, self.rli_columns)
 
@@ -115,7 +117,7 @@ class ReportGenerator:
     def generate_xls_targets_report(self):
         worksheet = self.workbook.add_sheet('Отчет по целям за сессию')
 
-        list_of_targets = TargetDto.get_all_targets()
+        list_of_targets = TargetDto.get_all_targets(required_session=self.session)
 
         self.write_xls_header_row(worksheet, self.targets_columns)
 
@@ -140,7 +142,7 @@ class ReportGenerator:
         return data_row
 
     def generate_csv_rli_report(self):
-        list_of_rli = RLIDto.get_all_rli()
+        list_of_rli = RLIDto.get_all_rli(required_session=self.session)
 
         with open(self.csv_rli_filename, 'w', newline='') as csv_file:
             csv_writer = csv.writer(csv_file)
@@ -155,7 +157,7 @@ class ReportGenerator:
         print('CSV RLI-report generated at {}'.format(self.csv_rli_filename))
 
     def generate_csv_targets_report(self):
-        list_of_targets = TargetDto.get_all_targets()
+        list_of_targets = TargetDto.get_all_targets(required_session=self.session)
 
         with open(self.csv_targets_filename, 'w', newline='') as csv_file:
             csv_writer = csv.writer(csv_file)

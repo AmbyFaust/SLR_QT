@@ -10,6 +10,7 @@ from .ownership_enum import Ownership
 from project.gui.mark_reviewer.coordinates_tab_widget import CoordinatesTab
 from ..common import LABEL_FONT
 from ..common.coordinates_translator import translate_coordinates, CoordinateSystemEpsg
+from .constants import _OBJECTS_CLASSIFIER, _REVERSE_OBJECTS_CLASSIFIER
 
 
 class EditMarkDialogWindow(QDialogBase):
@@ -29,20 +30,18 @@ class EditMarkDialogWindow(QDialogBase):
         self.common_widget = QWidget()
         self.common_widget.setFont(LABEL_FONT)
 
-        self.name_label = QLabel()
-
         self.name_edit = QLineEdit('Без имени')
-        self.object_type_edit = QLineEdit('Неизвестно')
-        self.relating_name_edit = QLineEdit('Неизвестно')
 
-        self.relating_object_type_box = QComboBoxBase()
-        self.relating_object_type_box.setFont(LABEL_FONT)
+        self.object_type_combobox = QComboBoxBase()
+        self.object_type_combobox.setFont(LABEL_FONT)
+        for object_classifier in _OBJECTS_CLASSIFIER.values():
+            self.object_type_combobox.addItem(', '.join(object_classifier))
 
+        self.relating_object_type_combobox = QComboBoxBase()
+        self.relating_object_type_combobox.setFont(LABEL_FONT)
 
         for ownership in Ownership:
-            self.relating_object_type_box.addItem(ownership.description)
-
-        self.relating_object_type_box.adjustSize()
+            self.relating_object_type_combobox.addItem(ownership.description)
 
         self.coordinates_tabs = CoordinatesTab()
         self.coordinates_tabs.setCurrentIndex(0)
@@ -53,14 +52,15 @@ class EditMarkDialogWindow(QDialogBase):
         self.create_btn = QPushButton('Принять')
         self.cancel_btn = QPushButton('Отмена')
 
+
     def __create_layout(self):
         common_v_layout = QVBoxLayout()
         common_form_layout = QFormLayout()
         common_form_layout.setLabelAlignment(Qt.AlignLeft)
+        common_form_layout.setLabelAlignment(Qt.AlignLeft)
         common_form_layout.addRow('Имя:', self.name_edit)
-        common_form_layout.addRow('Тип объекта:', self.object_type_edit)
-        common_form_layout.addRow('Принадлежность:', self.relating_name_edit)
-        common_form_layout.addRow('Тип принадлежности:', self.relating_object_type_box)
+        common_form_layout.addRow('Тип объекта:', self.object_type_combobox)
+        common_form_layout.addRow('Тип принадлежности:', self.relating_object_type_combobox)
 
         btn_h_layout = QHBoxLayout()
         btn_h_layout.addWidget(self.create_btn)
@@ -84,9 +84,8 @@ class EditMarkDialogWindow(QDialogBase):
 
     def accept_mark(self):
         name = self.name_edit.text()
-        object_type = self.object_type_edit.text()
-        relating_name = self.relating_name_edit.text()
-        relating_object_type = list(Ownership)[self.relating_object_type_box.currentIndex()].value
+        object_type = self.object_type_combobox.currentText()
+        relating_object_type = list(Ownership)[self.relating_object_type_combobox.currentIndex()].value
 
         cur_coordinates_system = self.coordinates_tabs.cur_coordinates_system
         geo_data = self.coordinates_tabs.get_coordinates_cur_tab()
@@ -103,27 +102,22 @@ class EditMarkDialogWindow(QDialogBase):
             obj_id=self.obj_id,
             name=name,
             object_type=object_type,
-            relating_name=relating_name,
+            relating_name=Ownership.int_to_ownership_type(relating_object_type),
             relating_type=relating_object_type,
             longitude=coordinates[0],
             latitude=coordinates[1],
             altitude=coordinates[2],
-            comment=str(meta)
+            comment=meta
         )
 
-        self.name_edit.setText('Без имени')
-        self.object_type_edit.setText('Неизвестно')
-        self.relating_name_edit.setText('Неизвестно')
-        self.comment_text_edit.setPlainText('Комментарий')
         self.accept()
 
     def set_data(self, data: MarkData):
         self.setWindowTitle('Редактирование отметки')
         self.obj_id = data.obj_id
         self.name_edit.setText(data.name)
-        self.object_type_edit.setText(str(data.object_type))
-        self.relating_name_edit.setText(data.relating_name)
-        self.relating_object_type_box.setCurrentIndex(Ownership.ownership_type_to_int(data.relating_type) - 1)
+        self.object_type_combobox.setCurrentIndex(int(_REVERSE_OBJECTS_CLASSIFIER[data.object_type]))
+        self.relating_object_type_combobox.setCurrentIndex(Ownership.ownership_type_to_int(data.relating_type) - 1)
         self.coordinates_tabs.coordinates = [data.longitude, data.latitude, data.altitude]
         self.coordinates_tabs.set_coordinates_cur_tab()
         self.comment_text_edit.setPlainText(data.comment)
