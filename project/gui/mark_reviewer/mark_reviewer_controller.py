@@ -1,5 +1,6 @@
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 from project.database.session_controller import session_controller
+from .mark_info_widget import MarkInfoWidget
 from ...database.dto.ObjectDto import ObjectDto
 
 from project.gui.mark_reviewer.mark_data import MarkData
@@ -8,6 +9,7 @@ from project.gui.mark_reviewer.mark_data import MarkData
 class MarksReviewerController(QObject):
     createMark = pyqtSignal(MarkData)
     addMark = pyqtSignal(ObjectDto)
+    setMarkInfoWidgetPositionLast = pyqtSignal(MarkInfoWidget)
     updateMark = pyqtSignal(MarkData)
     deleteMark = pyqtSignal(int)
     deleteSingleMark = pyqtSignal(int)
@@ -29,6 +31,9 @@ class MarksReviewerController(QObject):
     def add_mark(self, object_):
         self.all_marks.append(object_)
         self.addMark.emit(object_)
+
+    def set_mark_info_widget_position_last(self, mark_info_widget: MarkInfoWidget):
+        self.setMarkInfoWidgetPositionLast.emit(mark_info_widget)
 
     def get_updated_mark(self, mark_info):
         self.updateMark.emit(mark_info)

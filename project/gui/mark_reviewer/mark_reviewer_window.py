@@ -16,10 +16,11 @@ class MarksReviewerWindow(QMainWindowBase):
     def __init__(self, parent=None):
         super(MarksReviewerWindow, self).__init__(parent)
         self.controller = MarksReviewerController()
+        self.count_marks = 0
         self.__init_ui()
 
     def __init_ui(self):
-        self.setMinimumWidth(350)
+        self.setMinimumWidth(400)
         self.__create_widgets()
         self.__create_layout()
         self.__create_actions()
@@ -28,18 +29,16 @@ class MarksReviewerWindow(QMainWindowBase):
 
     def __create_widgets(self):
         self.common_widget = QWidget()
-        self.marks_info_container_widget = QWidget()
         self.marks_info_scroll_area = QScrollArea()
         self.marks_info_scroll_area.setAlignment(Qt.AlignTop)
         self.marks_info_scroll_area.setWidgetResizable(True)
-        self.marks_info_scroll_area.setWidget(self.marks_info_container_widget)
 
     def __create_layout(self):
         common_v_layout = QVBoxLayout()
         self.marks_info_layout = QVBoxLayout()
         self.marks_info_layout.setAlignment(Qt.AlignTop)
         self.marks_info_layout.addStretch(1)
-        self.marks_info_container_widget.setLayout(self.marks_info_layout)
+        self.marks_info_scroll_area.setLayout(self.marks_info_layout)
         common_v_layout.addWidget(self.marks_info_scroll_area)
         self.common_widget.setLayout(common_v_layout)
         self.setCentralWidget(self.common_widget)
@@ -63,15 +62,19 @@ class MarksReviewerWindow(QMainWindowBase):
         self.remove_target_action.triggered.connect(self.delete_selected_marks)
         self.controller.addMark.connect(self.add_mark_info_widget)
         self.controller.deleteSingleMark.connect(self.delete_single_mark)
+        self.controller.setMarkInfoWidgetPositionLast.connect(self.set_mark_info_widget_position_last)
 
     def add_mark_info_widget(self, object_entity):
         self.controller.get_short_mark_info(object_entity.id)
         name_ = self.controller.current_mark_short_info['name']
         datetime_ = self.controller.current_mark_short_info['datetime']
-        separator = Separator()
         mark_info_widget = MarkInfoWidget(object_entity.id, self.controller, name_, datetime_, self)
-        self.marks_info_layout.insertWidget(0, separator)
-        self.marks_info_layout.insertWidget(0, mark_info_widget)
+        self.marks_info_layout.insertWidget(self.count_marks, mark_info_widget)
+        self.count_marks += 1
+
+    @pyqtSlot(MarkInfoWidget)
+    def set_mark_info_widget_position_last(self, mark_info_widget: MarkInfoWidget):
+        self.marks_info_layout.insertWidget(self.count_marks - 1, mark_info_widget)
 
     @pyqtSlot(int)
     def delete_single_mark(self, object_id):
@@ -80,12 +83,10 @@ class MarksReviewerWindow(QMainWindowBase):
             if item:
                 mark_info_widget = item.widget()
                 if isinstance(mark_info_widget, MarkInfoWidget) and mark_info_widget.obj_id == object_id:
-                    separator = self.marks_info_layout.itemAt(index + 1).widget()
                     self.controller.delete_mark(mark_info_widget.obj_id)
                     self.marks_info_layout.removeWidget(mark_info_widget)
-                    self.marks_info_layout.removeWidget(separator)
                     mark_info_widget.deleteLater()
-                    separator.deleteLater()
+                    self.count_marks -= 1
 
     def delete_selected_marks(self):
         selected_marks_and_separators = []
@@ -102,6 +103,7 @@ class MarksReviewerWindow(QMainWindowBase):
             else:
                 self.marks_info_layout.removeWidget(selected_widget)
             selected_widget.deleteLater()
+            self.count_marks -= 1
 
     @pyqtSlot()
     def show_all_marks(self):

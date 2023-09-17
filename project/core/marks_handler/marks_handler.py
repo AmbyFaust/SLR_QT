@@ -82,6 +82,7 @@ class MarksHandler(QObject):
         except Exception:
             raise Exception(f'Не удалось обновить данные отметки с id={mark_info.obj_id}')
 
+
         for mark in self.map_marks:
             if mark.id == mark_info.obj_id:
                 mark.mark_name = mark_info.name
@@ -116,8 +117,8 @@ class MarksHandler(QObject):
         self.dict_map_database_marks[object_id].set_visibility(visibility)
 
     def put_all_marks(self):
-
         self.all_marks = ObjectDto.get_all_objects()
+        self.all_marks.sort(key=lambda x: x.mark.datetime)
 
         self.map_marks = [CanvasMark(mark.id, mark.name, mark.mark.coordinates.latitude,
                                      mark.mark.coordinates.longitude, self.painter)

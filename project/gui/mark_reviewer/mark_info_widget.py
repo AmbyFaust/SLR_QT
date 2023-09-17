@@ -10,6 +10,7 @@ from project.gui.form_classes_base import QDialogBase
 from project.gui.mark_reviewer.constants import IMAGE_DIRECTORY, VISIBILITY_VARIANTS
 from project.gui.mark_reviewer.edit_mark_dialog import EditMarkDialogWindow
 from project.gui.mark_reviewer.more_info_dialog import MoreInfoMarkDialogWindow
+from project.gui.mark_reviewer.separator_widget import Separator
 
 
 class MarkInfoWidget(QWidget):
@@ -63,10 +64,16 @@ class MarkInfoWidget(QWidget):
 
         self.redact_btn = QPushButton('Редактировать')
 
+        self.separator = Separator()
+
     def __create_layouts(self):
+        base_v_layout = QVBoxLayout()
         common_h_layout = QHBoxLayout()
+        common_h_layout.addStretch(1)
+        common_h_layout.setAlignment(Qt.AlignLeft)
 
         common_v_layout = QVBoxLayout()
+
         common_form_layout = QFormLayout()
         common_form_layout.setLabelAlignment(Qt.AlignLeft)
         common_form_layout.addRow('Имя:', self.name_label)
@@ -85,7 +92,10 @@ class MarkInfoWidget(QWidget):
 
         common_h_layout.addWidget(self.choice_checkbox)
         common_h_layout.addLayout(common_v_layout)
-        self.setLayout(common_h_layout)
+        base_v_layout.addLayout(common_h_layout)
+        base_v_layout.addWidget(self.separator)
+
+        self.setLayout(base_v_layout)
 
     def __create_actions(self):
         self.more_info_action = QAction("Подробнее", self)
@@ -120,7 +130,7 @@ class MarkInfoWidget(QWidget):
         self.show_visibility_btn.setIconSize(visibility_image.size())
 
     def open_more_info_dialog(self):
-        more_info_dialog = MoreInfoMarkDialogWindow(self, controller=self.controller, info_widget=self)
+        more_info_dialog = MoreInfoMarkDialogWindow(self, controller=self.controller, mark_info_widget=self)
         self.controller.get_full_mark_info(self.obj_id)
         more_info_dialog.set_info_in_widgets(self.controller.current_mark_info)
         more_info_dialog.exec_()
@@ -133,6 +143,7 @@ class MarkInfoWidget(QWidget):
             self.controller.get_updated_mark(edit_mark_dialog.mark_info)
             self.set_data(self.controller.current_mark_short_info['datetime'],
                           self.controller.current_mark_short_info['name'])
+            self.controller.set_mark_info_widget_position_last(self)
 
     def show_mark_visibility(self):
         self.image_visibility_index = (self.image_visibility_index + 1) % len(self.visibility_images)

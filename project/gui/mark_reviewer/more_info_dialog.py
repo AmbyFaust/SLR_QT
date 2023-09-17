@@ -12,11 +12,11 @@ from project.gui.mark_reviewer.mark_data import MarkData
 
 
 class MoreInfoMarkDialogWindow(QDialogBase):
-    def __init__(self, parent=None, controller=None, info_widget=None):
+    def __init__(self, parent=None, controller=None, mark_info_widget=None):
         super(MoreInfoMarkDialogWindow, self).__init__(parent)
         self.controller = controller
-        self.info_widget = info_widget
-        self.obj_id = self.info_widget.obj_id
+        self.mark_info_widget = mark_info_widget
+        self.obj_id = self.mark_info_widget.obj_id
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowContextHelpButtonHint)
         self.setWindowTitle('Подробная информация')
         self.setMinimumSize(500, 0)
@@ -93,5 +93,7 @@ class MoreInfoMarkDialogWindow(QDialogBase):
         self.reject()
         if edit_mark_dialog.exec_() == QDialogBase.Accepted:
             self.controller.get_updated_mark(edit_mark_dialog.mark_info)
-            self.info_widget.set_data(self.controller.current_mark_short_info['datetime'],
-                                      self.controller.current_mark_short_info['name'])
+            self.mark_info_widget.set_data(self.controller.current_mark_short_info['datetime'],
+                                           self.controller.current_mark_short_info['name'])
+            self.controller.set_mark_info_widget_position_last(self.mark_info_widget)
+
