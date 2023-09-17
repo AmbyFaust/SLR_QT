@@ -16,7 +16,7 @@ class MoreInfoMarkDialogWindow(QDialogBase):
         super(MoreInfoMarkDialogWindow, self).__init__(parent)
         self.controller = controller
         self.mark_info_widget = mark_info_widget
-        self.obj_id = self.mark_info_widget.obj_id
+        self.obj_id = self.mark_info_widget.object_id
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowContextHelpButtonHint)
         self.setWindowTitle('Подробная информация')
         self.setMinimumSize(500, 0)
@@ -75,25 +75,25 @@ class MoreInfoMarkDialogWindow(QDialogBase):
         self.setLayout(base_layout)
 
     def set_info_in_widgets(self, data: MarkData):
-        self.name_label.setText(data.name)
-        self.date_label.setText(str(data.datetime.date()))
-        self.time_label.setText(str(data.datetime.time()))
-        self.object_type_label.setText(str(data.object_type))
-        self.relating_name_label.setText(data.relating_name)
-        self.relating_type_label.setText(str(data.relating_type))
+        self.name_label.setText(self.mark_info_widget.data.name)
+        self.date_label.setText(str(self.mark_info_widget.data.datetime.date()))
+        self.time_label.setText(str(self.mark_info_widget.data.datetime.time()))
+        self.object_type_label.setText(str(self.mark_info_widget.data.object_type))
+        self.relating_name_label.setText(self.mark_info_widget.data.relating_name)
+        self.relating_type_label.setText(str(self.mark_info_widget.data.relating_type))
 
-        self.coordinates_tabs.coordinates = [data.longitude, data.latitude, data.altitude]
+        self.coordinates_tabs.coordinates = [self.mark_info_widget.data.longitude,
+                                             self.mark_info_widget.data.latitude,
+                                             self.mark_info_widget.data.altitude]
         self.coordinates_tabs.set_coordinates_cur_tab()
-        self.comment_text_edit.setText(data.comment)
+        self.comment_text_edit.setText(self.mark_info_widget.data.comment)
 
     def open_edit_mark_dialog(self):
         edit_mark_dialog = EditMarkDialogWindow(self)
-        self.controller.get_full_mark_info(self.obj_id)
-        edit_mark_dialog.set_data(self.controller.current_mark_info)
+        edit_mark_dialog.set_data(self.mark_info_widget.data)
         self.reject()
         if edit_mark_dialog.exec_() == QDialogBase.Accepted:
             self.controller.get_updated_mark(edit_mark_dialog.mark_info)
-            self.mark_info_widget.set_data(self.controller.current_mark_short_info['datetime'],
-                                           self.controller.current_mark_short_info['name'])
+            self.mark_info_widget.set_data_from_database()
             self.controller.set_mark_info_widget_position_last(self.mark_info_widget)
 

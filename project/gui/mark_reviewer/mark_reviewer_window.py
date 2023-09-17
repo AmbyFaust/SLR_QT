@@ -1,13 +1,13 @@
 from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QAction, QWidget, QVBoxLayout, QScrollArea
+from PyQt5.QtWidgets import QAction, QWidget, QVBoxLayout, QScrollArea, QFrame
 
 from project.gui.form_classes_base import QMainWindowBase, Toolbar, QDialogBase
 from .edit_mark_dialog import EditMarkDialogWindow
 
 from .mark_reviewer_controller import MarksReviewerController
 from .mark_info_widget import MarkInfoWidget
-from .separator_widget import Separator
+from .separator_widgets import HSeparator
 
 
 class MarksReviewerWindow(QMainWindowBase):
@@ -65,10 +65,8 @@ class MarksReviewerWindow(QMainWindowBase):
         self.controller.setMarkInfoWidgetPositionLast.connect(self.set_mark_info_widget_position_last)
 
     def add_mark_info_widget(self, object_entity):
-        self.controller.get_short_mark_info(object_entity.id)
-        name_ = self.controller.current_mark_short_info['name']
-        datetime_ = self.controller.current_mark_short_info['datetime']
-        mark_info_widget = MarkInfoWidget(object_entity.id, self.controller, name_, datetime_, self)
+        mark_info_widget = MarkInfoWidget(object_entity.id, self.controller)
+
         self.marks_info_layout.insertWidget(self.count_marks, mark_info_widget)
         self.count_marks += 1
 
