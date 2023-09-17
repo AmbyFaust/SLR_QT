@@ -81,7 +81,6 @@ class MarksHandler(QObject):
         except Exception:
             raise Exception(f'Не удалось обновить данные отметки с id={mark_info.obj_id}')
 
-
         for mark in self.map_marks:
             if mark.id == mark_info.obj_id:
                 mark.mark_name = mark_info.name
@@ -94,6 +93,7 @@ class MarksHandler(QObject):
 
     @pyqtSlot(int)
     def delete_mark(self, object_id):
+        print(object_id)
         del self.dict_map_database_marks[object_id]
 
         try:

@@ -34,7 +34,6 @@ class MoreInfoMarkDialogWindow(QDialogBase):
         self.date_label = QLabel()
         self.time_label = QLabel()
         self.object_type_label = QLabel()
-        self.relating_name_label = QLabel()
         self.relating_type_label = QLabel()
 
         self.coordinates_tabs = CoordinatesTab(is_edit=False)
@@ -54,7 +53,6 @@ class MoreInfoMarkDialogWindow(QDialogBase):
         common_form_layout.addRow('Дата:', self.date_label)
         common_form_layout.addRow('Время:', self.time_label)
         common_form_layout.addRow('Тип объекта:', self.object_type_label)
-        common_form_layout.addRow('Принадлежность:', self.relating_name_label)
         common_form_layout.addRow('Тип принадлежности:', self.relating_type_label)
 
         common_v_layout.addLayout(common_form_layout)
@@ -79,8 +77,7 @@ class MoreInfoMarkDialogWindow(QDialogBase):
         self.date_label.setText(str(self.mark_info_widget.data.datetime.date()))
         self.time_label.setText(str(self.mark_info_widget.data.datetime.time()))
         self.object_type_label.setText(str(self.mark_info_widget.data.object_type))
-        self.relating_name_label.setText(self.mark_info_widget.data.relating_name)
-        self.relating_type_label.setText(str(self.mark_info_widget.data.relating_type))
+        self.relating_type_label.setText(self.mark_info_widget.data.relating_type)
 
         self.coordinates_tabs.coordinates = [self.mark_info_widget.data.longitude,
                                              self.mark_info_widget.data.latitude,

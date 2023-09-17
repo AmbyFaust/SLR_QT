@@ -80,26 +80,24 @@ class MarksReviewerWindow(QMainWindowBase):
             item = self.marks_info_layout.itemAt(index)
             if item:
                 mark_info_widget = item.widget()
-                if isinstance(mark_info_widget, MarkInfoWidget) and mark_info_widget.obj_id == object_id:
-                    self.controller.delete_mark(mark_info_widget.obj_id)
+                if isinstance(mark_info_widget, MarkInfoWidget) and mark_info_widget.object_id == object_id:
+                    self.controller.delete_mark(mark_info_widget.object_id)
                     self.marks_info_layout.removeWidget(mark_info_widget)
                     mark_info_widget.deleteLater()
                     self.count_marks -= 1
 
     def delete_selected_marks(self):
-        selected_marks_and_separators = []
+        selected_marks = []
         for index in range(self.marks_info_layout.count()):
             mark_info_widget = self.marks_info_layout.itemAt(index).widget()
             if isinstance(mark_info_widget, MarkInfoWidget) and mark_info_widget.choice_checkbox.isChecked():
-                selected_marks_and_separators.append(mark_info_widget)
-                selected_marks_and_separators.append(self.marks_info_layout.itemAt(index + 1).widget())
+                selected_marks.append(mark_info_widget)
 
-        for selected_widget in selected_marks_and_separators:
+        for selected_widget in selected_marks:
             if isinstance(selected_widget, MarkInfoWidget):
-                self.controller.delete_mark(selected_widget.obj_id)
+                self.controller.delete_mark(selected_widget.object_id)
                 self.marks_info_layout.removeWidget(selected_widget)
-            else:
-                self.marks_info_layout.removeWidget(selected_widget)
+
             selected_widget.deleteLater()
             self.count_marks -= 1
 
