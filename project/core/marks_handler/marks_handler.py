@@ -11,7 +11,6 @@ from ...gui.mark_reviewer.ownership_enum import Ownership
 
 
 class MarksHandler(QObject):
-    putShortMarkInfo = pyqtSignal(dict)
     putFullMarkInfo = pyqtSignal(MarkData)
     putAllMarks = pyqtSignal(list)
     addMark = pyqtSignal(ObjectDto)
@@ -91,7 +90,7 @@ class MarksHandler(QObject):
                 mark.redraw()
                 break
 
-        self.get_short_mark_info(mark_info.obj_id)
+
 
     @pyqtSlot(int)
     def delete_mark(self, object_id):
@@ -130,18 +129,6 @@ class MarksHandler(QObject):
             map_mark.draw(draw_hidden=False)
 
         self.putAllMarks.emit(self.all_marks)
-
-    @pyqtSlot(int)
-    def get_short_mark_info(self, object_id):
-        try:
-            object_entity = list(filter(lambda obj_entity: obj_entity.id == object_id, self.all_marks))[0]
-            mark = object_entity.mark
-            current_mark_short_info = {'id': object_id, 'name': object_entity.name,
-                                       'datetime': mark.datetime}
-
-            self.putShortMarkInfo.emit(current_mark_short_info)
-        except Exception:
-            raise Exception(f'Ошибка получения краткой информации об объекте')
 
     @pyqtSlot(int)
     def get_full_mark_info(self, object_id):

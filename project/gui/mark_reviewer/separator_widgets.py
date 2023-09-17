@@ -12,7 +12,6 @@ class HSeparator(QFrame):
 class HDottedSeparator(QFrame):
     def __init__(self):
         super().__init__()
-        print(1)
         self.setFrameShape(QFrame.HLine)
         self.setFrameShadow(QFrame.Sunken)
         self.setLineWidth(1)

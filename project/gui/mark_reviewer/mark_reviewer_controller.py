@@ -14,7 +14,6 @@ class MarksReviewerController(QObject):
     deleteMark = pyqtSignal(int)
     deleteSingleMark = pyqtSignal(int)
     removeMarkFromDatabase = pyqtSignal(int)
-    getShortMarkInfo = pyqtSignal(int)
     getFullMarkInfo = pyqtSignal(int)
     showVisibility = pyqtSignal(int, int, dict)
 
@@ -50,13 +49,6 @@ class MarksReviewerController(QObject):
         object_ = session.query(ObjectDto).get(object_id)
         self.all_marks.remove(object_)
         self.removeMarkFromDatabase.emit(object_id)
-
-    def get_short_mark_info(self, object_id):
-        self.getShortMarkInfo.emit(object_id)
-
-    @pyqtSlot(dict)
-    def put_short_mark_info(self, mark_short_info):
-        self.current_mark_short_info = mark_short_info
 
     @pyqtSlot(list)
     def put_all_marks(self, all_marks):

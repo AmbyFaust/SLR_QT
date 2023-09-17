@@ -57,5 +57,8 @@ class CoordinatesTab(QTabWidget):
             (changed_coordinates[0], changed_coordinates[1])
         )) + [changed_coordinates[-1]]
 
+        self.coordinates[0] = int(self.coordinates[0] * 1e6) / 1e6
+        self.coordinates[1] = int(self.coordinates[1] * 1e6) / 1e6
+
         self.cur_coordinates_system = changed_coordinates_system
         self.set_coordinates_cur_tab()
