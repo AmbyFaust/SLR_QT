@@ -3,19 +3,15 @@ import urllib3
 
 from qgis.core import QgsApplication
 
-from project.database import TypeSourceRLIDto, FileDto, RawRLIDto, RLIDto, CoordinatesDto, ExtentDto, MarkDto, \
-    RelatingObjectDto, RasterRLIDto, ObjectDto, TargetDto
-from project.database.xls_cls_reporter.rli_target_reporter import ReportGenerator
 from project.settings import QGIS_PATH, QGIS_PLUGINS
 from project.gui.workspace_window import WorkspaceWindowTitled
 from project.core.marks_handler.marks_handler import MarksHandler
-from project.database.database_manager import DBManager
+from project.database.database_manager import db_manager
 
 
 def main():
     urllib3.disable_warnings()
 
-    db_manager = DBManager()
     db_manager.init('sessions')
     db_manager.start_app()
 
@@ -35,25 +31,14 @@ def main():
     window.controller.mark_reviewer_w.controller.deleteMark.connect(marks_handler.delete_mark)
     window.controller.mark_reviewer_w.controller.showVisibility.connect(marks_handler.show_visibility)
     window.controller.mark_reviewer_w.controller.removeMarkFromDatabase.connect(marks_handler.remove_mark_from_database)
+    window.controller.mark_reviewer_w.controller.showOnMap.connect(marks_handler.show_on_map)
     marks_handler.putFullMarkInfo.connect(window.controller.mark_reviewer_w.controller.put_full_mark_info)
     marks_handler.addMark.connect(window.controller.mark_reviewer_w.controller.add_mark)
     marks_handler.removeMark.connect(window.controller.mark_reviewer_w.controller.remove_mark)
     marks_handler.put_all_marks()
     window.controller.mark_reviewer_w.showAllMarks.emit()
 
-    # type_source_rli_id = TypeSourceRLIDto.create_type_source_rli('Тип источника')
-    # file_id = FileDto.create_file('Файл', 'Desktop/папка/', '.xls')
-    # raw_rli_id = RawRLIDto.create_raw_rli(file_id, type_source_rli_id)
-    # rli_id = RLIDto.create_rli('РЛИ', True, raw_rli_id)
-    # coordinates_id = CoordinatesDto.create_coordinates(52.0, 48.0, 10.0)
-    # extent_id = ExtentDto.create_extent(coordinates_id, coordinates_id, coordinates_id, coordinates_id)
-    # mark_id = MarkDto.create_mark(coordinates_id)
-    # relating_object_id = RelatingObjectDto.create_relating_object(1, 'имя принадлежности')
-    # raster_rli_id = RasterRLIDto.create_raster_rli(rli_id, file_id, extent_id)
-    # object_id = ObjectDto.create_object(mark_id, 'объект', 'тип объекта', relating_object_id, 'meta')
-    # TargetDto.create_target(1, object_id, raster_rli_id, 'type_key_sppr')
-
-    # ReportGenerator()
+    # ReportGenerator(db_file_name='2023_9_14')
 
     window.showMaximized()
 

@@ -131,6 +131,15 @@ class MarksHandler(QObject):
         self.putAllMarks.emit(self.all_marks)
 
     @pyqtSlot(int)
+    def show_on_map(self, object_id):
+        try:
+            for mark in self.map_marks:
+                if mark.id == object_id:
+                    mark.zoom_to_object()
+        except Exception:
+            raise Exception(f'Не возможно показать объект {object_id}')
+
+    @pyqtSlot(int)
     def get_full_mark_info(self, object_id):
         try:
             object_entity = list(filter(lambda obj_entity: obj_entity.id == object_id, self.all_marks))[0]

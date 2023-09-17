@@ -21,7 +21,7 @@ class CanvasMark(MapPoint):
             size=self.POINT_SIZE,
             label=f'Отметка {self.mark_name}',
             #image=':/images/cross.svg'
-            image = ''
+            image=''
         )
         super(CanvasMark, self).__init__(latitude, longitude, style, painter)
 

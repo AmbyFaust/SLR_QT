@@ -111,6 +111,8 @@ class MarkInfoWidget(QWidget):
     def __create_actions(self):
         self.more_info_action = QAction("Подробнее", self)
         self.more_info_action.triggered.connect(self.open_more_info_dialog)
+        self.show_on_map_action = QAction("Показать на карте")
+        self.show_on_map_action.triggered.connect(self.show_on_map)
         self.redact_action = QAction("Редактировать", self)
         self.redact_action.triggered.connect(self.open_edit_mark_dialog)
         self.delete_action = QAction("Удалить", self)
@@ -119,6 +121,7 @@ class MarkInfoWidget(QWidget):
     def show_context_menu(self, position):
         context_menu = QMenu(self)
         context_menu.addAction(self.more_info_action)
+        context_menu.addAction(self.show_on_map_action)
         context_menu.addAction(self.redact_action)
         context_menu.addAction(self.delete_action)
         context_menu.exec(self.mapToGlobal(position))
@@ -150,6 +153,9 @@ class MarkInfoWidget(QWidget):
 
         self.show_visibility_btn.setIcon(QIcon(visibility_image))
         self.show_visibility_btn.setIconSize(visibility_image.size())
+
+    def show_on_map(self):
+        self.controller.show_on_map(self.object_id)
 
     def open_more_info_dialog(self):
         more_info_dialog = MoreInfoMarkDialogWindow(self, controller=self.controller, mark_info_widget=self)

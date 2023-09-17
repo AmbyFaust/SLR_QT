@@ -16,6 +16,7 @@ class MarksReviewerController(QObject):
     removeMarkFromDatabase = pyqtSignal(int)
     getFullMarkInfo = pyqtSignal(int)
     showVisibility = pyqtSignal(int, int, dict)
+    showOnMap = pyqtSignal(int)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -60,3 +61,6 @@ class MarksReviewerController(QObject):
     @pyqtSlot(MarkData)
     def put_full_mark_info(self, mark_info: MarkData):
         self.current_mark_info = mark_info
+
+    def show_on_map(self, object_id):
+        self.showOnMap.emit(object_id)

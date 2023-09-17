@@ -49,10 +49,10 @@ class RLIDto(BaseDto):
                 rli.raw_rli_id = new_raw_rli_id
                 session.commit()
 
-    # Функция для получения РЛИ в сессии TODO удалена SessionDto => переделать
+    # Функция для получения РЛИ в сессии
     @classmethod
-    def get_all_rli(cls):
+    def get_all_rli(cls, required_session=None):
         with cls.mutex:
-            session = session_controller.get_session()
+            session = required_session if required_session else session_controller.get_session()
             return session.query(cls).all()
 
