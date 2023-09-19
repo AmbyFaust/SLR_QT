@@ -30,15 +30,17 @@ class MarksReviewerWindow(QMainWindowBase):
     def __create_widgets(self):
         self.common_widget = QWidget()
         self.marks_info_scroll_area = QScrollArea()
+        self.marks_info_container = QWidget()
         self.marks_info_scroll_area.setAlignment(Qt.AlignTop)
         self.marks_info_scroll_area.setWidgetResizable(True)
+        self.marks_info_scroll_area.setWidget(self.marks_info_container)
 
     def __create_layout(self):
         common_v_layout = QVBoxLayout()
         self.marks_info_layout = QVBoxLayout()
         self.marks_info_layout.setAlignment(Qt.AlignTop)
         self.marks_info_layout.addStretch(1)
-        self.marks_info_scroll_area.setLayout(self.marks_info_layout)
+        self.marks_info_container.setLayout(self.marks_info_layout)
         common_v_layout.addWidget(self.marks_info_scroll_area)
         self.common_widget.setLayout(common_v_layout)
         self.setCentralWidget(self.common_widget)
