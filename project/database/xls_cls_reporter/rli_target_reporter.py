@@ -7,6 +7,7 @@ import csv
 from project.database import RLIDto, TargetDto
 from project.database.database_manager import db_manager
 from project.gui.mark_reviewer.ownership_enum import Ownership
+from project.singletons import journal
 
 
 class ReportGenerator:
@@ -41,19 +42,20 @@ class ReportGenerator:
             {'header': 'Идентификатор цели', 'data_func': lambda data: data.id},
             {'header': 'Номер цели', 'data_func': lambda data: data.number},
             {'header': 'Координаты (Широта) (WGS-84)', 'data_func': lambda data: data.object.mark.coordinates.latitude},
-            {'header': 'Координаты (Долгота) (WGS-84)', 'data_func': lambda data: data.object.mark.coordinates.longitude},
+            {'header': 'Координаты (Долгота) (WGS-84)',
+             'data_func': lambda data: data.object.mark.coordinates.longitude},
             {'header': 'Координаты (Высота)', 'data_func': lambda data: data.object.mark.coordinates.altitude},
             {'header': 'Наименование объекта', 'data_func': lambda data: data.object.name},
             {'header': 'Тип объекта', 'data_func': lambda data: data.object.type},
             {'header': 'Принадлежность объекта', 'data_func': lambda data:
-                Ownership.int_to_ownership_type(data.object.relating_object.type_relating)},
+            Ownership.int_to_ownership_type(data.object.relating_object.type_relating)},
             {'header': 'Meta данные', 'data_func': lambda data: data.object.meta},
             {'header': 'Индентификатор РЛИ', 'data_func': lambda data: data.raster_rli.rli.id},
             {'header': 'Время локации', 'data_func': lambda data: data.raster_rli.rli.time_location},
             {'header': 'Наименование РЛИ', 'data_func': lambda data: data.raster_rli.rli.name},
             {'header': 'Признак обработки', 'data_func': lambda data: data.raster_rli.rli.is_processing},
             {'header': 'Наименование типа источника', 'data_func': lambda data:
-                data.raster_rli.rli.raw_rli.type_source_rli.name},
+            data.raster_rli.rli.raw_rli.type_source_rli.name},
             {'header': 'Наименование файла', 'data_func': lambda data: data.raster_rli.rli.raw_rli.file.name},
             {'header': 'Путь к файлу', 'data_func': lambda data: data.raster_rli.rli.raw_rli.file.path_to_file},
             {'header': 'Расширение файла', 'data_func': lambda data: data.raster_rli.rli.raw_rli.file.file_extension},
@@ -101,32 +103,40 @@ class ReportGenerator:
             self.set_column_width(worksheet, column_index, value)
 
     def generate_xls_rli_report(self):
-        worksheet = self.workbook.add_sheet('Отчет по РЛИ за сессию')
+        try:
+            worksheet = self.workbook.add_sheet('Отчет по РЛИ за сессию')
 
-        list_of_rli = RLIDto.get_all_rli(required_session=self.session)
+            list_of_rli = RLIDto.get_all_rli(required_session=self.session)
 
-        self.write_xls_header_row(worksheet, self.rli_columns)
+            self.write_xls_header_row(worksheet, self.rli_columns)
 
-        for row_index, rli_data in enumerate(list_of_rli):
-            self.write_xls_data_row(worksheet, self.rli_columns, row_index + 1, rli_data)
+            for row_index, rli_data in enumerate(list_of_rli):
+                self.write_xls_data_row(worksheet, self.rli_columns, row_index + 1, rli_data)
 
-        self.workbook.save(self.xls_filename)
+            self.workbook.save(self.xls_filename)
 
-        print('XLS RLI-report generated at {}'.format(self.output_dir))
+            journal.log(f'XLS-РЛИ отчет сгенерирован в {self.output_dir}.', attr='warning')
+
+        except BaseException as exp:
+            journal.log(f'Не удалось сгенерировать XLS-РЛИ отчет. {exp}', attr='error')
 
     def generate_xls_targets_report(self):
-        worksheet = self.workbook.add_sheet('Отчет по целям за сессию')
+        try:
+            worksheet = self.workbook.add_sheet('Отчет по целям за сессию')
 
-        list_of_targets = TargetDto.get_all_targets(required_session=self.session)
+            list_of_targets = TargetDto.get_all_targets(required_session=self.session)
 
-        self.write_xls_header_row(worksheet, self.targets_columns)
+            self.write_xls_header_row(worksheet, self.targets_columns)
 
-        for row_index, target_data in enumerate(list_of_targets):
-            self.write_xls_data_row(worksheet, self.targets_columns, row_index + 1, target_data)
+            for row_index, target_data in enumerate(list_of_targets):
+                self.write_xls_data_row(worksheet, self.targets_columns, row_index + 1, target_data)
 
-        self.workbook.save(self.xls_filename)
+            self.workbook.save(self.xls_filename)
 
-        print('XLS Target-report generated at {}'.format(self.output_dir))
+            journal.log(f'XLS-ЦЕЛИ отчет сгенерирован в {self.output_dir}.', attr='warning')
+
+        except BaseException as exp:
+            journal.log(f'Не удалось сгенерировать XLS-ЦЕЛИ отчет. {exp}', attr='error')
 
     def write_csv_data(self, columns, data):
         data_row = []
@@ -142,31 +152,39 @@ class ReportGenerator:
         return data_row
 
     def generate_csv_rli_report(self):
-        list_of_rli = RLIDto.get_all_rli(required_session=self.session)
+        try:
+            list_of_rli = RLIDto.get_all_rli(required_session=self.session)
 
-        with open(self.csv_rli_filename, 'w', newline='') as csv_file:
-            csv_writer = csv.writer(csv_file)
+            with open(self.csv_rli_filename, 'w', newline='') as csv_file:
+                csv_writer = csv.writer(csv_file)
 
-            header_row = [column_info['header'] for column_info in self.rli_columns]
-            csv_writer.writerow(header_row)
+                header_row = [column_info['header'] for column_info in self.rli_columns]
+                csv_writer.writerow(header_row)
 
-            for rli_data in list_of_rli:
-                data_row = self.write_csv_data(self.rli_columns, rli_data)
-                csv_writer.writerow(data_row)
+                for rli_data in list_of_rli:
+                    data_row = self.write_csv_data(self.rli_columns, rli_data)
+                    csv_writer.writerow(data_row)
 
-        print('CSV RLI-report generated at {}'.format(self.csv_rli_filename))
+            journal.log(f'CSV-РЛИ отчет сгенерирован в {self.csv_rli_filename}.', attr='warning')
+
+        except BaseException as exp:
+            journal.log(f'Не удалось сгенерировать CSV-РЛИ отчет. {exp}', attr='error')
 
     def generate_csv_targets_report(self):
-        list_of_targets = TargetDto.get_all_targets(required_session=self.session)
+        try:
+            list_of_targets = TargetDto.get_all_targets(required_session=self.session)
 
-        with open(self.csv_targets_filename, 'w', newline='') as csv_file:
-            csv_writer = csv.writer(csv_file)
+            with open(self.csv_targets_filename, 'w', newline='') as csv_file:
+                csv_writer = csv.writer(csv_file)
 
-            header_row = [column_info['header'] for column_info in self.targets_columns]
-            csv_writer.writerow(header_row)
+                header_row = [column_info['header'] for column_info in self.targets_columns]
+                csv_writer.writerow(header_row)
 
-            for target_data in list_of_targets:
-                data_row = self.write_csv_data(self.targets_columns, target_data)
-                csv_writer.writerow(data_row)
+                for target_data in list_of_targets:
+                    data_row = self.write_csv_data(self.targets_columns, target_data)
+                    csv_writer.writerow(data_row)
 
-        print('CSV Targets-report generated at {}'.format(self.csv_targets_filename))
+            journal.log(f'CSV-ЦЕЛИ отчет сгенерирован в {self.csv_targets_filename}.', attr='warning')
+
+        except BaseException as exp:
+            journal.log(f'Не удалось сгенерировать CSV-ЦЕЛИ отчет. {exp}', attr='error')

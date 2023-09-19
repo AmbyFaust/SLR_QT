@@ -3,6 +3,7 @@ import urllib3
 
 from qgis.core import QgsApplication
 
+from project.database.xls_cls_reporter.rli_target_reporter import ReportGenerator
 from project.settings import QGIS_PATH, QGIS_PLUGINS
 from project.gui.workspace_window import WorkspaceWindowTitled
 from project.core.marks_handler.marks_handler import MarksHandler
@@ -38,7 +39,7 @@ def main():
     marks_handler.put_all_marks()
     window.controller.mark_reviewer_w.showAllMarks.emit()
 
-    # ReportGenerator(db_file_name='2023_9_14')
+    ReportGenerator(db_file_name='2023_9_14')
 
     window.showMaximized()
 

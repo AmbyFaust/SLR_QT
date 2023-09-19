@@ -8,6 +8,7 @@ from ...database import CoordinatesDto, MarkDto, ObjectDto, RelatingObjectDto
 from ...gui.mark_reviewer.constants import VISIBILITY_VARIANTS
 from ...gui.mark_reviewer.mark_data import MarkData
 from ...gui.mark_reviewer.ownership_enum import Ownership
+from ...singletons import journal
 
 
 class MarksHandler(QObject):
@@ -44,14 +45,15 @@ class MarksHandler(QObject):
                                       mark_info.longitude, self.painter)
 
             object_ = self.session.query(ObjectDto).get(object_id)
-        except Exception:
-            raise Exception(f'Не удалось создать отметку')
 
-        self.all_marks.append(object_)
-        self.map_marks.append(new_map_mark)
-        self.dict_map_database_marks[object_id] = new_map_mark
-        new_map_mark.draw(draw_hidden=False)
-        self.addMark.emit(object_)
+            self.all_marks.append(object_)
+            self.map_marks.append(new_map_mark)
+            self.dict_map_database_marks[object_id] = new_map_mark
+            new_map_mark.draw(draw_hidden=False)
+            self.addMark.emit(object_)
+
+        except BaseException as exp:
+            journal.log(f'Не удалось создать отметку на карте. {exp}', attr='error')
 
     @pyqtSlot(MarkData)
     def update_mark(self, mark_info: MarkData):
@@ -59,11 +61,7 @@ class MarksHandler(QObject):
             object_ = self.session.query(ObjectDto).get(mark_info.obj_id)
             old_mark_id = object_.mark.id
             old_relating_object_id = object_.relating_object.id
-        except Exception:
-            raise Exception(f'При обновлении отметки, не удалось '
-                            f'получить старые данные об отметке с id={mark_info.obj_id}')
 
-        try:
             MarkDto.delete_mark(old_mark_id)
             RelatingObjectDto.delete_relating_object(old_relating_object_id)
 
@@ -78,24 +76,20 @@ class MarksHandler(QObject):
                                     new_name=mark_info.name, new_object_type=mark_info.object_type,
                                     new_relating_object_id=new_relating_object_id,
                                     new_meta=mark_info.comment)
-        except Exception:
-            raise Exception(f'Не удалось обновить данные отметки с id={mark_info.obj_id}')
 
-        for mark in self.map_marks:
-            if mark.id == mark_info.obj_id:
-                mark.mark_name = mark_info.name
-                mark.latitude = mark_info.latitude
-                mark.longitude = mark_info.longitude
-                mark.redraw()
-                break
+            for mark in self.map_marks:
+                if mark.id == mark_info.obj_id:
+                    mark.mark_name = mark_info.name
+                    mark.latitude = mark_info.latitude
+                    mark.longitude = mark_info.longitude
+                    mark.redraw()
+                    break
 
-
+        except BaseException as exp:
+            journal.log(f'Не удалось обновить данные отметки с id={mark_info.obj_id}. {exp}', attr='error')
 
     @pyqtSlot(int)
     def delete_mark(self, object_id):
-        print(object_id)
-        del self.dict_map_database_marks[object_id]
-
         try:
             for mark in self.map_marks:
                 if mark.id == object_id:
@@ -103,6 +97,9 @@ class MarksHandler(QObject):
                     mark.remove()
                     self.removeMark.emit(object_id)
                     break
+
+            del self.dict_map_database_marks[object_id]
+
         except Exception:
             raise Exception(f'Ошибка удаления отметки с id={object_id}')
 
@@ -136,8 +133,9 @@ class MarksHandler(QObject):
             for mark in self.map_marks:
                 if mark.id == object_id:
                     mark.zoom_to_object()
-        except Exception:
-            raise Exception(f'Не возможно показать объект {object_id}')
+
+        except BaseException as exp:
+            journal.log(f'Не возможно показать объект {object_id}. {exp}', attr='error')
 
     @pyqtSlot(int)
     def get_full_mark_info(self, object_id):
@@ -161,5 +159,7 @@ class MarksHandler(QObject):
             )
 
             self.putFullMarkInfo.emit(current_mark_info)
-        except Exception:
-            raise Exception(f'Ошибка получения полной информации об объекте')
+
+        except BaseException as exp:
+            journal.log(f'Ошибка получения полной информации об объекте. {exp}', attr='error')
+
