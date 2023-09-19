@@ -28,6 +28,7 @@ class MarksHandler(QObject):
 
     @pyqtSlot(MarkData)
     def create_mark(self, mark_info: MarkData):
+        object_ = None
         try:
             geo_data = [mark_info.longitude, mark_info.latitude, mark_info.altitude]
             coordinates_id = CoordinatesDto.create_coordinates(*geo_data)
@@ -50,10 +51,13 @@ class MarksHandler(QObject):
             self.map_marks.append(new_map_mark)
             self.dict_map_database_marks[object_id] = new_map_mark
             new_map_mark.draw(draw_hidden=False)
-            self.addMark.emit(object_)
 
         except BaseException as exp:
             journal.log(f'Не удалось создать отметку на карте. {exp}', attr='error')
+
+        if object_:
+            self.addMark.emit(object_)
+
 
     @pyqtSlot(MarkData)
     def update_mark(self, mark_info: MarkData):
@@ -90,22 +94,20 @@ class MarksHandler(QObject):
 
     @pyqtSlot(int)
     def delete_mark(self, object_id):
-        try:
-            for mark in self.map_marks:
-                if mark.id == object_id:
-                    self.map_marks.remove(mark)
-                    mark.remove()
-                    self.removeMark.emit(object_id)
-                    break
-
-            del self.dict_map_database_marks[object_id]
-
-        except Exception:
-            raise Exception(f'Ошибка удаления отметки с id={object_id}')
+        for mark in self.map_marks:
+            if mark.id == object_id:
+                self.map_marks.remove(mark)
+                mark.remove()
+                del self.dict_map_database_marks[object_id]
+                self.removeMark.emit(object_id)
+                break
 
     @pyqtSlot(int)
     def remove_mark_from_database(self, object_id):
-        ObjectDto.delete_object(object_id)
+        try:
+            ObjectDto.delete_object(object_id)
+        except BaseException as exp:
+            journal.log(f'Ошибка удаления отметки с id={object_id}. {exp}', attr='error')
 
     @pyqtSlot(int, int, dict)
     def show_visibility(self, object_id, index, visibility_dict):
@@ -158,8 +160,9 @@ class MarksHandler(QObject):
                 comment=str(object_entity.meta)
             )
 
-            self.putFullMarkInfo.emit(current_mark_info)
-
         except BaseException as exp:
             journal.log(f'Ошибка получения полной информации об объекте. {exp}', attr='error')
+
+        self.putFullMarkInfo.emit(current_mark_info)
+
 
