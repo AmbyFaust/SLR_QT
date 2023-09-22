@@ -7,7 +7,6 @@ class MarkData:
                  name=None,
                  datetime=None,
                  object_type=None,
-                 relating_name=None,
                  relating_type=None,
                  longitude=None,
                  latitude=None,
@@ -17,7 +16,6 @@ class MarkData:
         self.name = name
         self.datetime = datetime
         self.object_type = object_type
-        self.relating_name = relating_name
         self.relating_type = relating_type
         self.longitude = longitude
         self.latitude = latitude

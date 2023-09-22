@@ -12,17 +12,16 @@ class ObjectDto(BaseDto):
     mark = relationship('MarkDto')
     name = Column(String)
     type = Column(String)
-    relating_object_id = Column(Integer, ForeignKey('relating_object.id', ondelete='CASCADE'))
-    relating_object = relationship('RelatingObjectDto')
+    relating_object_type = Column(Integer)
     meta = Column(JSON)
 
     # Функция для создания объекта ObjectDto
     @classmethod
-    def create_object(cls, mark_id, name, object_type, relating_object_id, meta):
+    def create_object(cls, mark_id, name, type, relating_object_type, meta):
         with cls.mutex:
             session = session_controller.get_session()
-            new_object = cls(mark_id=mark_id, name=name, type=object_type,
-                             relating_object_id=relating_object_id, meta=meta)
+            new_object = cls(mark_id=mark_id, name=name, type=type,
+                             relating_object_type=relating_object_type, meta=meta)
             session.add(new_object)
             session.commit()
             return new_object.id
@@ -39,21 +38,20 @@ class ObjectDto(BaseDto):
 
     # Функция для изменения объекта ObjectDto по id
     @classmethod
-    def update_object(cls, object_id, new_mark_id, new_name, new_object_type, new_relating_object_id, new_meta):
+    def update_object(cls, object_id, new_mark_id, new_name, new_type, new_relating_object_type, new_meta):
         with cls.mutex:
             session = session_controller.get_session()
             object_ = session.query(cls).get(object_id)
             if object_:
                 object_.mark_id = new_mark_id
                 object_.name = new_name
-                object_.type = new_object_type
-                object_.relating_object_id = new_relating_object_id
+                object_.type = new_type
+                object_.relating_object_type = new_relating_object_type
                 object_.meta = new_meta
                 session.commit()
 
-    # Функция получения объектов сессии
     @classmethod
-    def get_all_objects(cls, required_session=None):
+    def get_all_objects(cls):
         with cls.mutex:
-            session = required_session if required_session else session_controller.get_session()
+            session = session_controller.get_session()
             return session.query(cls).all()

@@ -45,9 +45,15 @@ class MarkDto(BaseDto):
                 mark.datetime = datetime.now()
                 session.commit()
 
-    # Функция получения отметок сессии
+    # Функция получения отметок
     @classmethod
-    def get_all_marks(cls, required_session=None):
+    def get_all_marks(cls):
         with cls.mutex:
-            session = required_session if required_session else session_controller.get_session()
+            session = session_controller.get_session()
             return session.query(cls).all()
+
+    # Функция получения отметок сессии TODO удалена модель SessionDto => переделать
+    # @classmethod
+    # def get_marks_by_session_id(cls, session_id):
+    #     session = sessionmaker(bind=engine)()
+    #     return session.query(cls).filter(cls.session_id == session_id).all()

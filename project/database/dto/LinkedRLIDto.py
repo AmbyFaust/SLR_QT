@@ -15,8 +15,7 @@ class LinkedRLIDto(BaseDto):
     extent_id = Column(Integer, ForeignKey('extent.id', ondelete='CASCADE'))
     extent = relationship('ExtentDto')
     binding_attempt_number = Column(Integer)
-    type_binding_method_id = Column(Integer, ForeignKey('type_binding_method.id', ondelete='CASCADE'))
-    type_binding_method = relationship('TypeBindingMethodDto')
+    type_binding_method = Column(Integer)
 
     # Функция для создания объекта LinkedRLIDto
     @classmethod
@@ -39,25 +38,3 @@ class LinkedRLIDto(BaseDto):
             if linked_rli:
                 session.delete(linked_rli)
                 session.commit()
-
-    # Функция для изменения объекта LinkedRLIDto по id
-    @classmethod
-    def update_linked_rli(cls, linked_rli_id, new_raster_rli_id, new_file_id, new_extent_id,
-                          new_binding_attempt_number, new_type_binding_method_id):
-        with cls.mutex:
-            session = session_controller.get_session()
-            linked_rli = session.query(cls).get(linked_rli_id)
-            if linked_rli:
-                linked_rli.raster_rli_id = new_raster_rli_id
-                linked_rli.file_id = new_file_id
-                linked_rli.extent_id = new_extent_id
-                linked_rli.binding_attempt_number = new_binding_attempt_number
-                linked_rli.type_binding_method_id = new_type_binding_method_id
-                session.commit()
-
-    # Функция для получения привязанных РЛИ в сессии
-    @classmethod
-    def get_all_linked_rli(cls, required_session=None):
-        with cls.mutex:
-            session = required_session if required_session else session_controller.get_session()
-            return session.query(cls).all()
