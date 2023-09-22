@@ -52,7 +52,6 @@ class EditMarkDialogWindow(QDialogBase):
         self.create_btn = QPushButton('Принять')
         self.cancel_btn = QPushButton('Отмена')
 
-
     def __create_layout(self):
         common_v_layout = QVBoxLayout()
         common_form_layout = QFormLayout()
@@ -76,7 +75,6 @@ class EditMarkDialogWindow(QDialogBase):
         self.common_widget.setLayout(common_v_layout)
 
         self.setLayout(base_layout)
-
 
     def __create_actions(self):
         self.cancel_btn.clicked.connect(self.reject)

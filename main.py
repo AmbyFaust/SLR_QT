@@ -39,7 +39,7 @@ def main():
     marks_handler.put_all_marks()
     window.controller.mark_reviewer_w.showAllMarks.emit()
 
-    ReportGenerator(db_file_name='2023_9_14')
+    ReportGenerator(db_file_names=['2023_9_14', '2023_9_15'])
 
     window.showMaximized()
 

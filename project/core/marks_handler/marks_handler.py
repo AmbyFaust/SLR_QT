@@ -141,6 +141,7 @@ class MarksHandler(QObject):
 
     @pyqtSlot(int)
     def get_full_mark_info(self, object_id):
+        current_mark_info = None
         try:
             object_entity = list(filter(lambda obj_entity: obj_entity.id == object_id, self.all_marks))[0]
             mark = object_entity.mark
