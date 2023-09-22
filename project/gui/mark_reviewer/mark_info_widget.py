@@ -60,8 +60,6 @@ class MarkInfoWidget(QWidget):
         self.x_label.customContextMenuRequested.connect(self.show_context_menu)
         self.y_label = QLabel()
         self.y_label.customContextMenuRequested.connect(self.show_context_menu)
-        self.z_label = QLabel()
-        self.z_label.customContextMenuRequested.connect(self.show_context_menu)
 
         self.show_visibility_btn = QPushButton()
         self.show_visibility_btn.setFixedSize(29, 29)
@@ -87,7 +85,6 @@ class MarkInfoWidget(QWidget):
         coordinates_form_layout = QFormLayout()
         coordinates_form_layout.addRow('X:', self.x_label)
         coordinates_form_layout.addRow('Y:', self.y_label)
-        coordinates_form_layout.addRow('Z:', self.z_label)
 
         btn_h_layout = QHBoxLayout()
         btn_h_layout.addWidget(self.show_visibility_btn)
@@ -143,7 +140,6 @@ class MarkInfoWidget(QWidget):
         ))
         self.x_label.setText(str(xy_coordinates[0]))
         self.y_label.setText(str(xy_coordinates[1]))
-        self.z_label.setText(str(self.data.altitude))
 
     def __load_current_visibility_image(self):
         visibility_image = QPixmap(self.visibility_images[self.image_visibility_index])

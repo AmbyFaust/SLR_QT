@@ -2,9 +2,9 @@ from enum import Enum
 
 
 class Ownership(Enum):
-    FAMILIAR = (1, 'Свой')
-    UNFAMILIAR = (2, 'Чужой')
-    UNKNOWN = (3, 'Неизвестно')
+    FAMILIAR = (1, 'Неизвестно')
+    UNFAMILIAR = (2, 'Свой')
+    UNKNOWN = (3, 'Чужой')
 
     def __new__(cls, value, description):
         obj = object.__new__(cls)

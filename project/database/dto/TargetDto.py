@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, ForeignKey, String, Integer, TIMESTAMP
+from sqlalchemy import Column, ForeignKey, String, Integer
 from sqlalchemy.orm import relationship
 
 from ..session_controller import session_controller
@@ -15,7 +15,7 @@ class TargetDto(BaseDto):
     object = relationship('ObjectDto')
     raster_rli_id = Column(Integer, ForeignKey('raster_rli.id', ondelete='CASCADE'))
     raster_rli = relationship('RasterRLIDto')
-    datetime_sending = Column(TIMESTAMP)
+    datetime_sending = Column(Integer)
     sppr_type_key = Column(String)
 
     # Функция для создания объекта TargetDto
@@ -53,9 +53,19 @@ class TargetDto(BaseDto):
                 target.sppr_type_key = new_sppr_type_key
                 session.commit()
 
-    # Функция для получения целей сессии
-    @classmethod
-    def get_all_targets(cls, required_session=None):
-        with cls.mutex:
-            session = required_session if required_session else session_controller.get_session()
-            return session.query(cls).all()
+    # Функция для получения целей сессии TODO удалена SessionDto => переделать
+    # @classmethod
+    # def get_targets_by_session_id(cls, session_id):
+    #     with cls.mutex:
+    #         session = sessionmaker(bind=engine)()
+    #         # Выбираем id файлов с соответствующим session_id
+    #         ids_of_files_with_session_id = list(map(lambda x: x.id, session.query(FileDto).
+    #                                                 filter_by(session_id=session_id).all()))
+    #
+    #         # Выбираем id RasterRLIs по соответсвующим id файлов
+    #         raster_rli_ids_with_session_id = list(map(lambda x: x.id, session.query(RasterRLIDto).
+    #                                                   filter(RasterRLIDto.file_id.in_(ids_of_files_with_session_id)).
+    #                                                   all()))
+    #
+    #         # Возваращаем соответствующие Targets по id RasterRLIs
+    #         return session.query(cls).filter(cls.raster_rli_id.in_(raster_rli_ids_with_session_id)).all()

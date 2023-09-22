@@ -95,12 +95,10 @@ class EditMarkDialogWindow(QDialogBase):
         )) + [geo_data[-1]]
 
         meta = self.comment_text_edit.toPlainText()
-
         self.mark_info = MarkData(
             obj_id=self.obj_id,
             name=name,
             object_type=object_type,
-            relating_name=Ownership.int_to_ownership_type(relating_object_type),
             relating_type=relating_object_type,
             longitude=coordinates[0],
             latitude=coordinates[1],
