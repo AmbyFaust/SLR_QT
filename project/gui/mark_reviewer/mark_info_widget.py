@@ -83,8 +83,8 @@ class MarkInfoWidget(QWidget):
         common_form_layout.addRow('Время:', self.time_label)
 
         coordinates_form_layout = QFormLayout()
-        coordinates_form_layout.addRow('X:', self.x_label)
-        coordinates_form_layout.addRow('Y:', self.y_label)
+        coordinates_form_layout.addRow('X, м:', self.x_label)
+        coordinates_form_layout.addRow('Y, м:', self.y_label)
 
         btn_h_layout = QHBoxLayout()
         btn_h_layout.addWidget(self.show_visibility_btn)

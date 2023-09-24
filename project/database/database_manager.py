@@ -46,6 +46,9 @@ class DBManager:
         try:
             db_path = os.path.abspath(os.path.join(self.root_dir, db_file_name + '.db'))
 
+            if not os.path.exists(db_path):
+                return None
+
             additional_session_controller = SessionController()
 
             additional_session_controller.set_session(db_path)

@@ -117,7 +117,7 @@ class GisWindow(QMainWindow):
         self.mark_visibility_checkbox.setFont(CHECKBOX_FONT)
         self.mark_visibility_checkbox.clicked.connect(self.__mark_visibility_checkbox_clicked)
 
-        self.generate_report_button =
+        # self.generate_report_button =
 
         self.main_group_box = QGroupBox()
 

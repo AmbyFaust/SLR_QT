@@ -14,14 +14,25 @@ class ReportGenerator:
     def __init__(self, db_file_names, output_dir='xls_csv_report', filename='report'):
         self.output_dir = os.path.abspath(__file__).replace('.py', '_') + output_dir
         self.create_directory()
-        self.sessions = [db_manager.get_session_by_file_name(db_file_name) for db_file_name in db_file_names]
         self.filename = filename
-        self.xls_filenames = [os.path.join(self.output_dir, db_file_name + '_rli_and_targets_' + self.filename + '.xls')
-                              for db_file_name in db_file_names]
-        self.csv_rli_filenames = [os.path.join(self.output_dir, db_file_name + '_rli_' + self.filename + '.csv')
-                                  for db_file_name in db_file_names]
-        self.csv_targets_filenames = [os.path.join(self.output_dir, db_file_name + '_targets_' + self.filename + '.csv')
-                                      for db_file_name in db_file_names]
+        self.sessions = []
+        self.xls_filenames = []
+        self.csv_rli_filenames = []
+        self.csv_targets_filenames = []
+
+        for db_file_name in db_file_names:
+            session = db_manager.get_session_by_file_name(db_file_name)
+            if session:
+                self.sessions.append(session)
+
+                self.xls_filenames.append(os.path.join(self.output_dir, db_file_name +
+                                                       '_rli_and_targets_' + self.filename + '.xls'))
+                self.csv_rli_filenames.append(os.path.join(self.output_dir, db_file_name +
+                                                           '_rli_' + self.filename + '.csv'))
+                self.csv_targets_filenames.append(os.path.join(self.output_dir, db_file_name +
+                                                               '_targets_' + self.filename + '.csv'))
+            else:
+                journal.log(f'Не удалось получить файл базы данных {db_file_name}', attr='error')
 
         self.workbooks = [xlwt.Workbook() for _ in range(len(self.sessions))]
 
@@ -35,6 +46,9 @@ class ReportGenerator:
             {'header': 'Время локации', 'data_func': lambda data: data.time_location},
             {'header': 'Наименование РЛИ', 'data_func': lambda data: data.name},
             {'header': 'Признак обработки', 'data_func': lambda data: data.is_processing},
+            {'header': 'Ширина', 'data_func': lambda data: data.width},
+            {'header': 'Высота', 'data_func': lambda data: data.height},
+            {'header': 'Расширение', 'data_func': lambda data: data.resolution},
             {'header': 'Наименование типа источника', 'data_func': lambda data: data.raw_rli.type_source_rli.name},
             {'header': 'Наименование файла', 'data_func': lambda data: data.raw_rli.file.name},
             {'header': 'Путь к файлу', 'data_func': lambda data: data.raw_rli.file.path_to_file},
@@ -51,14 +65,17 @@ class ReportGenerator:
             {'header': 'Наименование объекта', 'data_func': lambda data: data.object.name},
             {'header': 'Тип объекта', 'data_func': lambda data: data.object.type},
             {'header': 'Принадлежность объекта', 'data_func': lambda data:
-                Ownership.int_to_ownership_type(data.object.relating_object.type_relating)},
+                Ownership.int_to_ownership_type(data.object.relating_object_type)},
+            {'header': 'Ширина', 'data_func': lambda data: data.raster_rli.rli.width},
+            {'header': 'Высота', 'data_func': lambda data: data.raster_rli.rli.height},
+            {'header': 'Расширение', 'data_func': lambda data: data.raster_rli.rli.resolution},
             {'header': 'Meta данные', 'data_func': lambda data: data.object.meta},
             {'header': 'Идентификатор РЛИ', 'data_func': lambda data: data.raster_rli.rli.id},
             {'header': 'Время локации', 'data_func': lambda data: data.raster_rli.rli.time_location},
             {'header': 'Наименование РЛИ', 'data_func': lambda data: data.raster_rli.rli.name},
             {'header': 'Признак обработки', 'data_func': lambda data: data.raster_rli.rli.is_processing},
-            {'header': 'Наименование типа источника', 'data_func': lambda data:
-                data.raster_rli.rli.raw_rli.type_source_rli.name},
+            {'header': 'Тип источника', 'data_func': lambda data:
+                data.raster_rli.rli.raw_rli.type_source_rli},
             {'header': 'Наименование файла', 'data_func': lambda data: data.raster_rli.rli.raw_rli.file.name},
             {'header': 'Путь к файлу', 'data_func': lambda data: data.raster_rli.rli.raw_rli.file.path_to_file},
             {'header': 'Расширение файла', 'data_func': lambda data: data.raster_rli.rli.raw_rli.file.file_extension},

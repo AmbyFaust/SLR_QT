@@ -43,9 +43,9 @@ class RegionDto(BaseDto):
                 region_.name = new_name
                 session.commit()
 
-    # Функция получения регионов
+    # Функция получения регионов сессии
     @classmethod
-    def get_all_regions(cls):
+    def get_all_regions(cls, required_session=None):
         with cls.mutex:
-            session = session_controller.get_session()
+            session = required_session if required_session else session_controller.get_session()
             return session.query(cls).all()
