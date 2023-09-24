@@ -25,7 +25,6 @@ def main():
     window = WorkspaceWindowTitled()  # главное окно
 
     marks_handler = MarksHandler(window.controller.gis_w.painter)
-    marks_handler.putAllMarks.connect(window.controller.mark_reviewer_w.controller.put_all_marks)
     window.controller.mark_reviewer_w.controller.getFullMarkInfo.connect(marks_handler.get_full_mark_info)
     window.controller.mark_reviewer_w.controller.createMark.connect(marks_handler.create_mark)
     window.controller.mark_reviewer_w.controller.updateMark.connect(marks_handler.update_mark)
@@ -33,11 +32,14 @@ def main():
     window.controller.mark_reviewer_w.controller.showVisibility.connect(marks_handler.show_visibility)
     window.controller.mark_reviewer_w.controller.removeMarkFromDatabase.connect(marks_handler.remove_mark_from_database)
     window.controller.mark_reviewer_w.controller.showOnMap.connect(marks_handler.show_on_map)
+    window.controller.mark_reviewer_w.controller.uploadAllMarks.connect(marks_handler.upload_all_marks)
+    window.controller.mark_reviewer_w.controller.showAllMarks.connect(window.controller.mark_reviewer_w.show_all_marks)
+
+    marks_handler.putAllMarks.connect(window.controller.mark_reviewer_w.controller.put_all_marks)
     marks_handler.putFullMarkInfo.connect(window.controller.mark_reviewer_w.controller.put_full_mark_info)
     marks_handler.addMark.connect(window.controller.mark_reviewer_w.controller.add_mark)
     marks_handler.removeMark.connect(window.controller.mark_reviewer_w.controller.remove_mark)
-    marks_handler.put_all_marks()
-    window.controller.mark_reviewer_w.showAllMarks.emit()
+    marks_handler.upload_all_marks()
 
     # ReportGenerator(db_file_name='2023_9_14')
 

@@ -54,6 +54,13 @@ class DBManager:
         except Exception:
             raise Exception(f'Не удалось получить файл: {db_file_name}')
 
+    def set_session_by_file_name(self, db_file_name):
+        try:
+            db_path = os.path.abspath(os.path.join(self.root_dir, db_file_name + '.db'))
+            session_controller.set_session(db_path)
+        except Exception:
+            raise Exception(f'Не удалось получить файл: {db_file_name}')
+
 
 db_manager = DBManager()
 

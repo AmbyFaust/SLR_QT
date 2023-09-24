@@ -22,8 +22,6 @@ class EditMarkDialogWindow(QDialogBase):
         self.obj_id = None
         self.__create_widgets()
         self.__create_layout()
-        self.__create_actions()
-
         self.mark_info = None
 
     def __create_widgets(self):
@@ -50,13 +48,14 @@ class EditMarkDialogWindow(QDialogBase):
         self.comment_text_edit.setPlaceholderText('Комментарий')
 
         self.create_btn = QPushButton('Принять')
+        self.create_btn.clicked.connect(self.accept_mark)
         self.cancel_btn = QPushButton('Отмена')
+        self.cancel_btn.clicked.connect(self.reject)
 
 
     def __create_layout(self):
         common_v_layout = QVBoxLayout()
         common_form_layout = QFormLayout()
-        common_form_layout.setLabelAlignment(Qt.AlignLeft)
         common_form_layout.setLabelAlignment(Qt.AlignLeft)
         common_form_layout.addRow('Имя:', self.name_edit)
         common_form_layout.addRow('Тип объекта:', self.object_type_combobox)
@@ -76,11 +75,6 @@ class EditMarkDialogWindow(QDialogBase):
         self.common_widget.setLayout(common_v_layout)
 
         self.setLayout(base_layout)
-
-
-    def __create_actions(self):
-        self.cancel_btn.clicked.connect(self.reject)
-        self.create_btn.clicked.connect(self.accept_mark)
 
     def accept_mark(self):
         name = self.name_edit.text()
@@ -119,3 +113,5 @@ class EditMarkDialogWindow(QDialogBase):
         self.coordinates_tabs.coordinates = [data.longitude, data.latitude, data.altitude]
         self.coordinates_tabs.set_coordinates_cur_tab()
         self.comment_text_edit.setPlainText(data.comment)
+
+

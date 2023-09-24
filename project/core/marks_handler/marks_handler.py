@@ -18,6 +18,7 @@ class MarksHandler(QObject):
     removeMark = pyqtSignal(int)
     updateMark = pyqtSignal(int)
 
+
     def __init__(self, painter: CanvasPainter, parent=None):
         super().__init__(parent)
         self.painter = painter
@@ -33,7 +34,6 @@ class MarksHandler(QObject):
             geo_data = [mark_info.longitude, mark_info.latitude, mark_info.altitude]
             coordinates_id = CoordinatesDto.create_coordinates(*geo_data)
             mark_id = MarkDto.create_mark(coordinates_id=coordinates_id)
-            relating_object_id = mark_info.relating_type,
 
             object_id = ObjectDto.create_object(mark_id=mark_id,
                                                 name=mark_info.name,
@@ -56,6 +56,8 @@ class MarksHandler(QObject):
 
         if object_:
             self.addMark.emit(object_)
+        else:
+            print('!!!')
 
 
     @pyqtSlot(MarkData)
@@ -84,6 +86,7 @@ class MarksHandler(QObject):
 
         except BaseException as exp:
             journal.log(f'Не удалось обновить данные отметки с id={mark_info.obj_id}. {exp}', attr='error')
+        print(self.session)
 
     @pyqtSlot(int)
     def delete_mark(self, object_id):
@@ -107,18 +110,24 @@ class MarksHandler(QObject):
         visibility = visibility_dict[index % VISIBILITY_VARIANTS]
         self.dict_map_database_marks[object_id].set_visibility(visibility)
 
-    def put_all_marks(self):
-        self.all_marks = ObjectDto.get_all_objects()
-        self.all_marks.sort(key=lambda x: x.mark.datetime)
+    def upload_all_marks(self):
+        try:
+            self.session = session_controller.get_session()
+            self.all_marks = ObjectDto.get_all_objects()
+            self.all_marks.sort(key=lambda x: x.mark.datetime)
 
-        self.map_marks = [CanvasMark(mark.id, mark.name, mark.mark.coordinates.latitude,
-                                     mark.mark.coordinates.longitude, self.painter)
-                          for mark in self.all_marks]
+            for mark in self.map_marks:
+                mark.remove()
+            self.map_marks = [CanvasMark(mark.id, mark.name, mark.mark.coordinates.latitude,
+                                         mark.mark.coordinates.longitude, self.painter)
+                              for mark in self.all_marks]
 
-        self.dict_map_database_marks = dict(zip([mark.id for mark in self.all_marks], self.map_marks))
+            self.dict_map_database_marks = dict(zip([mark.id for mark in self.all_marks], self.map_marks))
 
-        for map_mark in self.map_marks:
-            map_mark.draw(draw_hidden=False)
+            for map_mark in self.map_marks:
+                map_mark.draw(draw_hidden=False)
+        except BaseException as exp:
+            journal.log(f'Ошибка при получении информации об объектах. {exp}', attr='error')
 
         self.putAllMarks.emit(self.all_marks)
 
