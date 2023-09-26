@@ -8,8 +8,8 @@ from .BaseDto import BaseDto
 class ObjectDto(BaseDto):
     __tablename__ = 'object'
 
-    mark_id = Column(Integer, ForeignKey('mark.id', ondelete='CASCADE'))
-    mark = relationship('MarkDto')
+    mark = relationship('MarkDto', back_populates='object', uselist=False, cascade='all, delete-orphan')
+
     name = Column(String)
     type = Column(String)
     relating_object_type = Column(Integer)
@@ -17,38 +17,32 @@ class ObjectDto(BaseDto):
 
     # Функция для создания объекта ObjectDto
     @classmethod
-    def create_object(cls, mark_id, name, type, relating_object_type, meta):
+    def create_object(cls, mark, name, type, relating_object_type, meta):
         with cls.mutex:
             session = session_controller.get_session()
-            new_object = cls(mark_id=mark_id, name=name, type=type,
+            new_object = cls(mark=mark, name=name, type=type,
                              relating_object_type=relating_object_type, meta=meta)
             session.add(new_object)
-            session.commit()
-            return new_object.id
+            return new_object
 
     # Функция для удаления объекта ObjectDto по id
     @classmethod
-    def delete_object(cls, object_id):
+    def delete_object(cls, object_):
         with cls.mutex:
             session = session_controller.get_session()
-            object_ = session.query(cls).get(object_id)
             if object_:
                 session.delete(object_)
-                session.commit()
 
     # Функция для изменения объекта ObjectDto по id
     @classmethod
-    def update_object(cls, object_id, new_mark_id, new_name, new_type, new_relating_object_type, new_meta):
+    def update_object(cls, object_, new_mark, new_name, new_type, new_relating_object_type, new_meta):
         with cls.mutex:
-            session = session_controller.get_session()
-            object_ = session.query(cls).get(object_id)
             if object_:
-                object_.mark_id = new_mark_id
+                object_.mark = new_mark
                 object_.name = new_name
                 object_.type = new_type
                 object_.relating_object_type = new_relating_object_type
                 object_.meta = new_meta
-                session.commit()
 
     # Функция получения объектов сессии
     @classmethod

@@ -2,11 +2,13 @@ from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 from project.database.session_controller import session_controller
 from .mark_info_widget import MarkInfoWidget
 from ...database.dto.ObjectDto import ObjectDto
-
 from project.gui.mark_reviewer.mark_data import MarkData
+
+import os
 
 
 class MarksReviewerController(QObject):
+    showAllMarks = pyqtSignal()
     createMark = pyqtSignal(MarkData)
     addMark = pyqtSignal(ObjectDto)
     setMarkInfoWidgetPositionLast = pyqtSignal(MarkInfoWidget)
@@ -17,11 +19,12 @@ class MarksReviewerController(QObject):
     getFullMarkInfo = pyqtSignal(int)
     showVisibility = pyqtSignal(int, int, dict)
     showOnMap = pyqtSignal(int)
+    uploadAllMarks = pyqtSignal()
+    putSessionsToReport = pyqtSignal(list)
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.all_marks = []
-        self.current_mark_short_info = {}
         self.current_mark_info = MarkData()
 
     def create_mark(self, mark_info):
@@ -54,6 +57,8 @@ class MarksReviewerController(QObject):
     @pyqtSlot(list)
     def put_all_marks(self, all_marks):
         self.all_marks = all_marks
+        self.current_mark_info = MarkData()
+        self.showAllMarks.emit()
 
     def get_full_mark_info(self, object_id):
         self.getFullMarkInfo.emit(object_id)
@@ -64,3 +69,16 @@ class MarksReviewerController(QObject):
 
     def show_on_map(self, object_id):
         self.showOnMap.emit(object_id)
+
+    def upload_all_marks(self):
+        self.uploadAllMarks.emit()
+
+    def clear_map(self):
+        self.clearMap.emit()
+
+    @staticmethod
+    def get_sessions_names():
+        return os.path.splitext(os.path.basename(session_controller.engine.url.database))
+
+    def put_sessions_to_report(self, sessions):
+        self.putSessionsToReport.emit(sessions)

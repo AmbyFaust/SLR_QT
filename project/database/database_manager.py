@@ -50,7 +50,6 @@ class DBManager:
                 return None
 
             additional_session_controller = SessionController()
-
             additional_session_controller.set_session(db_path)
 
             return additional_session_controller.get_session()

@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt
 
 from PyQt5.QtWidgets import QVBoxLayout, QPushButton, \
-    QHBoxLayout, QLabel, QLineEdit, QPlainTextEdit, QFormLayout, QWidget
+    QHBoxLayout, QLineEdit, QPlainTextEdit, QFormLayout, QWidget
 
 from project.gui.form_classes_base import QDialogBase
 from project.gui.form_classes_base.qcombobox_base import QComboBoxBase
@@ -22,8 +22,6 @@ class EditMarkDialogWindow(QDialogBase):
         self.obj_id = None
         self.__create_widgets()
         self.__create_layout()
-        self.__create_actions()
-
         self.mark_info = None
 
     def __create_widgets(self):
@@ -50,12 +48,13 @@ class EditMarkDialogWindow(QDialogBase):
         self.comment_text_edit.setPlaceholderText('Комментарий')
 
         self.create_btn = QPushButton('Принять')
+        self.create_btn.clicked.connect(self.accept_mark)
         self.cancel_btn = QPushButton('Отмена')
+        self.cancel_btn.clicked.connect(self.reject)
 
     def __create_layout(self):
         common_v_layout = QVBoxLayout()
         common_form_layout = QFormLayout()
-        common_form_layout.setLabelAlignment(Qt.AlignLeft)
         common_form_layout.setLabelAlignment(Qt.AlignLeft)
         common_form_layout.addRow('Имя:', self.name_edit)
         common_form_layout.addRow('Тип объекта:', self.object_type_combobox)

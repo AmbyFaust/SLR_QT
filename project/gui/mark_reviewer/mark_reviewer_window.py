@@ -1,4 +1,4 @@
-from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot
+from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QAction, QWidget, QVBoxLayout, QScrollArea, QFrame
 
@@ -7,11 +7,11 @@ from .edit_mark_dialog import EditMarkDialogWindow
 
 from .mark_reviewer_controller import MarksReviewerController
 from .mark_info_widget import MarkInfoWidget
-from .separator_widgets import HSeparator
+
+from ...database.choice_session_dialog import ChoiceSessionDialog
 
 
 class MarksReviewerWindow(QMainWindowBase):
-    showAllMarks = pyqtSignal()
 
     def __init__(self, parent=None):
         super(MarksReviewerWindow, self).__init__(parent)
@@ -46,22 +46,26 @@ class MarksReviewerWindow(QMainWindowBase):
         self.setCentralWidget(self.common_widget)
 
     def __create_actions(self):
-        self.target_tool_action = QAction('Создать отметку', self)
-        self.target_tool_action.setIcon(QIcon(":/images/position3.svg"))
-        self.remove_target_action = QAction('Удалить выбранные отметки', self)
-        self.remove_target_action.setIcon(QIcon(':/images/delete.svg'))
+        self.mark_tool_action = QAction('Создать отметку', self)
+        self.mark_tool_action.setIcon(QIcon(":/images/position3.svg"))
+        self.choice_session_tool_action = QAction('Выбрать сессию', self)
+        self.choice_session_tool_action.setIcon(QIcon("project/gui/form_classes_base/qdarkstyle/svg/arrow_down.svg"))
+        self.remove_mark_action = QAction('Удалить выбранные отметки', self)
+        self.remove_mark_action.setIcon(QIcon(':/images/delete.svg'))
 
     def __create_toolbar(self):
         self.tool_bar = Toolbar()
-        self.tool_bar.addAction(self.target_tool_action)
+        self.tool_bar.addAction(self.mark_tool_action)
         self.tool_bar.addSeparator()
-        self.tool_bar.addAction(self.remove_target_action)
+        self.tool_bar.addAction(self.remove_mark_action)
+        self.tool_bar.addSeparator()
+        self.tool_bar.addAction(self.choice_session_tool_action)
         self.addToolBar(self.tool_bar)
 
     def __setup_connections(self):
-        self.showAllMarks.connect(self.show_all_marks)
-        self.target_tool_action.triggered.connect(self.open_create_mark_dialog)
-        self.remove_target_action.triggered.connect(self.delete_selected_marks)
+        self.mark_tool_action.triggered.connect(self.open_create_mark_dialog)
+        self.choice_session_tool_action.triggered.connect(self.open_choice_session_dialog)
+        self.remove_mark_action.triggered.connect(self.delete_selected_marks)
         self.controller.addMark.connect(self.add_mark_info_widget)
         self.controller.deleteSingleMark.connect(self.delete_single_mark)
         self.controller.setMarkInfoWidgetPositionLast.connect(self.set_mark_info_widget_position_last)
@@ -105,6 +109,18 @@ class MarksReviewerWindow(QMainWindowBase):
 
     @pyqtSlot()
     def show_all_marks(self):
+        selected_marks = []
+        for index in range(self.marks_info_layout.count()):
+            mark_info_widget = self.marks_info_layout.itemAt(index).widget()
+            if isinstance(mark_info_widget, MarkInfoWidget):
+                selected_marks.append(mark_info_widget)
+
+        for selected_widget in selected_marks:
+            if isinstance(selected_widget, MarkInfoWidget):
+                self.marks_info_layout.removeWidget(selected_widget)
+            selected_widget.deleteLater()
+            self.count_marks -= 1
+
         for object_entity in self.controller.all_marks:
             self.add_mark_info_widget(object_entity)
 
@@ -113,3 +129,6 @@ class MarksReviewerWindow(QMainWindowBase):
         if dialog.exec_() == QDialogBase.Accepted:
             self.controller.create_mark(dialog.mark_info)
 
+    def open_choice_session_dialog(self):
+        dialog = ChoiceSessionDialog(self, self.controller)
+        dialog.exec_()
